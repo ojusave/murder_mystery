@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'Dark Lotus <noreply@darklotus.party>';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Dark Lotus <noreply@saveoj.us>';
 const REAL_ADDRESS = process.env.REAL_ADDRESS || '123 Mystery Lane, Fremont, CA 94536';
 const EVENT_DATE = process.env.EVENT_DATE || '2025-11-01';
 const EVENT_START_TIME = process.env.EVENT_START_TIME || '20:00';

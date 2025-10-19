@@ -2,7 +2,7 @@ services:
   # Main Next.js Web Service
   - type: web
     name: black-lotus-web
-    env: node
+    runtime: node
     plan: starter
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -26,7 +26,7 @@ services:
   # Background Worker for Email Processing
   - type: worker
     name: black-lotus-worker
-    env: node
+    runtime: node
     plan: starter
     buildCommand: npm install
     startCommand: npm run worker:start
@@ -39,7 +39,7 @@ services:
   # Cron Job for Daily Tasks
   - type: cron
     name: black-lotus-cron
-    env: node
+    runtime: node
     plan: starter
     schedule: "0 9 * * *"  # Daily at 9 AM PT
     buildCommand: npm install
@@ -57,11 +57,6 @@ databases:
     databaseName: blacklotus
     user: blacklotus_user
 
-  # Redis Key-Value Store
-  - name: black-lotus-kv
-    plan: starter
-    maxmemoryPolicy: allkeys-lru
-
 envVarGroups:
   - name: black-lotus-env-group
     envVars:
@@ -69,12 +64,6 @@ envVarGroups:
       - key: DATABASE_URL
         fromDatabase:
           name: black-lotus-db
-          property: connectionString
-      
-      # Redis Connection
-      - key: REDIS_URL
-        fromDatabase:
-          name: black-lotus-kv
           property: connectionString
       
       # Authentication
@@ -90,7 +79,7 @@ envVarGroups:
         value: "2025-10-31"
       
       - key: EMAIL_FROM
-        value: "Dark Lotus <noreply@darklotus.party>"
+        value: "Dark Lotus <noreply@saveoj.us>"
       
       - key: MAX_GUESTS
         value: "50"

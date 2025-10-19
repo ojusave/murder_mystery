@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  createdAt     DateTime @default(now()) @map("created_at")
+  
+  @@map("admin_users")
+}
+
+model Guest {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  legalName         String   @map("legal_name")
+  wantsToPlay       String   @map("wants_to_play") // "Yes" | "No, I think I would just be interested in a regular party"
+  
+  // Section 2 fields
+  bringOptions      String[] @map("bring_options")
+  bringOther        String?  @map("bring_other")
+  volunteerDecor    Boolean  @map("volunteer_decor")
+  willDressUp       String   @map("will_dress_up") // "Of course…" | "I will try, but no commitments"
+  
+  // Section 3 fields
+  genderPref        String   @map("gender_pref")
+  genderOther       String?  @map("gender_other")
+  charNamePref      String?  @map("char_name_pref")
+  charNameMode       String   @map("char_name_mode") // "I leave the fate…" | "Other:"
+  charNameOther     String?  @map("char_name_other")
+  charInfoTiming     String   @map("char_info_timing") // "Yes… tell me earlier" | "I am very busy… give me on arrival"
+  talents           String[]
+  talentsOther      String?  @map("talents_other")
+  
+  // Acknowledgements
+  ackPairing        Boolean  @map("ack_pairing")
+  ackAdultThemes    Boolean  @map("ack_adult_themes")
+  ackWaiver         Boolean  @map("ack_waiver")
+  waiverVersion     String?  @map("waiver_version")
+  
+  suggestions       String?
+  status            String   @default("pending") // "pending" | "approved" | "rejected"
+  token             String   @unique
+  
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  character         Character?
+  emailEvents       EmailEvent[]
+  
+  @@index([email])
+  @@index([status])
+  @@map("guests")
+}
+
+model Character {
+  id              String    @id @default(uuid())
+  guestId         String?   @unique @map("guest_id")
+  displayName     String    @map("display_name")
+  traits          Json
+  notesPrivate    String?   @map("notes_private")
+  assignedAt      DateTime? @map("assigned_at")
+  
+  // Relations
+  guest           Guest?    @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  
+  @@map("characters")
+}
+
+model EmailEvent {
+  id        String   @id @default(uuid())
+  guestId   String   @map("guest_id")
+  type      String   // "rsvp_received" | "approved" | "rejected" | "character_assigned"
+  status    String   // "queued" | "sent" | "failed"
+  error     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  guest     Guest    @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  
+  @@index([status])
+  @@index([type])
+  @@map("email_events")
+}

@@ -1,0 +1,102 @@
+services:
+  # Main Next.js Web Service
+  - type: web
+    name: black-lotus-web
+    env: node
+    plan: starter
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXTAUTH_URL
+        fromService:
+          type: web
+          name: black-lotus-web
+          property: host
+      - key: APP_BASE_URL
+        fromService:
+          type: web
+          name: black-lotus-web
+          property: host
+    envVarGroups:
+      - black-lotus-env-group
+
+  # Background Worker for Email Processing
+  - type: worker
+    name: black-lotus-worker
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm run worker:start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    envVarGroups:
+      - black-lotus-env-group
+
+  # Cron Job for Daily Tasks
+  - type: cron
+    name: black-lotus-cron
+    env: node
+    plan: starter
+    schedule: "0 9 * * *"  # Daily at 9 AM PT
+    buildCommand: npm install
+    startCommand: npm run cron:daily
+    envVars:
+      - key: NODE_ENV
+        value: production
+    envVarGroups:
+      - black-lotus-env-group
+
+databases:
+  # PostgreSQL Database
+  - name: black-lotus-db
+    plan: starter
+    databaseName: blacklotus
+    user: blacklotus_user
+
+  # Redis Key-Value Store
+  - name: black-lotus-kv
+    plan: starter
+    maxmemoryPolicy: allkeys-lru
+
+envVarGroups:
+  - name: black-lotus-env-group
+    envVars:
+      # Database Connection
+      - key: DATABASE_URL
+        fromDatabase:
+          name: black-lotus-db
+          property: connectionString
+      
+      # Redis Connection
+      - key: REDIS_URL
+        fromDatabase:
+          name: black-lotus-kv
+          property: connectionString
+      
+      # Authentication
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      
+      # Email Service
+      - key: RESEND_API_KEY
+        sync: false  # Set manually in Render dashboard
+      
+      # Application Settings
+      - key: RSVP_DEADLINE
+        value: "2025-10-31"
+      
+      - key: EMAIL_FROM
+        value: "Dark Lotus <noreply@darklotus.party>"
+      
+      - key: MAX_GUESTS
+        value: "50"
+      
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "5"
+      
+      - key: RATE_LIMIT_PER_DAY
+        value: "100"

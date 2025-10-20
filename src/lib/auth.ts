@@ -1,11 +1,11 @@
-import NextAuth from 'next-auth'
-import Credentials from 'next-auth/providers/credentials'
-import bcrypt from 'bcryptjs'
+import NextAuth from 'next-auth/next'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import * as bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/db'
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+const authOptions = {
   providers: [
-    Credentials({
+    CredentialsProvider({
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
@@ -83,4 +83,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: '/admin/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
-})
+}
+
+export default NextAuth(authOptions)
+
+// Export handlers for API routes
+export const handlers = {
+  GET: NextAuth(authOptions),
+  POST: NextAuth(authOptions)
+}
+
+// Export auth function for middleware and other uses
+export const auth = NextAuth(authOptions)

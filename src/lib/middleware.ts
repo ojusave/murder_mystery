@@ -7,7 +7,7 @@ export async function withAuth(
   return async (req: NextRequest, context?: Record<string, unknown>) => {
     const session = await auth()
     
-    if (!session || session.user.role !== 'admin') {
+    if (!session || !session.user || session.user.role !== 'admin') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     

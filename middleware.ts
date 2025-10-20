@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
     }
     
     // Check if user is authenticated and has admin role
-    if (!session || session.user.role !== 'admin') {
+    if (!session || !session.user || session.user.role !== 'admin') {
       return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }

@@ -5,7 +5,7 @@ import { prisma } from '@/lib/db';
 export async function POST(request: NextRequest) {
   const session = await auth();
   
-  if (!session || session.user.role !== 'admin') {
+  if (!session || !session.user || session.user.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const session = await auth();
   
-  if (!session || session.user.role !== 'admin') {
+  if (!session || !session.user || session.user.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -114,7 +114,7 @@ export async function PATCH(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const session = await auth();
   
-  if (!session || session.user.role !== 'admin') {
+  if (!session || !session.user || session.user.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

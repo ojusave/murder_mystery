@@ -44,7 +44,7 @@ export default function ThanksPage() {
               </Link>
               
               <div className="text-gray-400 text-sm">
-                <p>Questions? Contact us at [email@blacklotus.party]</p>
+                <p>Questions? Contact us at [email@darklotus.party]</p>
               </div>
             </div>
           </div>

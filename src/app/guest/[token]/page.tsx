@@ -257,8 +257,8 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
             <CardContent>
               <p className="text-gray-300">
                 If you have any questions or need assistance, please contact us at{' '}
-                <a href="mailto:host@blacklotus.party" className="text-purple-300 hover:text-purple-200 underline">
-                  host@blacklotus.party
+                <a href="mailto:host@darklotus.party" className="text-purple-300 hover:text-purple-200 underline">
+                  host@darklotus.party
                 </a>
               </p>
             </CardContent>

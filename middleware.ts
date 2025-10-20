@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
+import { getToken } from 'next-auth/jwt'
 
 export async function middleware(request: NextRequest) {
-  const session = await auth()
-  
   // Check if the request is for an admin route
   if (request.nextUrl.pathname.startsWith('/admin')) {
     // Allow access to login page
@@ -11,8 +9,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next()
     }
     
+    // Get the token from the request
+    const token = await getToken({ 
+      req: request, 
+      secret: process.env.NEXTAUTH_SECRET 
+    })
+    
     // Check if user is authenticated and has admin role
-    if (!session || !session.user || session.user.role !== 'admin') {
+    if (!token || !token.role || token.role !== 'admin') {
       return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }

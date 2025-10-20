@@ -67,7 +67,7 @@ export default function AdminLogin() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="bg-gray-800 border-gray-600 text-white"
-                placeholder="admin@blacklotus.party"
+                placeholder="admin@darklotus.party"
               />
             </div>
 

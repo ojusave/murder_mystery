@@ -3,8 +3,6 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import * as bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/db'
 import { NextRequest } from 'next/server'
-import jwt from 'jsonwebtoken'
-// import NextAuthJWT from 'next-auth/jwt'
 
 export const authOptions = {
   providers: [
@@ -120,6 +118,7 @@ export async function getServerAuth(request: NextRequest) {
 
   try {
     // Use NextAuth's built-in JWT verification instead of manual decoding
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const NextAuthJWT = require('next-auth/jwt');
     const token = await NextAuthJWT.getToken({ 
       req: request, 

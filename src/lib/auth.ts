@@ -41,7 +41,7 @@ const config = {
           }
 
           const isPasswordValid = await bcrypt.compare(
-            credentials.password,
+            credentials.password as string,
             admin.passwordHash
           )
 

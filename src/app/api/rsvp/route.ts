@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
+import { sendRSVPConfirmationEmail } from '@/lib/email';
 
 const rsvpSchema = z.object({
   email: z.string().email(),
@@ -100,14 +101,30 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Queue email notification (this will be processed by the background worker)
-    await prisma.emailEvent.create({
-      data: {
-        guestId: guest.id,
-        type: 'rsvp_received',
-        status: 'queued',
-      },
-    });
+    // Send confirmation email immediately
+    try {
+      await sendRSVPConfirmationEmail(guest);
+      
+      // Create email event for tracking
+      await prisma.emailEvent.create({
+        data: {
+          guestId: guest.id,
+          type: 'rsvp_received',
+          status: 'sent',
+        },
+      });
+    } catch (emailError) {
+      console.error('RSVP confirmation email failed:', emailError);
+      // Still create email event for tracking, but mark as failed
+      await prisma.emailEvent.create({
+        data: {
+          guestId: guest.id,
+          type: 'rsvp_received',
+          status: 'failed',
+          error: emailError instanceof Error ? emailError.message : 'Unknown error',
+        },
+      });
+    }
 
     return NextResponse.json({ 
       success: true, 
@@ -206,14 +223,30 @@ export async function PUT(request: NextRequest) {
       },
     });
 
-    // Queue email notification for update
-    await prisma.emailEvent.create({
-      data: {
-        guestId: updatedGuest.id,
-        type: 'rsvp_updated',
-        status: 'queued',
-      },
-    });
+    // Send update confirmation email immediately
+    try {
+      await sendRSVPConfirmationEmail(updatedGuest);
+      
+      // Create email event for tracking
+      await prisma.emailEvent.create({
+        data: {
+          guestId: updatedGuest.id,
+          type: 'rsvp_updated',
+          status: 'sent',
+        },
+      });
+    } catch (emailError) {
+      console.error('RSVP update confirmation email failed:', emailError);
+      // Still create email event for tracking, but mark as failed
+      await prisma.emailEvent.create({
+        data: {
+          guestId: updatedGuest.id,
+          type: 'rsvp_updated',
+          status: 'failed',
+          error: emailError instanceof Error ? emailError.message : 'Unknown error',
+        },
+      });
+    }
 
     return NextResponse.json({ 
       success: true, 

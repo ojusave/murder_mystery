@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { sendApprovalEmail, sendRejectionEmail } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   const session = await getServerAuth(request);
@@ -61,14 +62,34 @@ export async function PATCH(request: NextRequest) {
         data: { status },
       });
 
-      // Queue email notification
-      await prisma.emailEvent.create({
-        data: {
-          guestId: guest.id,
-          type: status === 'approved' ? 'approved' : 'rejected',
-          status: 'queued',
-        },
-      });
+      // Send email immediately instead of queuing
+      try {
+        if (status === 'approved') {
+          await sendApprovalEmail(guest);
+        } else if (status === 'rejected') {
+          await sendRejectionEmail(guest);
+        }
+        
+        // Still create email event for tracking
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guest.id,
+            type: status === 'approved' ? 'approved' : 'rejected',
+            status: 'sent',
+          },
+        });
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Still update the guest status even if email fails
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guest.id,
+            type: status === 'approved' ? 'approved' : 'rejected',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      }
 
       return NextResponse.json({ success: true });
     }

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -281,14 +282,12 @@ export default function RSVPForm() {
     <div className="min-h-screen bg-gray-900">
       {/* Background Image Container */}
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800">
-        <img 
+        <Image 
           src="/dark-lotus-poster.jpg"
           alt="Dark Lotus Poster"
-          className="w-auto h-screen object-contain"
-          style={{
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-          }}
+          fill
+          className="object-contain"
+          priority
         />
       </div>
       {/* Dark overlay for better text readability */}

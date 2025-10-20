@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     let parsedTraits;
     try {
       parsedTraits = typeof traits === 'string' ? JSON.parse(traits) : traits;
-    } catch (error) {
+    } catch {
       return NextResponse.json(
         { error: 'Invalid traits format. Must be valid JSON.' },
         { status: 400 }
@@ -86,7 +86,7 @@ export async function PATCH(request: NextRequest) {
       if (typeof traits === 'string') {
         try {
           parsedTraits = JSON.parse(traits);
-        } catch (error) {
+        } catch {
           return NextResponse.json(
             { error: 'Invalid traits format. Must be valid JSON.' },
             { status: 400 }

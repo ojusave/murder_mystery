@@ -193,7 +193,7 @@ export default function RSVPForm() {
       if (error instanceof z.ZodError) {
         // Set the errors on the form
         const fieldErrors: any = {};
-        error.errors.forEach((err) => {
+        error.issues.forEach((err) => {
           if (err.path.length > 0) {
             fieldErrors[err.path[0]] = { message: err.message };
           }

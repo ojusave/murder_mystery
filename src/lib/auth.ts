@@ -34,7 +34,7 @@ const config: NextAuthConfig = {
         // Fallback to database check
         try {
           const admin = await prisma.adminUser.findUnique({
-            where: { email: credentials.email }
+            where: { email: credentials.email as string }
           })
 
           if (!admin) {

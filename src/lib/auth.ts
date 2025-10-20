@@ -118,41 +118,33 @@ export async function getServerAuth(request: NextRequest) {
   }
 
   try {
-    // Decode the JWT token manually
-    const decoded = jwt.verify(sessionToken, process.env.NEXTAUTH_SECRET) as any;
-    
-    console.log('JWT decoded successfully:', { 
-      sub: decoded.sub, 
-      email: decoded.email, 
-      role: decoded.role,
-      iat: decoded.iat,
-      exp: decoded.exp 
+    // Use NextAuth's built-in JWT verification instead of manual decoding
+    const { getToken } = await import('next-auth/jwt');
+    const token = await getToken({ 
+      req: request, 
+      secret: process.env.NEXTAUTH_SECRET 
     });
     
-    if (decoded && decoded.role === 'admin') {
+    if (token && token.role === 'admin') {
+      console.log('JWT verified successfully:', { 
+        sub: token.sub, 
+        email: token.email, 
+        role: token.role 
+      });
+      
       return {
         user: {
-          id: decoded.sub,
-          email: decoded.email,
-          role: decoded.role
+          id: token.sub,
+          email: token.email,
+          role: token.role
         }
       };
     }
     
-    console.log('JWT token does not have admin role');
+    console.log('JWT token does not have admin role or is invalid');
     return null;
   } catch (error) {
-    // More specific error logging
-    if (error instanceof jwt.JsonWebTokenError) {
-      console.error('JWT token error:', error.message);
-      console.error('Token preview:', sessionToken.substring(0, 50) + '...');
-    } else if (error instanceof jwt.TokenExpiredError) {
-      console.error('JWT token expired:', error.message);
-    } else if (error instanceof jwt.NotBeforeError) {
-      console.error('JWT token not active:', error.message);
-    } else {
-      console.error('Auth token verification failed:', error);
-    }
+    console.error('Auth token verification failed:', error);
     return null;
   }
 }

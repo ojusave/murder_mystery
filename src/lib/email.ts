@@ -68,7 +68,7 @@ export async function sendRSVPConfirmationEmail(guest: any) {
         <h3 style="margin-top: 0;">Event Details:</h3>
         <p><strong>Date:</strong> November 1st, 2025</p>
         <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
-        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Location:</strong> [Venue TBD - Address will be provided upon approval]</p>
       </div>
       
       <p>If you have any questions, please don't hesitate to contact us.</p>

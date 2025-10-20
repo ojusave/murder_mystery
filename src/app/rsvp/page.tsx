@@ -94,18 +94,18 @@ export default function RSVPForm() {
     defaultValues: {
       email: '',
       legalName: '',
-      wantsToPlay: undefined,
+      wantsToPlay: '' as any,
       ackWaiver: false,
       bringOptions: [],
       bringOther: '',
       volunteerDecor: false,
-      willDressUp: undefined,
-      genderPref: undefined,
+      willDressUp: '' as any,
+      genderPref: '' as any,
       genderOther: '',
       charNamePref: '',
-      charNameMode: undefined,
+      charNameMode: '' as any,
       charNameOther: '',
-      charInfoTiming: undefined,
+      charInfoTiming: '' as any,
       talents: [],
       talentsOther: '',
       ackPairing: false,
@@ -115,8 +115,8 @@ export default function RSVPForm() {
   });
 
   // Debug form initialization
-  console.log('Form initialized with values:', form.getValues());
-  console.log('Form state:', form.formState);
+  // console.log('Form initialized with values:', form.getValues());
+  // console.log('Form state:', form.formState);
 
   // Save progress to localStorage
   useEffect(() => {
@@ -139,21 +139,10 @@ export default function RSVPForm() {
   }, [form]);
 
   const onSubmit = async (data: FormData) => {
-    console.log('=== RSVP SUBMISSION DEBUG ===');
-    console.log('Form submitted with data:', data);
-    console.log('Form validation state:', form.formState);
-    console.log('Form errors:', form.formState.errors);
-    console.log('All form values:', form.getValues());
-    console.log('Current URL:', window.location.href);
-    console.log('User agent:', navigator.userAgent);
-    console.log('Timestamp:', new Date().toISOString());
-    
     // First, validate all fields
     const isValid = await form.trigger();
-    console.log('Full form validation result:', isValid);
     
     if (!isValid) {
-      console.log('Validation errors found:', form.formState.errors);
       
       // Find which section has the first error
       let errorSection = 1;
@@ -181,11 +170,6 @@ export default function RSVPForm() {
     setSubmitError('');
 
     try {
-      console.log('=== MAKING API REQUEST ===');
-      console.log('Request URL:', '/api/rsvp');
-      console.log('Request method:', 'POST');
-      console.log('Request body:', JSON.stringify(data));
-      
       const response = await fetch('/api/rsvp', {
         method: 'POST',
         headers: {
@@ -194,16 +178,8 @@ export default function RSVPForm() {
         body: JSON.stringify(data),
       });
 
-      console.log('=== API RESPONSE ===');
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
-
       if (!response.ok) {
         const error = await response.json();
-        console.log('Error response:', error);
-        console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
         
         // Provide more specific error messages
         if (response.status === 400) {
@@ -218,7 +194,6 @@ export default function RSVPForm() {
       }
 
       const result = await response.json();
-      console.log('Success response:', result);
 
       // Clear saved data and redirect to guest portal
       localStorage.removeItem('rsvp-form-data');
@@ -232,15 +207,8 @@ export default function RSVPForm() {
   };
 
   const nextSection = () => {
-    console.log('nextSection called, current section:', currentSection);
-    console.log('Form state:', form.formState);
-    console.log('Form values:', form.getValues());
-    
     if (currentSection === 1) {
       form.trigger(['email', 'legalName', 'wantsToPlay', 'ackWaiver']).then((isValid) => {
-        console.log('Section 1 validation result:', isValid);
-        console.log('Form errors:', form.formState.errors);
-        console.log('Form values after trigger:', form.getValues());
         if (isValid) {
           setCurrentSection(2);
           setSubmitError(''); // Clear any previous errors
@@ -255,8 +223,6 @@ export default function RSVPForm() {
       });
     } else if (currentSection === 2) {
       form.trigger(['bringOptions', 'volunteerDecor', 'willDressUp']).then((isValid) => {
-        console.log('Section 2 validation result:', isValid);
-        console.log('Form errors:', form.formState.errors);
         if (isValid) {
           setCurrentSection(3);
           setSubmitError(''); // Clear any previous errors
@@ -341,7 +307,6 @@ export default function RSVPForm() {
                         {...form.register('email')}
                         className="bg-gray-800 border-gray-600 text-white"
                         onChange={(e) => {
-                          console.log('Email changed:', e.target.value);
                           form.setValue('email', e.target.value);
                           form.trigger('email');
                         }}
@@ -362,7 +327,6 @@ export default function RSVPForm() {
                         {...form.register('legalName')}
                         className="bg-gray-800 border-gray-600 text-white"
                         onChange={(e) => {
-                          console.log('Legal name changed:', e.target.value);
                           form.setValue('legalName', e.target.value);
                           form.trigger('legalName');
                         }}
@@ -381,7 +345,6 @@ export default function RSVPForm() {
                       <RadioGroup
                         value={form.watch('wantsToPlay') || ''}
                         onValueChange={(value) => {
-                          console.log('Radio button changed:', value);
                           form.setValue('wantsToPlay', value as 'Yes' | 'No, I think I would just be interested in a regular party');
                           form.trigger('wantsToPlay');
                         }}
@@ -430,7 +393,6 @@ export default function RSVPForm() {
                           id="ackWaiver"
                           checked={form.watch('ackWaiver')}
                           onCheckedChange={(checked) => {
-                            console.log('Checkbox changed:', checked);
                             form.setValue('ackWaiver', checked as boolean);
                             form.trigger('ackWaiver');
                           }}
@@ -616,7 +578,7 @@ export default function RSVPForm() {
                         Do you have a gender preference for your character?
                       </Label>
                       <RadioGroup
-                        value={form.watch('genderPref')}
+                        value={form.watch('genderPref') || ''}
                         onValueChange={(value) => {
                           form.setValue('genderPref', value as 'Male' | 'Female' | 'Other:');
                           form.trigger('genderPref');
@@ -667,7 +629,7 @@ export default function RSVPForm() {
                         The preferred name for my character is... (Host judgment final on this)
                       </Label>
                       <RadioGroup
-                        value={form.watch('charNameMode')}
+                        value={form.watch('charNameMode') || ''}
                         onValueChange={(value) => {
                           form.setValue('charNameMode', value as 'I leave the fate of my character in your capable hands' | 'Other:');
                           form.trigger('charNameMode');
@@ -707,7 +669,7 @@ export default function RSVPForm() {
                         I would like to know about my character/ and their traits before the party
                       </Label>
                       <RadioGroup
-                        value={form.watch('charInfoTiming')}
+                        value={form.watch('charInfoTiming') || ''}
                         onValueChange={(value) => {
                           form.setValue('charInfoTiming', value as 'Yes. If I get to know about this before, I will have enough time to get into the character and plan my attire accordingly' | 'I am very busy. The host should consider themselves lucky that I am attending this party. You can give me a character once I show up.');
                           form.trigger('charInfoTiming');
@@ -877,14 +839,8 @@ export default function RSVPForm() {
                     disabled={isSubmitting}
                     className="bg-purple-600 hover:bg-purple-700 text-white ml-auto"
                     onClick={(e) => {
-                      console.log('Submit button clicked!');
-                      console.log('Event:', e);
-                      console.log('Form element:', e.currentTarget.form);
-                      console.log('Form state:', form.formState);
-                      console.log('Form errors:', form.formState.errors);
-                      console.log('Form values:', form.getValues());
-                      
-                      // Don't prevent default - let the form handle submission
+                      e.preventDefault();
+                      onSubmit(form.getValues());
                     }}
                   >
                     {isSubmitting ? 'Submitting...' : 'Submit RSVP'}

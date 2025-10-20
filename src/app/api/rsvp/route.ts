@@ -60,7 +60,11 @@ export async function POST(request: NextRequest) {
 
     if (existingGuest) {
       return NextResponse.json(
-        { error: 'An RSVP with this email address already exists' },
+        { 
+          error: 'An RSVP with this email address already exists',
+          existingGuestId: existingGuest.id,
+          message: 'If you need to update your RSVP, please contact the host directly.'
+        },
         { status: 409 }
       );
     }
@@ -148,6 +152,97 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { error: 'Failed to submit RSVP. Please try again later.' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    // Test database connection first
+    await prisma.$queryRaw`SELECT 1`;
+    
+    const body = await request.json();
+    
+    // Validate the request body
+    const validatedData = rsvpSchema.parse(body);
+    
+    // Check if email exists
+    const existingGuest = await prisma.guest.findUnique({
+      where: { email: validatedData.email },
+    });
+
+    if (!existingGuest) {
+      return NextResponse.json(
+        { error: 'No RSVP found with this email address' },
+        { status: 404 }
+      );
+    }
+    
+    // Update the guest record
+    const updatedGuest = await prisma.guest.update({
+      where: { email: validatedData.email },
+      data: {
+        legalName: validatedData.legalName,
+        wantsToPlay: validatedData.wantsToPlay,
+        ackWaiver: validatedData.ackWaiver,
+        waiverVersion: '2024-10-28', // Current waiver version
+        bringOptions: validatedData.bringOptions,
+        bringOther: validatedData.bringOther,
+        volunteerDecor: validatedData.volunteerDecor,
+        willDressUp: validatedData.willDressUp,
+        genderPref: validatedData.genderPref,
+        genderOther: validatedData.genderOther,
+        charNamePref: validatedData.charNamePref,
+        charNameMode: validatedData.charNameMode,
+        charNameOther: validatedData.charNameOther,
+        charInfoTiming: validatedData.charInfoTiming,
+        talents: validatedData.talents || [],
+        talentsOther: validatedData.talentsOther,
+        ackPairing: validatedData.ackPairing,
+        ackAdultThemes: validatedData.ackAdultThemes,
+        suggestions: validatedData.suggestions,
+        status: 'pending', // Reset status when updating
+      },
+    });
+
+    // Queue email notification for update
+    await prisma.emailEvent.create({
+      data: {
+        guestId: updatedGuest.id,
+        type: 'rsvp_updated',
+        status: 'queued',
+      },
+    });
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'RSVP updated successfully',
+      token: updatedGuest.token 
+    });
+
+  } catch (error) {
+    console.error('RSVP update error:', error);
+    
+    if (error instanceof z.ZodError) {
+      console.error('Validation error:', error.issues);
+      return NextResponse.json(
+        { error: 'Invalid form data', details: error.issues },
+        { status: 400 }
+      );
+    }
+
+    // Handle database connection errors
+    if (error && typeof error === 'object' && 'code' in error) {
+      console.error('Database error:', error);
+      return NextResponse.json(
+        { error: 'Database connection failed. Please try again later.' },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to update RSVP. Please try again later.' },
       { status: 500 }
     );
   }

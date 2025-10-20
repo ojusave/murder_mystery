@@ -87,6 +87,7 @@ export default function RSVPForm() {
   const [currentSection, setCurrentSection] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(fullSchema),
@@ -170,8 +171,9 @@ export default function RSVPForm() {
     setSubmitError('');
 
     try {
+      const method = isUpdating ? 'PUT' : 'POST';
       const response = await fetch('/api/rsvp', {
-        method: 'POST',
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -185,7 +187,12 @@ export default function RSVPForm() {
         if (response.status === 400) {
           throw new Error(error.details ? `Validation error: ${JSON.stringify(error.details)}` : error.error || 'Invalid form data');
         } else if (response.status === 409) {
-          throw new Error('An RSVP with this email address already exists');
+          // Offer to update existing RSVP
+          setSubmitError(`An RSVP with this email address already exists. Would you like to update your existing RSVP instead?`);
+          setIsUpdating(true);
+          return;
+        } else if (response.status === 404) {
+          throw new Error('No existing RSVP found with this email address');
         } else if (response.status === 503) {
           throw new Error('Service temporarily unavailable. Please try again later.');
         } else {
@@ -843,7 +850,7 @@ export default function RSVPForm() {
                       onSubmit(form.getValues());
                     }}
                   >
-                    {isSubmitting ? 'Submitting...' : 'Submit RSVP'}
+                    {isSubmitting ? (isUpdating ? 'Updating...' : 'Submitting...') : (isUpdating ? 'Update RSVP' : 'Submit RSVP')}
                   </Button>
                 )}
               </div>
@@ -852,12 +859,28 @@ export default function RSVPForm() {
                 <div className="bg-red-900/30 border border-red-500 rounded-lg p-4 mb-6">
                   <div className="flex items-center gap-2">
                     <span className="text-red-400">⚠️</span>
-                    <div>
+                    <div className="flex-1">
                       <p className="text-red-300 font-medium">{submitError}</p>
                       {Object.keys(form.formState.errors).length > 0 && (
                         <p className="text-red-200 text-sm mt-2">
                           Missing fields: {Object.keys(form.formState.errors).join(', ')}
                         </p>
+                      )}
+                      {isUpdating && (
+                        <div className="mt-3 flex gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setIsUpdating(false);
+                              setSubmitError('');
+                            }}
+                            className="text-white border-white hover:bg-white hover:text-gray-900"
+                          >
+                            Cancel Update
+                          </Button>
+                        </div>
                       )}
                     </div>
                   </div>

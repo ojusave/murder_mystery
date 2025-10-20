@@ -65,6 +65,10 @@ export const authOptions = {
   ],
   session: {
     strategy: 'jwt' as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async jwt({ token, user }: { token: any; user: any }) {
@@ -85,6 +89,7 @@ export const authOptions = {
     signIn: '/admin/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
 }
 
 export default NextAuth(authOptions)
@@ -97,18 +102,34 @@ export const handlers = {
 
 // Custom auth function for API routes
 export async function getServerAuth(request: NextRequest) {
+  // Get the session token from cookies
   const sessionToken = request.cookies.get('next-auth.session-token')?.value || 
                       request.cookies.get('__Secure-next-auth.session-token')?.value;
   
   if (!sessionToken) {
+    console.log('No session token found in cookies');
+    return null;
+  }
+
+  // Check if NEXTAUTH_SECRET is available
+  if (!process.env.NEXTAUTH_SECRET) {
+    console.error('NEXTAUTH_SECRET environment variable is not set');
     return null;
   }
 
   try {
-    // For NextAuth v4, we'll decode the JWT token manually
-    const decoded = jwt.verify(sessionToken, process.env.NEXTAUTH_SECRET!);
+    // Decode the JWT token manually
+    const decoded = jwt.verify(sessionToken, process.env.NEXTAUTH_SECRET) as any;
     
-    if (decoded && typeof decoded === 'object' && 'role' in decoded && decoded.role === 'admin') {
+    console.log('JWT decoded successfully:', { 
+      sub: decoded.sub, 
+      email: decoded.email, 
+      role: decoded.role,
+      iat: decoded.iat,
+      exp: decoded.exp 
+    });
+    
+    if (decoded && decoded.role === 'admin') {
       return {
         user: {
           id: decoded.sub,
@@ -118,9 +139,20 @@ export async function getServerAuth(request: NextRequest) {
       };
     }
     
+    console.log('JWT token does not have admin role');
     return null;
   } catch (error) {
-    console.error('Auth token verification failed:', error);
+    // More specific error logging
+    if (error instanceof jwt.JsonWebTokenError) {
+      console.error('JWT token error:', error.message);
+      console.error('Token preview:', sessionToken.substring(0, 50) + '...');
+    } else if (error instanceof jwt.TokenExpiredError) {
+      console.error('JWT token expired:', error.message);
+    } else if (error instanceof jwt.NotBeforeError) {
+      console.error('JWT token not active:', error.message);
+    } else {
+      console.error('Auth token verification failed:', error);
+    }
     return null;
   }
 }

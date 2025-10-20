@@ -1,21 +1,24 @@
-import { withAuth } from "next-auth/middleware"
+import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
 
-export default withAuth(
-  function middleware(req) {
-    // Add any additional middleware logic here if needed
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Allow access to admin routes only if user has admin role
-        if (req.nextUrl.pathname.startsWith('/admin')) {
-          return token?.role === 'admin'
-        }
-        return true
-      },
-    },
+export async function middleware(request: NextRequest) {
+  const session = await auth()
+  
+  // Check if the request is for an admin route
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    // Allow access to login page
+    if (request.nextUrl.pathname === '/admin/login') {
+      return NextResponse.next()
+    }
+    
+    // Check if user is authenticated and has admin role
+    if (!session || session.user.role !== 'admin') {
+      return NextResponse.redirect(new URL('/admin/login', request.url))
+    }
   }
-)
+  
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [

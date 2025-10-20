@@ -45,6 +45,9 @@ const rsvpSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    // Test database connection first
+    await prisma.$queryRaw`SELECT 1`;
+    
     const body = await request.json();
     
     // Validate the request body
@@ -112,6 +115,7 @@ export async function POST(request: NextRequest) {
     console.error('RSVP submission error:', error);
     
     if (error instanceof z.ZodError) {
+      console.error('Validation error:', error.issues);
       return NextResponse.json(
         { error: 'Invalid form data', details: error.issues },
         { status: 400 }
@@ -126,8 +130,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Handle database connection errors
+    if (error && typeof error === 'object' && 'code' in error) {
+      console.error('Database error:', error);
+      return NextResponse.json(
+        { error: 'Database connection failed. Please try again later.' },
+        { status: 503 }
+      );
+    }
+
+    // More detailed error logging for debugging
+    console.error('Unexpected error:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      error
+    });
+
     return NextResponse.json(
-      { error: 'Failed to submit RSVP' },
+      { error: 'Failed to submit RSVP. Please try again later.' },
       { status: 500 }
     );
   }

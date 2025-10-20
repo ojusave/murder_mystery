@@ -190,7 +190,19 @@ export default function RSVPForm() {
       if (!response.ok) {
         const error = await response.json();
         console.log('Error response:', error);
-        throw new Error(error.message || 'Failed to submit RSVP');
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        
+        // Provide more specific error messages
+        if (response.status === 400) {
+          throw new Error(error.details ? `Validation error: ${JSON.stringify(error.details)}` : error.error || 'Invalid form data');
+        } else if (response.status === 409) {
+          throw new Error('An RSVP with this email address already exists');
+        } else if (response.status === 503) {
+          throw new Error('Service temporarily unavailable. Please try again later.');
+        } else {
+          throw new Error(error.error || error.message || 'Failed to submit RSVP');
+        }
       }
 
       const result = await response.json();

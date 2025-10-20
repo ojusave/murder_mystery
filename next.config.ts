@@ -8,9 +8,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
   // Ensure API routes work properly
   async rewrites() {
     return [];

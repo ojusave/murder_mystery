@@ -2,6 +2,8 @@ import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import * as bcrypt from 'bcryptjs'
 import { prisma } from '@/lib/db'
+import { NextRequest } from 'next/server'
+import jwt from 'jsonwebtoken'
 
 export const authOptions = {
   providers: [
@@ -93,5 +95,32 @@ export const handlers = {
   POST: NextAuth(authOptions)
 }
 
-// Export auth function for middleware and other uses
-export const auth = NextAuth(authOptions)
+// Custom auth function for API routes
+export async function getServerAuth(request: NextRequest) {
+  const sessionToken = request.cookies.get('next-auth.session-token')?.value || 
+                      request.cookies.get('__Secure-next-auth.session-token')?.value;
+  
+  if (!sessionToken) {
+    return null;
+  }
+
+  try {
+    // For NextAuth v4, we'll decode the JWT token manually
+    const decoded = jwt.verify(sessionToken, process.env.NEXTAUTH_SECRET!);
+    
+    if (decoded && typeof decoded === 'object' && 'role' in decoded && decoded.role === 'admin') {
+      return {
+        user: {
+          id: decoded.sub,
+          email: decoded.email,
+          role: decoded.role
+        }
+      };
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Auth token verification failed:', error);
+    return null;
+  }
+}

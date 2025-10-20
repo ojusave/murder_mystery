@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "The Dark Lotus Murder Mystery",
   description: "A Halloween Murder Mystery Event",
+  icons: {
+    icon: "/dark-lotus-poster.jpg",
+  },
 };
 
 export default function RootLayout({

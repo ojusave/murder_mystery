@@ -122,11 +122,6 @@ export default function RSVPForm() {
   const [submitError, setSubmitError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
 
-  // Function to clear saved form data
-  const clearSavedData = () => {
-    localStorage.removeItem('rsvp-form-data');
-    form.reset();
-  };
 
   const form = useForm<FormData>({
     resolver: zodResolver(fullSchema),
@@ -239,10 +234,34 @@ export default function RSVPForm() {
         if (response.status === 400) {
           throw new Error(error.details ? `Validation error: ${JSON.stringify(error.details)}` : error.error || 'Invalid form data');
         } else if (response.status === 409) {
-          // Offer to update existing RSVP
-          setSubmitError(`An RSVP with this email address already exists. Would you like to update your existing RSVP instead?`);
-          setIsUpdating(true);
-          return;
+          // Automatically retry with PUT to update existing RSVP
+          if (!isUpdating) {
+            setIsUpdating(true);
+            setSubmitError(`An RSVP with this email address already exists. Updating your existing RSVP...`);
+            
+            // Retry with PUT method
+            const updateResponse = await fetch('/api/rsvp', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            });
+            
+            if (!updateResponse.ok) {
+              const updateError = await updateResponse.json();
+              throw new Error(updateError.error || 'Failed to update RSVP');
+            }
+            
+            const updateResult = await updateResponse.json();
+            console.log('RSVP updated successfully:', updateResult);
+            
+            // Redirect to thanks page
+            window.location.href = '/thanks';
+            return;
+          } else {
+            throw new Error('Failed to update existing RSVP');
+          }
         } else if (response.status === 404) {
           throw new Error('No existing RSVP found with this email address');
         } else if (response.status === 503) {

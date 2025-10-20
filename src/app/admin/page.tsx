@@ -98,7 +98,7 @@ export default function AdminDashboard() {
     } else {
       console.log('No session found, status:', status);
     }
-  }, [session]);
+  }, [session, status]);
 
   const fetchGuests = async () => {
     try {

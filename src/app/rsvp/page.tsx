@@ -31,6 +31,41 @@ const section2Schema = z.object({
 });
 
 const section3Schema = z.object({
+  genderPref: z.enum(['Male', 'Female', 'Other:']).optional(),
+  genderOther: z.string().optional(),
+  charNamePref: z.string().optional(),
+  charNameMode: z.enum(['I leave the fate of my character in your capable hands', 'Other:']).optional(),
+  charNameOther: z.string().optional(),
+  charInfoTiming: z.enum(['Yes. If I get to know about this before, I will have enough time to get into the character and plan my attire accordingly', 'I am very busy. The host should consider themselves lucky that I am attending this party. You can give me a character once I show up.']).optional(),
+  talents: z.array(z.string()).optional(),
+  talentsOther: z.string().optional(),
+  ackPairing: z.boolean().optional(),
+  ackAdultThemes: z.boolean().optional(),
+  suggestions: z.string().optional(),
+}).refine((data) => {
+  // If genderPref is "Other:", then genderOther must be provided
+  if (data.genderPref === 'Other:' && (!data.genderOther || data.genderOther.trim() === '')) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please specify your gender preference",
+  path: ["genderOther"]
+}).refine((data) => {
+  // If charNameMode is "Other:", then charNameOther must be provided
+  if (data.charNameMode === 'Other:' && (!data.charNameOther || data.charNameOther.trim() === '')) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please specify your character name preference",
+  path: ["charNameOther"]
+});
+
+const fullSchema = section1Schema.merge(section2Schema).merge(section3Schema);
+
+// Strict validation schema for submission
+const submissionSchema = section1Schema.merge(section2Schema).merge(z.object({
   genderPref: z.enum(['Male', 'Female', 'Other:']),
   genderOther: z.string().optional(),
   charNamePref: z.string().optional(),
@@ -60,9 +95,7 @@ const section3Schema = z.object({
 }, {
   message: "Please specify your character name preference",
   path: ["charNameOther"]
-});
-
-const fullSchema = section1Schema.merge(section2Schema).merge(section3Schema);
+}));
 
 type FormData = z.infer<typeof fullSchema>;
 
@@ -89,9 +122,16 @@ export default function RSVPForm() {
   const [submitError, setSubmitError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
 
+  // Function to clear saved form data
+  const clearSavedData = () => {
+    localStorage.removeItem('rsvp-form-data');
+    form.reset();
+  };
+
   const form = useForm<FormData>({
     resolver: zodResolver(fullSchema),
-    mode: 'onChange',
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
     defaultValues: {
       email: '',
       legalName: '',
@@ -125,9 +165,15 @@ export default function RSVPForm() {
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
+        // Ensure volunteerDecor defaults to false if not explicitly set
+        if (parsed.volunteerDecor === undefined) {
+          parsed.volunteerDecor = false;
+        }
         form.reset(parsed);
       } catch (error) {
         console.error('Error parsing saved form data:', error);
+        // Clear invalid data
+        localStorage.removeItem('rsvp-form-data');
       }
     }
   }, [form]);
@@ -140,31 +186,37 @@ export default function RSVPForm() {
   }, [form]);
 
   const onSubmit = async (data: FormData) => {
-    // First, validate all fields
-    const isValid = await form.trigger();
-    
-    if (!isValid) {
-      
-      // Find which section has the first error
-      let errorSection = 1;
-      const errors = form.formState.errors;
-      
-      if (errors.genderPref || errors.charNameMode || errors.charInfoTiming || errors.ackPairing || errors.ackAdultThemes) {
-        errorSection = 3;
-      } else if (errors.bringOptions || errors.willDressUp) {
-        errorSection = 2;
+    // First, validate all fields using the strict schema
+    try {
+      submissionSchema.parse(data);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Set the errors on the form
+        const fieldErrors: any = {};
+        error.errors.forEach((err) => {
+          if (err.path.length > 0) {
+            fieldErrors[err.path[0]] = { message: err.message };
+          }
+        });
+        
+        // Find which section has the first error
+        let errorSection = 1;
+        if (fieldErrors.genderPref || fieldErrors.charNameMode || fieldErrors.charInfoTiming || fieldErrors.ackPairing || fieldErrors.ackAdultThemes) {
+          errorSection = 3;
+        } else if (fieldErrors.bringOptions || fieldErrors.willDressUp) {
+          errorSection = 2;
+        }
+        
+        // Go to the section with the error
+        setCurrentSection(errorSection);
+        
+        setSubmitError('Please fill in all required fields before submitting.');
+        
+        // Scroll to the top of the form
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        return;
       }
-      
-      // Go to the section with the error
-      setCurrentSection(errorSection);
-      
-      // Show error message
-      setSubmitError(`Please complete all required fields. Missing: ${Object.keys(errors).join(', ')}`);
-      
-      // Scroll to the top of the form
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      
-      return;
     }
     
     setIsSubmitting(true);
@@ -242,6 +294,9 @@ export default function RSVPForm() {
           setSubmitError(`Please complete: ${missingFields.join(', ')}`);
         }
       });
+    } else if (currentSection === 3) {
+      // For section 3, we don't validate on next since it's the last section
+      // Validation will happen on submit
     }
   };
 
@@ -495,7 +550,7 @@ export default function RSVPForm() {
                         I can volunteer for designing / decorating the area before the party (if selected the host may invite you a day prior or earlier for decorating)
                       </Label>
                       <RadioGroup
-                        value={form.watch('volunteerDecor') ? 'Yes' : 'No'}
+                        value={form.watch('volunteerDecor') === true ? 'Yes' : 'No'}
                         onValueChange={(value) => {
                           form.setValue('volunteerDecor', value === 'Yes');
                           form.trigger('volunteerDecor');

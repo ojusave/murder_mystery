@@ -17,6 +17,8 @@ export async function GET() {
     const envCheck = {
       DATABASE_URL: process.env.DATABASE_URL ? 'Set' : 'Missing',
       NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ? 'Set' : 'Missing',
+      RESEND_API_KEY: process.env.RESEND_API_KEY ? 'Set' : 'Missing',
+      EMAIL_FROM: process.env.EMAIL_FROM || 'Not set',
       NODE_ENV: process.env.NODE_ENV,
       APP_BASE_URL: process.env.APP_BASE_URL,
     };
@@ -44,6 +46,8 @@ export async function GET() {
         environment: {
           DATABASE_URL: process.env.DATABASE_URL ? 'Set' : 'Missing',
           NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ? 'Set' : 'Missing',
+          RESEND_API_KEY: process.env.RESEND_API_KEY ? 'Set' : 'Missing',
+          EMAIL_FROM: process.env.EMAIL_FROM || 'Not set',
           NODE_ENV: process.env.NODE_ENV,
         }
       },

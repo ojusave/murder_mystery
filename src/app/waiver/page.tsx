@@ -2,11 +2,51 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import StickyNavigation from "@/components/sticky-navigation";
 
 export default function WaiverPage() {
   const handlePrint = () => {
     window.print();
   };
+
+  const navigationItems = [
+    // Terms and Conditions
+    { id: 'private-event', label: 'Private Event at a Private Residence', href: '#private-event', level: 0 },
+    { id: 'authority-host', label: 'Authority of the Host', href: '#authority-host', level: 0 },
+    { id: 'host-liability', label: 'Host Liability', href: '#host-liability', level: 0 },
+    { id: 'host-exemption', label: 'Host Exemption', href: '#host-exemption', level: 0 },
+    { id: 'host-discretion', label: 'Host Discretion', href: '#host-discretion', level: 0 },
+    { id: 'host-limitations', label: "Host's Limitations", href: '#host-limitations', level: 0 },
+    { id: 'right-admission', label: 'Right of Admission and Expulsion', href: '#right-admission', level: 0 },
+    { id: 'age-verification', label: 'Age and Identity Verification', href: '#age-verification', level: 0 },
+    { id: 'safety-conduct', label: 'Safety, Conduct, and Assumption of Risk', href: '#safety-conduct', level: 0 },
+    { id: 'property-damage', label: 'Property Damage and Cleanliness', href: '#property-damage', level: 0 },
+    { id: 'guest-limitations', label: 'Guest Limitations', href: '#guest-limitations', level: 0 },
+    { id: 'food-drink', label: 'Food and Drink Consumption', href: '#food-drink', level: 0 },
+    { id: 'substance-use', label: 'Substance Use', href: '#substance-use', level: 0 },
+    { id: 'prescription-medicines', label: 'Prescription Medicines', href: '#prescription-medicines', level: 0 },
+    { id: 'health-considerations', label: 'Health Considerations and Liability', href: '#health-considerations', level: 0 },
+    { id: 'emergency-situations', label: 'Emergency Situations', href: '#emergency-situations', level: 0 },
+    { id: 'emergency-services', label: 'Emergency Services and Law Enforcement', href: '#emergency-services', level: 0 },
+    { id: 'force-majeure', label: 'Force Majeure', href: '#force-majeure', level: 0 },
+    { id: 'property-access', label: 'Access to the Property', href: '#property-access', level: 0 },
+    { id: 'community-respect', label: 'Community and Neighborhood Respect and Liability', href: '#community-respect', level: 0 },
+    { id: 'prohibited-activities', label: 'Prohibited Activities', href: '#prohibited-activities', level: 0 },
+    { id: 'offensive-content', label: 'Offensive Content', href: '#offensive-content', level: 0 },
+    { id: 'party-conclusion', label: 'Party Conclusion', href: '#party-conclusion', level: 0 },
+    { id: 'data-collection', label: 'Data Collection and Usage', href: '#data-collection', level: 0 },
+    { id: 'duration-waiver', label: 'Duration of Waiver', href: '#duration-waiver', level: 0 },
+    { id: 'agreement-terms', label: 'Agreement to Terms', href: '#agreement-terms', level: 0 },
+    
+    // Definitions
+    { id: 'attendees-def', label: 'Attendee(s)', href: '#attendees-def', level: 0 },
+    { id: 'hosts-def', label: 'Host(s)', href: '#hosts-def', level: 0 },
+    { id: 'party-def', label: 'Party', href: '#party-def', level: 0 },
+    { id: 'property-def', label: 'Property', href: '#property-def', level: 0 },
+    { id: 'prohibited-substances', label: 'Prohibited Substances', href: '#prohibited-substances', level: 0 },
+    { id: 'alcohol-consumption', label: 'Alcohol Consumption', href: '#alcohol-consumption', level: 0 },
+    { id: 'damage-def', label: 'Damage', href: '#damage-def', level: 0 },
+  ];
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
       {/* Header */}
@@ -525,6 +565,9 @@ export default function WaiverPage() {
         <div className="text-center text-gray-400">
         </div>
       </footer>
+
+      {/* Sticky Navigation */}
+      <StickyNavigation items={navigationItems} />
     </div>
   );
 }

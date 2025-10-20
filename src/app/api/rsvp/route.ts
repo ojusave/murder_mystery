@@ -103,7 +103,13 @@ export async function POST(request: NextRequest) {
 
     // Send confirmation email immediately
     try {
+      console.log('Attempting to send RSVP confirmation email to:', guest.email);
+      console.log('RESEND_API_KEY available:', !!process.env.RESEND_API_KEY);
+      console.log('EMAIL_FROM:', process.env.EMAIL_FROM);
+      
       await sendRSVPConfirmationEmail(guest);
+      
+      console.log('RSVP confirmation email sent successfully to:', guest.email);
       
       // Create email event for tracking
       await prisma.emailEvent.create({
@@ -115,6 +121,13 @@ export async function POST(request: NextRequest) {
       });
     } catch (emailError) {
       console.error('RSVP confirmation email failed:', emailError);
+      console.error('Email error details:', {
+        message: emailError instanceof Error ? emailError.message : 'Unknown error',
+        stack: emailError instanceof Error ? emailError.stack : undefined,
+        guestEmail: guest.email,
+        resendKeyAvailable: !!process.env.RESEND_API_KEY
+      });
+      
       // Still create email event for tracking, but mark as failed
       await prisma.emailEvent.create({
         data: {
@@ -225,7 +238,12 @@ export async function PUT(request: NextRequest) {
 
     // Send update confirmation email immediately
     try {
+      console.log('Attempting to send RSVP update confirmation email to:', updatedGuest.email);
+      console.log('RESEND_API_KEY available:', !!process.env.RESEND_API_KEY);
+      
       await sendRSVPConfirmationEmail(updatedGuest);
+      
+      console.log('RSVP update confirmation email sent successfully to:', updatedGuest.email);
       
       // Create email event for tracking
       await prisma.emailEvent.create({
@@ -237,6 +255,13 @@ export async function PUT(request: NextRequest) {
       });
     } catch (emailError) {
       console.error('RSVP update confirmation email failed:', emailError);
+      console.error('Email error details:', {
+        message: emailError instanceof Error ? emailError.message : 'Unknown error',
+        stack: emailError instanceof Error ? emailError.stack : undefined,
+        guestEmail: updatedGuest.email,
+        resendKeyAvailable: !!process.env.RESEND_API_KEY
+      });
+      
       // Still create email event for tracking, but mark as failed
       await prisma.emailEvent.create({
         data: {

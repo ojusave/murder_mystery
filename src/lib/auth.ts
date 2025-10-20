@@ -31,27 +31,32 @@ export const authOptions = {
         }
 
         // Fallback to database check
-        const admin = await prisma.adminUser.findUnique({
-          where: { email: credentials.email }
-        })
+        try {
+          const admin = await prisma.adminUser.findUnique({
+            where: { email: credentials.email }
+          })
 
-        if (!admin) {
+          if (!admin) {
+            return null
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            admin.passwordHash
+          )
+
+          if (!isPasswordValid) {
+            return null
+          }
+
+          return {
+            id: admin.id,
+            email: admin.email,
+            role: 'admin'
+          }
+        } catch (error) {
+          console.error('Auth database error:', error)
           return null
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          admin.passwordHash
-        )
-
-        if (!isPasswordValid) {
-          return null
-        }
-
-        return {
-          id: admin.id,
-          email: admin.email,
-          role: 'admin'
         }
       }
     })
@@ -78,6 +83,8 @@ export const authOptions = {
     signIn: '/admin/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
+  // Add URL configuration
+  url: process.env.NEXTAUTH_URL || process.env.APP_BASE_URL,
 }
 
 export default NextAuth(authOptions)

@@ -138,10 +138,14 @@ export default function RSVPForm() {
   }, [form]);
 
   const onSubmit = async (data: FormData) => {
+    console.log('=== RSVP SUBMISSION DEBUG ===');
     console.log('Form submitted with data:', data);
     console.log('Form validation state:', form.formState);
     console.log('Form errors:', form.formState.errors);
     console.log('All form values:', form.getValues());
+    console.log('Current URL:', window.location.href);
+    console.log('User agent:', navigator.userAgent);
+    console.log('Timestamp:', new Date().toISOString());
     
     // First, validate all fields
     const isValid = await form.trigger();
@@ -176,6 +180,11 @@ export default function RSVPForm() {
     setSubmitError('');
 
     try {
+      console.log('=== MAKING API REQUEST ===');
+      console.log('Request URL:', '/api/rsvp');
+      console.log('Request method:', 'POST');
+      console.log('Request body:', JSON.stringify(data));
+      
       const response = await fetch('/api/rsvp', {
         method: 'POST',
         headers: {
@@ -184,8 +193,10 @@ export default function RSVPForm() {
         body: JSON.stringify(data),
       });
 
+      console.log('=== API RESPONSE ===');
       console.log('Response status:', response.status);
       console.log('Response ok:', response.ok);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const error = await response.json();

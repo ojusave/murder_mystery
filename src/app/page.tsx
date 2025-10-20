@@ -6,7 +6,7 @@ export default function Home() {
     <div 
       className="min-h-screen bg-cover bg-center bg-no-repeat relative"
       style={{
-        backgroundImage: 'url(/dark-lotus-poster.jpg)',
+        backgroundImage: 'url(/a9m7eb.gif)',
       }}
     >
       {/* Dark overlay for better text readability */}

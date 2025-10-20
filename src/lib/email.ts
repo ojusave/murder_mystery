@@ -63,16 +63,10 @@ export async function sendRSVPConfirmationEmail(guest: any) {
       <p>Hi ${guest.legalName},</p>
       <p>Thank you for your RSVP to The Dark Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.</p>
       <p>You'll receive another email within 24-48 hours with our decision and next steps.</p>
-      
-      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
-        <h3 style="margin-top: 0;">Event Details:</h3>
-        <p><strong>Date:</strong> November 1st, 2025</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
-        <p><strong>Location:</strong> [Venue TBD - Address will be provided upon approval]</p>
-      </div>
+    
       
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>BrO-J</p>
     </div>
   `;
 

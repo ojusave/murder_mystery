@@ -93,19 +93,36 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (session) {
+      console.log('Session found:', session);
       fetchGuests();
+    } else {
+      console.log('No session found, status:', status);
     }
   }, [session]);
 
   const fetchGuests = async () => {
     try {
-      const response = await fetch('/api/admin/guests');
+      console.log('Fetching guests...');
+      const response = await fetch('/api/admin/guests', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Guests data:', data);
         setGuests(data);
+      } else {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        alert(`Failed to fetch guests: ${errorData.error}`);
       }
     } catch (error) {
       console.error('Error fetching guests:', error);
+      alert('Network error fetching guests');
     } finally {
       setLoading(false);
     }
@@ -115,6 +132,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/guests', {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -141,6 +159,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/guests', {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -190,6 +209,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/guests', {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -235,6 +255,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/characters', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -274,6 +295,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/characters', {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -301,6 +323,7 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/characters', {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

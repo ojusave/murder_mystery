@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { sendRSVPConfirmationEmail } from '@/lib/email';
+import { Resend } from 'resend';
 
 export async function POST() {
   try {
-    console.log('Email test endpoint called');
+    console.log('=== Resend Debug Test ===');
     
     // Check if RESEND_API_KEY is available
     const hasResendKey = !!process.env.RESEND_API_KEY;
@@ -17,33 +17,36 @@ export async function POST() {
       }, { status: 500 });
     }
     
-    // Create a test guest object
-    const testGuest = {
-      id: 'test-123',
-      email: 'delkajuer@gmail.com', // Using delkajuer@gmail.com for testing
-      legalName: 'Test User',
-      token: 'test-token-123'
+    // Show partial API key for debugging (first 8 chars)
+    const partialKey = process.env.RESEND_API_KEY.substring(0, 8) + '...';
+    console.log('RESEND_API_KEY (partial):', partialKey);
+    
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    // Test with a simple email
+    const testEmail = {
+      from: 'Dark Lotus <noreply@saveoj.us>',
+      to: 'test@example.com',
+      subject: 'Resend Debug Test',
+      html: '<p>This is a test email to verify Resend configuration.</p>',
     };
     
-    console.log('Attempting to send test email to:', testGuest.email);
+    console.log('Attempting to send test email:', testEmail);
     
-    // Try to send the email
-    await sendRSVPConfirmationEmail(testGuest);
+    const result = await resend.emails.send(testEmail);
     
-    console.log('Test email sent successfully');
+    console.log('Resend API response:', result);
     
     return NextResponse.json({
       success: true,
-      message: 'Test email sent successfully',
-      testGuest: {
-        email: testGuest.email,
-        legalName: testGuest.legalName
-      },
+      message: 'Resend test completed',
+      resendResponse: result,
+      testEmail: testEmail,
       timestamp: new Date().toISOString()
     });
 
   } catch (error) {
-    console.error('Email test error:', error);
+    console.error('Resend debug error:', error);
     
     return NextResponse.json({
       success: false,

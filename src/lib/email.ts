@@ -71,13 +71,28 @@ export async function sendRSVPConfirmationEmail(guest: any) {
   `;
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
       subject: 'RSVP Received - The Dark Lotus Murder Mystery',
       html,
     });
+    
     console.log(`RSVP confirmation email sent to ${guest.email}`);
+    console.log('Resend API response:', result);
+    
+    // Check if the result indicates success
+    if (result.error) {
+      console.error('Resend API error:', result.error);
+      throw new Error(`Resend API error: ${result.error.message || 'Unknown error'}`);
+    }
+    
+    if (!result.data || !result.data.id) {
+      console.error('Unexpected Resend response:', result);
+      throw new Error('Unexpected response from Resend API');
+    }
+    
+    console.log('Email sent successfully with ID:', result.data.id);
   } catch (error) {
     console.error(`Error sending RSVP confirmation email to ${guest.email}:`, error);
     throw error;

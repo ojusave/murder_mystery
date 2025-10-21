@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
         ackAdultThemes: validatedData.ackAdultThemes,
         ackWaiver: validatedData.ackWaiver,
         waiverVersion: '2024-10-28', // Current waiver version
+        wantsToPlay: 'Yes', // Default value to satisfy database constraint
         token: token,
         status: 'pending',
       },
@@ -190,6 +191,7 @@ export async function PUT(request: NextRequest) {
         ackAdultThemes: validatedData.ackAdultThemes,
         ackWaiver: validatedData.ackWaiver,
         waiverVersion: '2024-10-28', // Current waiver version
+        wantsToPlay: 'Yes', // Default value to satisfy database constraint
         status: 'pending', // Reset status when updating
       },
     });

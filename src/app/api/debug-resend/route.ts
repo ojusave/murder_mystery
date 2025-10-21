@@ -6,10 +6,10 @@ export async function POST() {
     console.log('=== Resend Debug Test ===');
     
     // Check if RESEND_API_KEY is available
-    const hasResendKey = !!process.env.RESEND_API_KEY;
-    console.log('RESEND_API_KEY available:', hasResendKey);
+    const resendApiKey = process.env.RESEND_API_KEY;
+    console.log('RESEND_API_KEY available:', !!resendApiKey);
     
-    if (!hasResendKey) {
+    if (!resendApiKey) {
       return NextResponse.json({
         success: false,
         error: 'RESEND_API_KEY environment variable is not set',
@@ -18,14 +18,14 @@ export async function POST() {
     }
     
     // Show partial API key for debugging (first 8 chars)
-    const partialKey = process.env.RESEND_API_KEY.substring(0, 8) + '...';
+    const partialKey = resendApiKey.substring(0, 8) + '...';
     console.log('RESEND_API_KEY (partial):', partialKey);
     
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = new Resend(resendApiKey);
     
     // Test with a simple email
     const testEmail = {
-      from: 'Dark Lotus <noreply@saveoj.us>',
+      from: 'Black Lotus <noreply@saveoj.us>',
       to: 'test@example.com',
       subject: 'Resend Debug Test',
       html: '<p>This is a test email to verify Resend configuration.</p>',

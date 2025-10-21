@@ -79,7 +79,7 @@ envVarGroups:
         value: "2025-10-31"
       
       - key: EMAIL_FROM
-        value: "Dark Lotus <noreply@saveoj.us>"
+        value: "Black Lotus <noreply@saveoj.us>"
       
       - key: MAX_GUESTS
         value: "50"

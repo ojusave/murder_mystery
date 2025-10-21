@@ -8,7 +8,7 @@ export default function ThanksPage() {
       <header className="container mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-white">
-            Dark Lotus
+            Black Lotus
           </Link>
         </nav>
       </header>
@@ -23,7 +23,7 @@ export default function ThanksPage() {
             
             <p className="text-xl text-gray-300 mb-8">
               Your RSVP has been successfully submitted. We're excited to have you join us for 
-              The Dark Lotus: A Halloween Murder Mystery!
+              The Black Lotus: A Halloween Murder Mystery!
             </p>
 
             <div className="bg-purple-900/30 rounded-lg p-6 mb-8">

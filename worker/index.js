@@ -6,12 +6,12 @@ const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'Dark Lotus <noreply@saveoj.us>';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Black Lotus <noreply@saveoj.us>';
 const REAL_ADDRESS = process.env.REAL_ADDRESS || '123 Mystery Lane, Fremont, CA 94536';
 const EVENT_DATE = process.env.EVENT_DATE || '2025-11-01';
 const EVENT_START_TIME = process.env.EVENT_START_TIME || '20:00';
 const EVENT_END_TIME = process.env.EVENT_END_TIME || '00:00';
-const EVENT_TITLE = process.env.EVENT_TITLE || 'The Dark Lotus: A Halloween Murder Mystery';
+const EVENT_TITLE = process.env.EVENT_TITLE || 'The Black Lotus: A Halloween Murder Mystery';
 const EVENT_DESCRIPTION = process.env.EVENT_DESCRIPTION || 'Join us for an unforgettable evening of mystery, intrigue, and Halloween thrills.';
 
 // Helper function to generate calendar links
@@ -53,7 +53,7 @@ function generateICSFile(startDate, endDate) {
   
   return `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Dark Lotus//Event//EN
+PRODID:-//Black Lotus//Event//EN
 BEGIN:VEVENT
 UID:${Date.now()}@darklotus.party
 DTSTAMP:${formatICSDate(new Date())}
@@ -138,10 +138,10 @@ async function processEmailEvent(emailEvent) {
 async function sendRSVPReceivedEmail(guest) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #e5e7eb;">RSVP Received!</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Thank you for your RSVP to The Dark Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.</p>
+      <p>Thank you for your RSVP to The Black Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.</p>
       <p>You'll receive another email within 24-48 hours with our decision and next steps.</p>
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
@@ -150,14 +150,14 @@ async function sendRSVPReceivedEmail(guest) {
         <p><strong>Location:</strong> [Venue TBD]</p>
       </div>
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
   await resend.emails.send({
     from: EMAIL_FROM,
     to: guest.email,
-    subject: 'RSVP Received - The Dark Lotus Murder Mystery',
+    subject: 'RSVP Received - The Black Lotus Murder Mystery',
     html,
   });
 }
@@ -168,10 +168,10 @@ async function sendApprovalEmail(guest) {
   
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #10b981;">You're In!</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Great news! Your RSVP has been approved for The Dark Lotus: A Halloween Murder Mystery!</p>
+      <p>Great news! Your RSVP has been approved for The Black Lotus: A Halloween Murder Mystery!</p>
       <p>We're excited to have you join us for this thrilling evening of mystery and intrigue.</p>
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
@@ -207,14 +207,14 @@ async function sendApprovalEmail(guest) {
       </div>
       <p>Your character assignment will be sent to you soon. Keep an eye on your email!</p>
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
   await resend.emails.send({
     from: EMAIL_FROM,
     to: guest.email,
-    subject: 'You\'re In: Dark Lotus Murder Mystery - Event Details Inside!',
+    subject: 'You\'re In: Black Lotus Murder Mystery - Event Details Inside!',
     html,
   });
 }
@@ -222,21 +222,21 @@ async function sendApprovalEmail(guest) {
 async function sendRejectionEmail(guest) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #e5e7eb;">RSVP Update</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Thank you for your interest in The Dark Lotus: A Halloween Murder Mystery.</p>
+      <p>Thank you for your interest in The Black Lotus: A Halloween Murder Mystery.</p>
       <p>Unfortunately, we're unable to accommodate your RSVP at this time due to capacity constraints.</p>
       <p>We appreciate your understanding and hope you'll consider joining us for future events.</p>
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
   await resend.emails.send({
     from: EMAIL_FROM,
     to: guest.email,
-    subject: 'RSVP Update - The Dark Lotus Murder Mystery',
+    subject: 'RSVP Update - The Black Lotus Murder Mystery',
     html,
   });
 }
@@ -252,10 +252,10 @@ async function sendCharacterAssignedEmail(guest) {
 
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #a855f7;">Your Character is Ready!</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Your character assignment for The Dark Lotus Murder Mystery is ready!</p>
+      <p>Your character assignment for The Black Lotus Murder Mystery is ready!</p>
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0; color: #a855f7;">Meet ${character.displayName}</h3>
         <div style="margin: 15px 0;">
@@ -299,14 +299,14 @@ async function sendCharacterAssignedEmail(guest) {
       </div>
       <p>Study your character carefully and get ready to bring them to life on November 1st!</p>
       <p>If you have any questions about your character or the event, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
   await resend.emails.send({
     from: EMAIL_FROM,
     to: guest.email,
-    subject: 'Your Character is Ready - The Dark Lotus',
+    subject: 'Your Character is Ready - The Black Lotus',
     html,
   });
 }

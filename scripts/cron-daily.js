@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'Dark Lotus <noreply@saveoj.us>';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Black Lotus <noreply@saveoj.us>';
 const RSVP_DEADLINE = process.env.RSVP_DEADLINE || '2024-10-30';
 
 async function sendRSVPDeadlineReminders() {
@@ -36,10 +36,10 @@ async function sendRSVPDeadlineReminders() {
 async function sendDeadlineReminderEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #f59e0b;">RSVP Deadline Reminder</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>This is a friendly reminder that the RSVP deadline for The Dark Lotus: A Halloween Murder Mystery is approaching!</p>
+      <p>This is a friendly reminder that the RSVP deadline for The Black Lotus: A Halloween Murder Mystery is approaching!</p>
       <div style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0; color: #f59e0b;">Important Deadline</h3>
         <p><strong>RSVP Deadline:</strong> ${RSVP_DEADLINE}</p>
@@ -49,14 +49,14 @@ async function sendDeadlineReminderEmail(guest: any) {
       <p>Your RSVP is currently under review. We'll notify you of our decision soon!</p>
       <p>If you have any questions or need to update your RSVP, please contact us immediately.</p>
       <p>Don't miss out on this thrilling evening of mystery and intrigue!</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
   await resend.emails.send({
     from: EMAIL_FROM,
     to: guest.email,
-    subject: 'RSVP Deadline Reminder - The Dark Lotus Murder Mystery',
+    subject: 'RSVP Deadline Reminder - The Black Lotus Murder Mystery',
     html,
   });
 }

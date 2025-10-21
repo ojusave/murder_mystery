@@ -57,7 +57,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Dark Lotus</h1>
+          <h1 className="text-2xl font-bold text-white">Black Lotus</h1>
           <div className="text-gray-300">
             Welcome, {guest.legalName}
           </div>
@@ -94,7 +94,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                 
                 {/* Welcome message for new RSVPs */}
                 <div className="bg-purple-900/30 rounded-lg p-4 mt-6">
-                  <h3 className="text-lg font-semibold text-white mb-2">🎉 Welcome to Dark Lotus!</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">🎉 Welcome to Black Lotus!</h3>
                   <p className="text-sm text-gray-300">
                     Your RSVP has been successfully submitted! You can bookmark this page to check your status anytime.
                     We'll review your application and get back to you within 24-48 hours.
@@ -167,7 +167,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                 {guest.status === 'rejected' && (
                   <div className="bg-red-900/30 border border-red-500 rounded-lg p-4">
                     <h4 className="text-lg font-semibold text-red-300 mb-2">Not Approved</h4>
-                    <p>Unfortunately, we're unable to accommodate your RSVP at this time. Thank you for your interest in The Dark Lotus Murder Mystery.</p>
+                    <p>Unfortunately, we're unable to accommodate your RSVP at this time. Thank you for your interest in The Black Lotus Murder Mystery.</p>
                   </div>
                 )}
 
@@ -182,7 +182,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                   <div className="space-y-4">
                     <div className="bg-green-900/30 border border-green-500 rounded-lg p-4">
                       <h4 className="text-lg font-semibold text-green-300 mb-2">Ready to Play!</h4>
-                      <p>You're all set for The Dark Lotus Murder Mystery! Here's what you need to know:</p>
+                      <p>You're all set for The Black Lotus Murder Mystery! Here's what you need to know:</p>
                     </div>
                     
                     <div className="bg-gray-800/50 rounded-lg p-4">

@@ -27,7 +27,7 @@ export default function Home() {
       <main className="container mx-auto px-4 py-16 relative z-10">
         <div className="text-center mb-16">
           <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-2xl">
-            The Dark Lotus
+            The Black Lotus
           </h1>
           <h2 className="text-3xl text-purple-200 mb-8 drop-shadow-lg">
             A Halloween Murder Mystery

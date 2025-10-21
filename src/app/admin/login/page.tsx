@@ -51,7 +51,7 @@ export default function AdminLogin() {
             Host Login
           </CardTitle>
           <CardDescription className="text-gray-300">
-            Sign in to manage The Dark Lotus Murder Mystery
+            Sign in to manage The Black Lotus Murder Mystery
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -38,7 +38,7 @@ RESEND_API_KEY=your_resend_api_key_here
 #### Optional Variables (already set in render.yaml):
 ```
 RSVP_DEADLINE=2025-10-31
-EMAIL_FROM=Dark Lotus <noreply@saveoj.us>
+EMAIL_FROM=Black Lotus <noreply@saveoj.us>
 MAX_GUESTS=50
 RATE_LIMIT_PER_MINUTE=5
 RATE_LIMIT_PER_DAY=100

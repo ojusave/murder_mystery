@@ -1,11 +1,11 @@
 # Background Image Setup Instructions
 
-## To use the DARK LOTUS poster as your website background:
+## To use the BLACK LOTUS poster as your website background:
 
 1. **Save the image**: 
-   - Download the DARK LOTUS movie poster image
-   - Save it as `dark-lotus-poster.jpg` in the `/public/` folder
-   - The file should be located at: `/public/dark-lotus-poster.jpg`
+   - Download the BLACK LOTUS movie poster image
+   - Save it as `black-lotus-poster.jpg` in the `/public/` folder
+   - The file should be located at: `/public/black-lotus-poster.jpg`
 
 2. **Image specifications**:
    - Recommended size: 1920x1080px or larger
@@ -24,6 +24,6 @@
 
 5. **Alternative image names**:
    - If you save the image with a different name, update line 9 in `/src/app/page.tsx`
-   - Change `backgroundImage: 'url(/dark-lotus-poster.jpg)'` to your filename
+   - Change `backgroundImage: 'url(/black-lotus-poster.jpg)'` to your filename
 
 The background will create an amazing atmospheric effect for your murder mystery event!

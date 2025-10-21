@@ -14,7 +14,7 @@ NEXTAUTH_URL="http://localhost:3000"
 
 # Email Service (Resend)
 RESEND_API_KEY="your_resend_api_key_here"
-EMAIL_FROM="Dark Lotus <noreply@darklotus.party>"
+EMAIL_FROM="Black Lotus <noreply@darklotus.party>"
 
 # App Configuration
 APP_BASE_URL="http://localhost:3000"
@@ -30,7 +30,7 @@ REAL_ADDRESS="123 Mystery Lane, Fremont, CA 94536"
 EVENT_DATE="2025-11-01"
 EVENT_START_TIME="20:00"
 EVENT_END_TIME="00:00"
-EVENT_TITLE="The Dark Lotus: A Halloween Murder Mystery"
+EVENT_TITLE="The Black Lotus: A Halloween Murder Mystery"
 EVENT_DESCRIPTION="Join us for an unforgettable evening of mystery, intrigue, and Halloween thrills. Step into a world where every guest has a secret, every character has a motive, and the truth lies hidden in the shadows."
 ```
 

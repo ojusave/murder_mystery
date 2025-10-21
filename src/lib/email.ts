@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const APP_BASE_URL = process.env.APP_BASE_URL || 'https://murder-mystery-zumz.onrender.com';
-const EMAIL_FROM = process.env.EMAIL_FROM || 'Dark Lotus <noreply@saveoj.us>';
+const EMAIL_FROM = process.env.EMAIL_FROM || 'Black Lotus <noreply@saveoj.us>';
 const REAL_ADDRESS = process.env.REAL_ADDRESS || '40849 High Street, Fremont';
 
 export async function sendApprovalEmail(guest: any) {
@@ -10,10 +10,10 @@ export async function sendApprovalEmail(guest: any) {
   
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #10b981;">🎉 RSVP Approved!</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Great news! Your RSVP for The Dark Lotus: A Halloween Murder Mystery has been approved!</p>
+      <p>Great news! Your RSVP for The Black Lotus: A Halloween Murder Mystery has been approved!</p>
       <p>We're excited to have you join us for this unforgettable evening of mystery and intrigue.</p>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -37,7 +37,7 @@ export async function sendApprovalEmail(guest: any) {
       </ul>
       
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
@@ -45,7 +45,7 @@ export async function sendApprovalEmail(guest: any) {
     await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
-      subject: 'RSVP Approved - The Dark Lotus Murder Mystery',
+      subject: 'RSVP Approved - The Black Lotus Murder Mystery',
       html,
     });
     console.log(`Approval email sent to ${guest.email}`);
@@ -58,10 +58,10 @@ export async function sendApprovalEmail(guest: any) {
 export async function sendRSVPConfirmationEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #e5e7eb;">RSVP Received!</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Thank you for your RSVP to The Dark Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.</p>
+      <p>Thank you for your RSVP to The Black Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.</p>
       <p>You'll receive another email within 24-48 hours with our decision and next steps.</p>
     
       
@@ -74,7 +74,7 @@ export async function sendRSVPConfirmationEmail(guest: any) {
     const result = await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
-      subject: 'RSVP Received - The Dark Lotus Murder Mystery',
+      subject: 'RSVP Received - The Black Lotus Murder Mystery',
       html,
     });
     
@@ -102,14 +102,14 @@ export async function sendRSVPConfirmationEmail(guest: any) {
 export async function sendRejectionEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-      <h1 style="text-align: center; margin-bottom: 30px;">The Dark Lotus</h1>
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #e5e7eb;">RSVP Update</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Thank you for your interest in The Dark Lotus: A Halloween Murder Mystery.</p>
+      <p>Thank you for your interest in The Black Lotus: A Halloween Murder Mystery.</p>
       <p>Unfortunately, we're unable to accommodate your RSVP at this time due to capacity constraints.</p>
       <p>We appreciate your understanding and hope you'll consider joining us for future events.</p>
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Dark Lotus Team</p>
+      <p>Best regards,<br>The Black Lotus Team</p>
     </div>
   `;
 
@@ -117,7 +117,7 @@ export async function sendRejectionEmail(guest: any) {
     await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
-      subject: 'RSVP Update - The Dark Lotus Murder Mystery',
+      subject: 'RSVP Update - The Black Lotus Murder Mystery',
       html,
     });
     console.log(`Rejection email sent to ${guest.email}`);

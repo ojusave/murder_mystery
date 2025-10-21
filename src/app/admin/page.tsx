@@ -372,7 +372,7 @@ export default function AdminDashboard() {
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Dark Lotus Admin</h1>
+          <h1 className="text-2xl font-bold text-white">Black Lotus Admin</h1>
           <div className="flex gap-4">
             <Link href="/">
               <Button variant="outline" className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400">

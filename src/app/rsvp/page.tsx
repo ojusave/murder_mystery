@@ -187,8 +187,8 @@ export default function RSVPForm() {
       {/* Background Image Container */}
       <div className="fixed inset-0 flex items-center justify-center bg-gray-800">
         <Image 
-          src="/dark-lotus-poster.jpg"
-          alt="Dark Lotus Poster"
+          src="/black-lotus-poster.jpg"
+          alt="Black Lotus Poster"
           fill
           className="object-contain"
           priority
@@ -202,7 +202,7 @@ export default function RSVPForm() {
       <header className="container mx-auto px-4 py-6">
         <nav className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold text-white">
-            Dark Lotus
+            Black Lotus
           </Link>
           <Link href="/waiver">
             <Button variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
@@ -220,7 +220,7 @@ export default function RSVPForm() {
               RSVP Form
             </CardTitle>
             <CardDescription className="text-gray-300 text-center">
-              Dark Lotus Halloween Murder Mystery Party
+              Black Lotus Halloween Murder Mystery Party
             </CardDescription>
           </CardHeader>
 

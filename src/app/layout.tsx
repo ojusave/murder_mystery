@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Dark Lotus Murder Mystery",
+  title: "The Black Lotus Murder Mystery",
   description: "A Halloween Murder Mystery Event",
   icons: {
-    icon: "/dark-lotus-poster.jpg",
+    icon: "/black-lotus-poster.jpg",
   },
 };
 

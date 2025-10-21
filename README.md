@@ -1,4 +1,4 @@
-# The Dark Lotus: A Halloween Murder Mystery
+# The Black Lotus: A Halloween Murder Mystery
 
 A complete Next.js application for managing a Halloween murder mystery party, built with TypeScript, Tailwind CSS, and deployed on Render.
 
@@ -53,7 +53,7 @@ A complete Next.js application for managing a Halloween murder mystery party, bu
    RESEND_API_KEY="your-resend-api-key"
    APP_BASE_URL="http://localhost:3000"
    RSVP_DEADLINE="2024-10-30"
-   EMAIL_FROM="Dark Lotus <noreply@saveoj.us>"
+   EMAIL_FROM="Black Lotus <noreply@saveoj.us>"
    ADMIN_EMAIL="admin@blacklotus.party"
    ADMIN_PASSWORD="your-admin-password"
    ```
@@ -133,7 +133,7 @@ A complete Next.js application for managing a Halloween murder mystery party, bu
 | `RESEND_API_KEY` | Resend API key for emails | Yes | - |
 | `APP_BASE_URL` | Application base URL | Yes | - |
 | `RSVP_DEADLINE` | RSVP deadline date | No | `2024-10-30` |
-| `EMAIL_FROM` | Email sender address | No | `Dark Lotus <noreply@saveoj.us>` |
+| `EMAIL_FROM` | Email sender address | No | `Black Lotus <noreply@saveoj.us>` |
 | `MAX_GUESTS` | Maximum guest capacity | No | `50` |
 | `RATE_LIMIT_PER_MINUTE` | Rate limit per minute | No | `5` |
 | `RATE_LIMIT_PER_DAY` | Rate limit per day | No | `100` |

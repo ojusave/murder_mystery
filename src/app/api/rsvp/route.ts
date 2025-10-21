@@ -69,6 +69,10 @@ export async function POST(request: NextRequest) {
         volunteerDecor: false, // Default value to satisfy database constraint
         bringOptions: [], // Default empty array
         talents: [], // Default empty array
+        genderPref: 'No preference', // Default value to satisfy database constraint
+        charNamePref: '', // Default empty string
+        charInfoTiming: 'I am very busy… give me on arrival', // Default value
+        suggestions: '', // Default empty string
         token: token,
         status: 'pending',
       },
@@ -198,6 +202,10 @@ export async function PUT(request: NextRequest) {
         volunteerDecor: false, // Default value to satisfy database constraint
         bringOptions: [], // Default empty array
         talents: [], // Default empty array
+        genderPref: 'No preference', // Default value to satisfy database constraint
+        charNamePref: '', // Default empty string
+        charInfoTiming: 'I am very busy… give me on arrival', // Default value
+        suggestions: '', // Default empty string
         status: 'pending', // Reset status when updating
       },
     });

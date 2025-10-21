@@ -53,8 +53,8 @@ export async function POST(request: NextRequest) {
     // Generate a unique token for the guest portal
     const token = uuidv4().replace(/-/g, '').substring(0, 16);
     
-    // Create the guest record with only the fields from the RSVP form
-    // Note: Adding minimal defaults for database constraints that aren't in the form
+    // Create the guest record with ONLY the fields from the RSVP form
+    // Note: Database has NOT NULL constraints on unused fields, so we add minimal defaults
     const guest = await prisma.guest.create({
       data: {
         email: validatedData.email,
@@ -65,8 +65,8 @@ export async function POST(request: NextRequest) {
         ackPairing: validatedData.ackPairing,
         ackAdultThemes: validatedData.ackAdultThemes,
         ackWaiver: validatedData.ackWaiver,
-        waiverVersion: '2024-10-28', // Current waiver version
-        // Database requires these fields but they're not in the RSVP form
+        waiverVersion: '2024-10-28',
+        // Required by database but not in RSVP form - using minimal defaults
         wantsToPlay: 'Yes',
         volunteerDecor: false,
         genderPref: 'No preference',
@@ -184,8 +184,8 @@ export async function PUT(request: NextRequest) {
       );
     }
     
-    // Update the guest record with only the fields from the RSVP form
-    // Note: Adding minimal defaults for database constraints that aren't in the form
+    // Update the guest record with ONLY the fields from the RSVP form
+    // Note: Database has NOT NULL constraints on unused fields, so we add minimal defaults
     const updatedGuest = await prisma.guest.update({
       where: { email: validatedData.email },
       data: {
@@ -196,13 +196,13 @@ export async function PUT(request: NextRequest) {
         ackPairing: validatedData.ackPairing,
         ackAdultThemes: validatedData.ackAdultThemes,
         ackWaiver: validatedData.ackWaiver,
-        waiverVersion: '2024-10-28', // Current waiver version
-        // Database requires these fields but they're not in the RSVP form
+        waiverVersion: '2024-10-28',
+        // Required by database but not in RSVP form - using minimal defaults
         wantsToPlay: 'Yes',
         volunteerDecor: false,
         genderPref: 'No preference',
         charInfoTiming: 'I am very busy… give me on arrival',
-        status: 'pending', // Reset status when updating
+        status: 'pending',
       },
     });
 

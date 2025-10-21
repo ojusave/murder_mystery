@@ -66,6 +66,9 @@ export async function POST(request: NextRequest) {
         ackWaiver: validatedData.ackWaiver,
         waiverVersion: '2024-10-28', // Current waiver version
         wantsToPlay: 'Yes', // Default value to satisfy database constraint
+        volunteerDecor: false, // Default value to satisfy database constraint
+        bringOptions: [], // Default empty array
+        talents: [], // Default empty array
         token: token,
         status: 'pending',
       },
@@ -192,6 +195,9 @@ export async function PUT(request: NextRequest) {
         ackWaiver: validatedData.ackWaiver,
         waiverVersion: '2024-10-28', // Current waiver version
         wantsToPlay: 'Yes', // Default value to satisfy database constraint
+        volunteerDecor: false, // Default value to satisfy database constraint
+        bringOptions: [], // Default empty array
+        talents: [], // Default empty array
         status: 'pending', // Reset status when updating
       },
     });

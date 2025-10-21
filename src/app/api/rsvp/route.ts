@@ -7,32 +7,12 @@ import { sendRSVPConfirmationEmail } from '@/lib/email';
 const rsvpSchema = z.object({
   email: z.string().email(),
   legalName: z.string().min(1),
-  wantsToPlay: z.enum(['Yes', 'No, I think I would just be interested in a regular party']),
-  ackWaiver: z.boolean().refine(val => val === true),
-  bringOptions: z.array(z.string()).min(1),
-  bringOther: z.string().optional(),
-  volunteerDecor: z.boolean(),
   willDressUp: z.enum(['Of course, who goes to a halloween murder mystery without dressing up?', 'I will try, but no commitments']),
-  genderPref: z.enum(['Male', 'Female', 'Other:']),
-  genderOther: z.string().optional(),
-  charNamePref: z.string().optional(),
   charNameMode: z.enum(['I leave the fate of my character in your capable hands', 'Other:']),
   charNameOther: z.string().optional(),
-  charInfoTiming: z.enum(['Yes. If I get to know about this before, I will have enough time to get into the character and plan my attire accordingly', 'I am very busy. The host should consider themselves lucky that I am attending this party. You can give me a character once I show up.']),
-  talents: z.array(z.string()).optional(),
-  talentsOther: z.string().optional(),
   ackPairing: z.boolean().refine(val => val === true),
   ackAdultThemes: z.boolean().refine(val => val === true),
-  suggestions: z.string().optional(),
-}).refine((data) => {
-  // If genderPref is "Other:", then genderOther must be provided
-  if (data.genderPref === 'Other:' && (!data.genderOther || data.genderOther.trim() === '')) {
-    return false;
-  }
-  return true;
-}, {
-  message: "Please specify your gender preference",
-  path: ["genderOther"]
+  ackWaiver: z.boolean().refine(val => val === true),
 }).refine((data) => {
   // If charNameMode is "Other:", then charNameOther must be provided
   if (data.charNameMode === 'Other:' && (!data.charNameOther || data.charNameOther.trim() === '')) {
@@ -78,24 +58,13 @@ export async function POST(request: NextRequest) {
       data: {
         email: validatedData.email,
         legalName: validatedData.legalName,
-        wantsToPlay: validatedData.wantsToPlay,
-        ackWaiver: validatedData.ackWaiver,
-        waiverVersion: '2024-10-28', // Current waiver version
-        bringOptions: validatedData.bringOptions,
-        bringOther: validatedData.bringOther,
-        volunteerDecor: validatedData.volunteerDecor,
         willDressUp: validatedData.willDressUp,
-        genderPref: validatedData.genderPref,
-        genderOther: validatedData.genderOther,
-        charNamePref: validatedData.charNamePref,
         charNameMode: validatedData.charNameMode,
         charNameOther: validatedData.charNameOther,
-        charInfoTiming: validatedData.charInfoTiming,
-        talents: validatedData.talents || [],
-        talentsOther: validatedData.talentsOther,
         ackPairing: validatedData.ackPairing,
         ackAdultThemes: validatedData.ackAdultThemes,
-        suggestions: validatedData.suggestions,
+        ackWaiver: validatedData.ackWaiver,
+        waiverVersion: '2024-10-28', // Current waiver version
         token: token,
         status: 'pending',
       },
@@ -214,24 +183,13 @@ export async function PUT(request: NextRequest) {
       where: { email: validatedData.email },
       data: {
         legalName: validatedData.legalName,
-        wantsToPlay: validatedData.wantsToPlay,
-        ackWaiver: validatedData.ackWaiver,
-        waiverVersion: '2024-10-28', // Current waiver version
-        bringOptions: validatedData.bringOptions,
-        bringOther: validatedData.bringOther,
-        volunteerDecor: validatedData.volunteerDecor,
         willDressUp: validatedData.willDressUp,
-        genderPref: validatedData.genderPref,
-        genderOther: validatedData.genderOther,
-        charNamePref: validatedData.charNamePref,
         charNameMode: validatedData.charNameMode,
         charNameOther: validatedData.charNameOther,
-        charInfoTiming: validatedData.charInfoTiming,
-        talents: validatedData.talents || [],
-        talentsOther: validatedData.talentsOther,
         ackPairing: validatedData.ackPairing,
         ackAdultThemes: validatedData.ackAdultThemes,
-        suggestions: validatedData.suggestions,
+        ackWaiver: validatedData.ackWaiver,
+        waiverVersion: '2024-10-28', // Current waiver version
         status: 'pending', // Reset status when updating
       },
     });

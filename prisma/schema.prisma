@@ -23,23 +23,11 @@ model Guest {
   id                String   @id @default(uuid())
   email             String   @unique
   legalName         String   @map("legal_name")
-  wantsToPlay       String   @map("wants_to_play") // "Yes" | "No, I think I would just be interested in a regular party"
   
-  // Section 2 fields
-  bringOptions      String[] @map("bring_options")
-  bringOther        String?  @map("bring_other")
-  volunteerDecor    Boolean  @map("volunteer_decor")
+  // Simplified required fields
   willDressUp       String   @map("will_dress_up") // "Of course…" | "I will try, but no commitments"
-  
-  // Section 3 fields
-  genderPref        String   @map("gender_pref")
-  genderOther       String?  @map("gender_other")
-  charNamePref      String?  @map("char_name_pref")
   charNameMode       String   @map("char_name_mode") // "I leave the fate…" | "Other:"
   charNameOther     String?  @map("char_name_other")
-  charInfoTiming     String   @map("char_info_timing") // "Yes… tell me earlier" | "I am very busy… give me on arrival"
-  talents           String[]
-  talentsOther      String?  @map("talents_other")
   
   // Acknowledgements
   ackPairing        Boolean  @map("ack_pairing")
@@ -47,7 +35,19 @@ model Guest {
   ackWaiver         Boolean  @map("ack_waiver")
   waiverVersion     String?  @map("waiver_version")
   
+  // Optional fields for backward compatibility
+  wantsToPlay       String?  @map("wants_to_play") // "Yes" | "No, I think I would just be interested in a regular party"
+  bringOptions      String[] @map("bring_options")
+  bringOther        String?  @map("bring_other")
+  volunteerDecor    Boolean? @map("volunteer_decor")
+  genderPref        String?  @map("gender_pref")
+  genderOther       String?  @map("gender_other")
+  charNamePref      String?  @map("char_name_pref")
+  charInfoTiming     String?  @map("char_info_timing") // "Yes… tell me earlier" | "I am very busy… give me on arrival"
+  talents           String[]
+  talentsOther      String?  @map("talents_other")
   suggestions       String?
+  
   status            String   @default("pending") // "pending" | "approved" | "rejected"
   token             String   @unique
   

@@ -55,3 +55,16 @@ body {
   color: hsl(var(--foreground));
   background: hsl(var(--background));
 }
+
+/* Horror font classes */
+.font-creepster {
+  font-family: var(--font-creepster);
+}
+
+.font-nosifer {
+  font-family: var(--font-nosifer);
+}
+
+.font-butcherman {
+  font-family: var(--font-butcherman);
+}

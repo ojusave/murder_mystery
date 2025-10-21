@@ -26,10 +26,10 @@ export default function Home() {
       {/* Hero Section */}
       <main className="container mx-auto px-4 py-16 relative z-10">
         <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-2xl">
+          <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-2xl font-creepster tracking-wider">
             The Black Lotus
           </h1>
-          <h2 className="text-3xl text-purple-200 mb-8 drop-shadow-lg">
+          <h2 className="text-3xl text-red-400 mb-8 drop-shadow-lg font-nosifer tracking-wide">
             A Halloween Murder Mystery
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto drop-shadow-md">
@@ -40,7 +40,7 @@ export default function Home() {
           
           {/* Event Details */}
           <div className="bg-black/50 backdrop-blur-sm rounded-lg p-8 mb-12 max-w-2xl mx-auto border border-white/20">
-            <h3 className="text-2xl font-semibold text-white mb-6 drop-shadow-lg">Event Details</h3>
+            <h3 className="text-2xl font-semibold text-white mb-6 drop-shadow-lg font-butcherman tracking-wide">Event Details</h3>
             <div className="space-y-4 text-gray-300">
               <p><strong className="text-white">Date:</strong> November 1st, 2025</p>
               <p><strong className="text-white">Time:</strong> 8:00 PM - 12:00 AM</p>

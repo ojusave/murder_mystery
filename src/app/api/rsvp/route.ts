@@ -53,7 +53,8 @@ export async function POST(request: NextRequest) {
     // Generate a unique token for the guest portal
     const token = uuidv4().replace(/-/g, '').substring(0, 16);
     
-    // Create the guest record
+    // Create the guest record with only the fields from the RSVP form
+    // Note: Adding minimal defaults for database constraints that aren't in the form
     const guest = await prisma.guest.create({
       data: {
         email: validatedData.email,
@@ -65,14 +66,11 @@ export async function POST(request: NextRequest) {
         ackAdultThemes: validatedData.ackAdultThemes,
         ackWaiver: validatedData.ackWaiver,
         waiverVersion: '2024-10-28', // Current waiver version
-        wantsToPlay: 'Yes', // Default value to satisfy database constraint
-        volunteerDecor: false, // Default value to satisfy database constraint
-        bringOptions: [], // Default empty array
-        talents: [], // Default empty array
-        genderPref: 'No preference', // Default value to satisfy database constraint
-        charNamePref: '', // Default empty string
-        charInfoTiming: 'I am very busy… give me on arrival', // Default value
-        suggestions: '', // Default empty string
+        // Database requires these fields but they're not in the RSVP form
+        wantsToPlay: 'Yes',
+        volunteerDecor: false,
+        genderPref: 'No preference',
+        charInfoTiming: 'I am very busy… give me on arrival',
         token: token,
         status: 'pending',
       },
@@ -186,7 +184,8 @@ export async function PUT(request: NextRequest) {
       );
     }
     
-    // Update the guest record
+    // Update the guest record with only the fields from the RSVP form
+    // Note: Adding minimal defaults for database constraints that aren't in the form
     const updatedGuest = await prisma.guest.update({
       where: { email: validatedData.email },
       data: {
@@ -198,14 +197,11 @@ export async function PUT(request: NextRequest) {
         ackAdultThemes: validatedData.ackAdultThemes,
         ackWaiver: validatedData.ackWaiver,
         waiverVersion: '2024-10-28', // Current waiver version
-        wantsToPlay: 'Yes', // Default value to satisfy database constraint
-        volunteerDecor: false, // Default value to satisfy database constraint
-        bringOptions: [], // Default empty array
-        talents: [], // Default empty array
-        genderPref: 'No preference', // Default value to satisfy database constraint
-        charNamePref: '', // Default empty string
-        charInfoTiming: 'I am very busy… give me on arrival', // Default value
-        suggestions: '', // Default empty string
+        // Database requires these fields but they're not in the RSVP form
+        wantsToPlay: 'Yes',
+        volunteerDecor: false,
+        genderPref: 'No preference',
+        charInfoTiming: 'I am very busy… give me on arrival',
         status: 'pending', // Reset status when updating
       },
     });

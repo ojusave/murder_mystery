@@ -80,6 +80,9 @@ export async function PATCH(request: NextRequest) {
     
     if (displayName !== undefined) updateData.displayName = displayName;
     if (notesPrivate !== undefined) updateData.notesPrivate = notesPrivate;
+    if (characterName !== undefined) updateData.characterName = characterName;
+    if (characterHistory !== undefined) updateData.characterHistory = characterHistory;
+    if (hostNotes !== undefined) updateData.hostNotes = hostNotes;
     
     if (traits !== undefined) {
       let parsedTraits = traits;

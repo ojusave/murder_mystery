@@ -874,6 +874,53 @@ export default function AdminDashboard() {
                 placeholder="Internal notes about this character..."
               />
             </div>
+            <div>
+              <Label htmlFor="edit-char-characterName" className="text-white">
+                Character Name
+              </Label>
+              <Input
+                id="edit-char-characterName"
+                value={characterForm.characterName || ''}
+                onChange={(e) => setCharacterForm({
+                  ...characterForm,
+                  characterName: e.target.value
+                })}
+                className="bg-gray-700 border-gray-600 text-white"
+                placeholder="Character's actual name in the story..."
+              />
+            </div>
+            <div>
+              <Label htmlFor="edit-char-characterHistory" className="text-white">
+                Character History
+              </Label>
+              <Textarea
+                id="edit-char-characterHistory"
+                value={characterForm.characterHistory || ''}
+                onChange={(e) => setCharacterForm({
+                  ...characterForm,
+                  characterHistory: e.target.value
+                })}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={4}
+                placeholder="Character's background story and history..."
+              />
+            </div>
+            <div>
+              <Label htmlFor="edit-char-hostNotes" className="text-white">
+                Host Notes
+              </Label>
+              <Textarea
+                id="edit-char-hostNotes"
+                value={characterForm.hostNotes || ''}
+                onChange={(e) => setCharacterForm({
+                  ...characterForm,
+                  hostNotes: e.target.value
+                })}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={3}
+                placeholder="Host's private notes and instructions..."
+              />
+            </div>
             <div className="flex gap-2">
               <Button
                 onClick={updateCharacter}

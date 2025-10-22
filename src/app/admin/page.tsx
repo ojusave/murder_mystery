@@ -714,7 +714,7 @@ export default function AdminDashboard() {
                         </div>
 
                         <div className="mb-4">
-                          <h4 className="text-sm font-medium text-gray-300 mb-2">Character Traits:</h4>
+                          <h4 className="text-sm font-medium text-gray-300 mb-2">Backstory:</h4>
                           <div className="bg-gray-700 p-3 rounded text-sm text-gray-200">
                             <pre className="whitespace-pre-wrap">
                               {JSON.stringify(guest.character?.traits, null, 2)}

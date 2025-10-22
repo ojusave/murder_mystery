@@ -37,6 +37,7 @@ export default function Home() {
             <p>Attendance is selective and by authorization only. If you received this, your presence has been summoned</p>
             <p>The Addams Family invites you to a gathering of exquisite darkness—a celebration of death, devotion, and dangerous secrets.</p>
             <p>But beware: this is no ordinary reunion. Within these halls, the walls remember what happened here… and tonight, they are ready to speak.</p>
+            <p>BrO-J and Half-Chai (A D T)</p>
           </div>
           
           {/* Event Details */}
@@ -47,7 +48,6 @@ export default function Home() {
               <p><strong className="text-white">Time:</strong> 8:00 PM - 12:00 AM</p>
               <p><strong className="text-white">Location:</strong> Fremont</p>
               <p><strong className="text-white">Dress Code:</strong> Costumes required</p>
-              <p><strong className="text-white">Hosted by:</strong> BrO-J and Half-Chai (A D T)</p>
             </div>
           </div>
 

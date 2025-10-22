@@ -16,7 +16,7 @@ export default function Home() {
         <nav className="flex justify-between items-center">
           <div></div>
           <Link href="/admin/login">
-            <Button variant="outline" className="text-white bg-transparent border-white hover:bg-white hover:text-gray-900 hover:border-white">
+            <Button variant="outline" className="text-red-400 bg-black/30 border-red-600 hover:bg-red-900/50 hover:text-red-200 hover:border-red-500 shadow-lg shadow-red-900/50">
               Host Login
             </Button>
           </Link>
@@ -33,9 +33,10 @@ export default function Home() {
             A Halloween Murder Mystery
           </h2>
           <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto drop-shadow-md">
-            Join us for an unforgettable evening of mystery, intrigue, and Halloween thrills. 
-            Step into a world where every guest has a secret, every character has a motive, 
-            and the truth lies hidden in the shadows.
+          After decades sealed in silence, The Black Lotus Hotel reopens its iron gates for one night only. 
+          The Addams Family invites you to a gathering of exquisite darkness
+          —a celebration of death, devotion, and dangerous secrets. 
+          But beware: this is no ordinary reunion. Within these halls, the walls remember what happened here… and tonight, they are ready to speak.
           </p>
           
           {/* Event Details */}
@@ -57,7 +58,7 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/waiver">
-              <Button variant="outline" size="lg" className="text-white bg-transparent border-white hover:bg-white hover:text-gray-900 hover:border-white px-8 py-4 text-lg">
+              <Button variant="outline" size="lg" className="text-purple-300 bg-black/30 border-purple-600 hover:bg-purple-900/50 hover:text-purple-100 hover:border-purple-500 px-8 py-4 text-lg shadow-lg shadow-purple-900/50">
                 Read Waiver
               </Button>
             </Link>

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && npm run db:migrate && next build",
     "start": "next start",
     "lint": "eslint",
     "worker:start": "node worker/index.js",
@@ -12,6 +12,7 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node scripts/seed.js",
+    "db:migrate": "node scripts/migrate-db.js",
     "postinstall": "prisma generate",
     "type-check": "tsc --noEmit"
   },

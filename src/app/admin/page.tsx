@@ -803,6 +803,237 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* Characters Tab */}
+          <TabsContent value="characters">
+            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle className="text-2xl font-bold text-white">
+                      Character Management
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Manage character assignments and details
+                    </CardDescription>
+                  </div>
+                  <Dialog open={createCharacterDialogOpen} onOpenChange={setCreateCharacterDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                        Create Character
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-gray-800 border-gray-600">
+                      <DialogHeader>
+                        <DialogTitle className="text-white">
+                          Create New Character
+                        </DialogTitle>
+                        <DialogDescription className="text-gray-300">
+                          Create a character that can be assigned later
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="create-displayName" className="text-white">
+                            Character Name
+                          </Label>
+                          <Input
+                            id="create-displayName"
+                            value={characterForm.displayName}
+                            onChange={(e) => setCharacterForm({
+                              ...characterForm,
+                              displayName: e.target.value
+                            })}
+                            className="bg-gray-700 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="create-backstory" className="text-white">
+                            Backstory / History
+                          </Label>
+                          <Textarea
+                            id="create-backstory"
+                            value={characterForm.backstory}
+                            onChange={(e) => setCharacterForm({
+                              ...characterForm,
+                              backstory: e.target.value
+                            })}
+                            className="bg-gray-700 border-gray-600 text-white"
+                            rows={4}
+                            placeholder="Describe the character's background, history, and personality..."
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="create-hostNotes" className="text-white">
+                            Host Notes
+                          </Label>
+                          <Textarea
+                            id="create-hostNotes"
+                            value={characterForm.hostNotes}
+                            onChange={(e) => setCharacterForm({
+                              ...characterForm,
+                              hostNotes: e.target.value
+                            })}
+                            className="bg-gray-700 border-gray-600 text-white"
+                            rows={3}
+                            placeholder="Private notes for the host about this character..."
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={createCharacter}
+                            className="bg-purple-600 hover:bg-purple-700 text-white"
+                          >
+                            Create Character
+                          </Button>
+                          <Button
+                            variant="outline"
+                            onClick={() => setCreateCharacterDialogOpen(false)}
+                            className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {/* Unassigned Characters */}
+                  {unassignedCharacters.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-4">Unassigned Characters</h3>
+                      <div className="space-y-4">
+                        {unassignedCharacters.map((character) => (
+                          <Card key={character.id} className="bg-gray-800/50 border-gray-600">
+                            <CardContent className="p-6">
+                              <div className="flex justify-between items-start mb-4">
+                                <div>
+                                  <h4 className="text-lg font-semibold text-white">
+                                    {character.displayName}
+                                  </h4>
+                                  <Badge variant="outline" className="text-yellow-300 border-yellow-300">
+                                    Unassigned
+                                  </Badge>
+                                </div>
+                              </div>
+
+                              <div className="mb-4">
+                                <h5 className="text-sm font-medium text-gray-300 mb-2">Backstory:</h5>
+                                <div className="bg-gray-700 p-3 rounded text-sm text-gray-200">
+                                  <pre className="whitespace-pre-wrap">
+                                    {(character.traits as any)?.backstory || 'No backstory provided'}
+                                  </pre>
+                                </div>
+                              </div>
+
+                              {character.notesPrivate && (
+                                <div className="mb-4">
+                                  <h5 className="text-sm font-medium text-gray-300 mb-2">Host Notes:</h5>
+                                  <p className="text-sm text-gray-200 bg-gray-700 p-3 rounded">
+                                    {character.notesPrivate}
+                                  </p>
+                                </div>
+                              )}
+
+                              <div className="flex gap-2 flex-wrap">
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() => deleteCharacter(character.id)}
+                                  className="bg-red-600 hover:bg-red-700 text-white"
+                                >
+                                  Delete Character
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Assigned Characters */}
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-4">Assigned Characters</h3>
+                    <div className="space-y-4">
+                      {guests.filter(guest => guest.character).map((guest) => (
+                        <Card key={guest.id} className="bg-gray-800/50 border-gray-600">
+                          <CardContent className="p-6">
+                            <div className="flex justify-between items-start mb-4">
+                              <div>
+                                <h3 className="text-lg font-semibold text-white">
+                                  {guest.character?.displayName}
+                                </h3>
+                                <p className="text-gray-300">Assigned to: {guest.legalName}</p>
+                                <p className="text-sm text-gray-400">{guest.email}</p>
+                              </div>
+                              <Badge className="bg-purple-600 text-white">
+                                Assigned
+                              </Badge>
+                            </div>
+
+                            <div className="mb-4">
+                              <h4 className="text-sm font-medium text-gray-300 mb-2">Backstory:</h4>
+                              <div className="bg-gray-700 p-3 rounded text-sm text-gray-200">
+                                <pre className="whitespace-pre-wrap">
+                                  {(guest.character?.traits as any)?.backstory || 'No backstory provided'}
+                                </pre>
+                              </div>
+                            </div>
+
+                            {guest.character?.notesPrivate && (
+                              <div className="mb-4">
+                                <h4 className="text-sm font-medium text-gray-300 mb-2">Host Notes:</h4>
+                                <p className="text-sm text-gray-200 bg-gray-700 p-3 rounded">
+                                  {guest.character.notesPrivate}
+                                </p>
+                              </div>
+                            )}
+
+                            <div className="flex gap-2 flex-wrap">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openEditCharacterDialog(guest)}
+                                className="text-purple-300 border-purple-300 hover:bg-purple-300 hover:text-gray-900"
+                              >
+                                Edit Character
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => deleteCharacter(guest.character!.id)}
+                                className="text-red-300 border-red-300 hover:bg-red-300 hover:text-gray-900"
+                              >
+                                Delete Character
+                              </Button>
+                              <Link href={`/guest/${guest.token}`}>
+                                <Button size="sm" variant="outline" className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400">
+                                  View Guest Portal
+                                </Button>
+                              </Link>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+
+                      {guests.filter(guest => guest.character).length === 0 && unassignedCharacters.length === 0 && (
+                        <div className="text-center py-8">
+                          <p className="text-gray-300">No characters created yet.</p>
+                          <p className="text-sm text-gray-400 mt-2">
+                            Create your first character using the button above.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Settings Tab */}
           <TabsContent value="settings">
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">

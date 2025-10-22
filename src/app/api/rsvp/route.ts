@@ -50,8 +50,29 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Generate a unique token for the guest portal
-    const token = uuidv4().replace(/-/g, '').substring(0, 16);
+    // Generate a unique token for the guest portal with retry mechanism
+    let token: string;
+    let attempts = 0;
+    const maxAttempts = 5;
+    
+    do {
+      token = uuidv4().replace(/-/g, '').substring(0, 16);
+      attempts++;
+      
+      // Check if token already exists
+      const existingToken = await prisma.guest.findUnique({
+        where: { token },
+        select: { id: true }
+      });
+      
+      if (!existingToken) {
+        break; // Token is unique
+      }
+      
+      if (attempts >= maxAttempts) {
+        throw new Error('Unable to generate unique token after multiple attempts');
+      }
+    } while (attempts < maxAttempts);
     
     // Create the guest record with ONLY the fields from the RSVP form
     // Note: Database has NOT NULL constraints on unused fields, so we add minimal defaults
@@ -71,6 +92,8 @@ export async function POST(request: NextRequest) {
         volunteerDecor: false,
         genderPref: 'No preference',
         charInfoTiming: 'I am very busy… give me on arrival',
+        bringOptions: [], // Required String array field
+        talents: [], // Required String array field
         token: token,
         status: 'pending',
       },
@@ -87,13 +110,18 @@ export async function POST(request: NextRequest) {
       console.log('RSVP confirmation email sent successfully to:', guest.email);
       
       // Create email event for tracking
-      await prisma.emailEvent.create({
-        data: {
-          guestId: guest.id,
-          type: 'rsvp_received',
-          status: 'sent',
-        },
-      });
+      try {
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guest.id,
+            type: 'rsvp_received',
+            status: 'sent',
+          },
+        });
+      } catch (emailEventError) {
+        console.error('Failed to create email event for RSVP confirmation:', emailEventError);
+        // Don't fail the entire request for email event creation failure
+      }
 
       // Send host notification email
       try {
@@ -102,25 +130,35 @@ export async function POST(request: NextRequest) {
         console.log('Host notification email sent successfully');
         
         // Create email event for host notification
-        await prisma.emailEvent.create({
-          data: {
-            guestId: guest.id,
-            type: 'host_notification',
-            status: 'sent',
-          },
-        });
+        try {
+          await prisma.emailEvent.create({
+            data: {
+              guestId: guest.id,
+              type: 'host_notification',
+              status: 'sent',
+            },
+          });
+        } catch (emailEventError) {
+          console.error('Failed to create email event for host notification:', emailEventError);
+          // Don't fail the entire request for email event creation failure
+        }
       } catch (hostEmailError) {
         console.error('Host notification email failed:', hostEmailError);
         
         // Still create email event for tracking, but mark as failed
-        await prisma.emailEvent.create({
-          data: {
-            guestId: guest.id,
-            type: 'host_notification',
-            status: 'failed',
-            error: hostEmailError instanceof Error ? hostEmailError.message : 'Unknown error',
-          },
-        });
+        try {
+          await prisma.emailEvent.create({
+            data: {
+              guestId: guest.id,
+              type: 'host_notification',
+              status: 'failed',
+              error: hostEmailError instanceof Error ? hostEmailError.message : 'Unknown error',
+            },
+          });
+        } catch (emailEventError) {
+          console.error('Failed to create email event for failed host notification:', emailEventError);
+          // Don't fail the entire request for email event creation failure
+        }
       }
     } catch (emailError) {
       console.error('RSVP confirmation email failed:', emailError);
@@ -132,14 +170,19 @@ export async function POST(request: NextRequest) {
       });
       
       // Still create email event for tracking, but mark as failed
-      await prisma.emailEvent.create({
-        data: {
-          guestId: guest.id,
-          type: 'rsvp_received',
-          status: 'failed',
-          error: emailError instanceof Error ? emailError.message : 'Unknown error',
-        },
-      });
+      try {
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guest.id,
+            type: 'rsvp_received',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      } catch (emailEventError) {
+        console.error('Failed to create email event for failed RSVP confirmation:', emailEventError);
+        // Don't fail the entire request for email event creation failure
+      }
     }
 
     return NextResponse.json({ 
@@ -230,6 +273,8 @@ export async function PUT(request: NextRequest) {
         volunteerDecor: false,
         genderPref: 'No preference',
         charInfoTiming: 'I am very busy… give me on arrival',
+        bringOptions: [], // Required String array field
+        talents: [], // Required String array field
         status: 'pending',
       },
     });
@@ -244,13 +289,18 @@ export async function PUT(request: NextRequest) {
       console.log('RSVP update confirmation email sent successfully to:', updatedGuest.email);
       
       // Create email event for tracking
-      await prisma.emailEvent.create({
-        data: {
-          guestId: updatedGuest.id,
-          type: 'rsvp_updated',
-          status: 'sent',
-        },
-      });
+      try {
+        await prisma.emailEvent.create({
+          data: {
+            guestId: updatedGuest.id,
+            type: 'rsvp_updated',
+            status: 'sent',
+          },
+        });
+      } catch (emailEventError) {
+        console.error('Failed to create email event for RSVP update:', emailEventError);
+        // Don't fail the entire request for email event creation failure
+      }
     } catch (emailError) {
       console.error('RSVP update confirmation email failed:', emailError);
       console.error('Email error details:', {
@@ -261,14 +311,19 @@ export async function PUT(request: NextRequest) {
       });
       
       // Still create email event for tracking, but mark as failed
-      await prisma.emailEvent.create({
-        data: {
-          guestId: updatedGuest.id,
-          type: 'rsvp_updated',
-          status: 'failed',
-          error: emailError instanceof Error ? emailError.message : 'Unknown error',
-        },
-      });
+      try {
+        await prisma.emailEvent.create({
+          data: {
+            guestId: updatedGuest.id,
+            type: 'rsvp_updated',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      } catch (emailEventError) {
+        console.error('Failed to create email event for failed RSVP update:', emailEventError);
+        // Don't fail the entire request for email event creation failure
+      }
     }
 
     return NextResponse.json({ 

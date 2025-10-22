@@ -37,14 +37,14 @@ model Guest {
   
   // Optional fields for backward compatibility
   wantsToPlay       String?  @map("wants_to_play") // "Yes" | "No, I think I would just be interested in a regular party"
-  bringOptions      String[] @map("bring_options")
+  bringOptions      String[] @default([]) @map("bring_options")
   bringOther        String?  @map("bring_other")
   volunteerDecor    Boolean? @map("volunteer_decor")
   genderPref        String?  @map("gender_pref")
   genderOther       String?  @map("gender_other")
   charNamePref      String?  @map("char_name_pref")
   charInfoTiming     String?  @map("char_info_timing") // "Yes… tell me earlier" | "I am very busy… give me on arrival"
-  talents           String[]
+  talents           String[] @default([])
   talentsOther      String?  @map("talents_other")
   suggestions       String?
   

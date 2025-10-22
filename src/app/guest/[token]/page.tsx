@@ -17,7 +17,7 @@ async function getGuestByToken(token: string) {
       character: true,
       emailEvents: {
         orderBy: {
-          sentAt: 'desc',
+          createdAt: 'desc',
         },
       },
     },
@@ -295,17 +295,17 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                            '📧 Email Notification'}
                         </h4>
                         <span className="text-sm text-gray-400">
-                          {event.sentAt ? new Date(event.sentAt).toLocaleDateString() : 'Unknown'} at {event.sentAt ? new Date(event.sentAt).toLocaleTimeString() : 'Unknown'}
+                          {new Date(event.createdAt).toLocaleDateString()} at {new Date(event.createdAt).toLocaleTimeString()}
                         </span>
                       </div>
-                      {event.subject && (
+                      {(event as any).subject && (
                         <h5 className="text-md font-medium text-purple-300 mb-2">
-                          {event.subject}
+                          {(event as any).subject}
                         </h5>
                       )}
-                      {event.message && (
+                      {(event as any).message && (
                         <div className="text-gray-300 whitespace-pre-wrap">
-                          {event.message}
+                          {(event as any).message}
                         </div>
                       )}
                     </div>

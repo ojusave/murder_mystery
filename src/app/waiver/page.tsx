@@ -187,15 +187,7 @@ export default function WaiverPage() {
             </nav>
           </div>
 
-          {/* Print/Save Button */}
-          <div className="mb-8 text-center">
-            <Button 
-              onClick={handlePrint}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
-            >
-              Print / Save as PDF
-            </Button>
-          </div>
+     
 
           {/* Waiver Content */}
           <div className="prose prose-invert max-w-none">

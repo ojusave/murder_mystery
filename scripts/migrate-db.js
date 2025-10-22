@@ -40,7 +40,7 @@ async function migrateDatabase() {
       SELECT column_name 
       FROM information_schema.columns 
       WHERE table_name = 'email_events' 
-      AND column_name IN ('subject', 'message', 'status')
+      AND column_name IN ('subject', 'message', 'status', 'sent_at')
     `;
     
     const existingEmailEventColumns = emailEventsResult.map(row => row.column_name);
@@ -50,7 +50,8 @@ async function migrateDatabase() {
     const emailEventColumnsToAdd = [
       { name: 'subject', exists: existingEmailEventColumns.includes('subject') },
       { name: 'message', exists: existingEmailEventColumns.includes('message') },
-      { name: 'status', exists: existingEmailEventColumns.includes('status') }
+      { name: 'status', exists: existingEmailEventColumns.includes('status') },
+      { name: 'sent_at', exists: existingEmailEventColumns.includes('sent_at') }
     ];
     
     for (const column of emailEventColumnsToAdd) {
@@ -58,6 +59,8 @@ async function migrateDatabase() {
         console.log(`Adding email_events column: ${column.name}`);
         if (column.name === 'status') {
           await prisma.$executeRawUnsafe(`ALTER TABLE email_events ADD COLUMN ${column.name} VARCHAR(50) DEFAULT 'queued'`);
+        } else if (column.name === 'sent_at') {
+          await prisma.$executeRawUnsafe(`ALTER TABLE email_events ADD COLUMN ${column.name} TIMESTAMP`);
         } else {
           await prisma.$executeRawUnsafe(`ALTER TABLE email_events ADD COLUMN ${column.name} TEXT`);
         }

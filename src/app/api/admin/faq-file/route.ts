@@ -16,35 +16,23 @@ export async function GET() {
   try {
     const fileContent = await fs.readFile(FAQ_FILE_PATH, 'utf-8')
     
-    // Extract FAQs from the static data in the file
+    // Extract FAQs from the static data in the file using a safer approach
     const faqMatch = fileContent.match(/const staticFaqs: FAQ\[\] = \[([\s\S]*?)\];/)
     if (!faqMatch) {
       return NextResponse.json({ error: 'Could not find FAQ data in file' }, { status: 500 })
     }
     
-    // Parse the FAQ data (this is a simplified parser)
-    const faqs: FAQ[] = []
-    const faqBlocks = faqMatch[1].split(/(?=\s*{\s*id:)/).filter(block => block.trim())
+    // Create a safe evaluation context
+    const faqContent = faqMatch[1]
     
-    for (const block of faqBlocks) {
-      const idMatch = block.match(/id:\s*['"`]([^'"`]+)['"`]/)
-      const questionMatch = block.match(/question:\s*['"`]([^'"`]+)['"`]/)
-      const answerMatch = block.match(/answer:\s*['"`]([^'"`]+)['"`]/)
-      const orderMatch = block.match(/order:\s*(\d+)/)
-      const activeMatch = block.match(/isActive:\s*(true|false)/)
-      
-      if (idMatch && questionMatch && answerMatch && orderMatch && activeMatch) {
-        faqs.push({
-          id: idMatch[1],
-          question: questionMatch[1],
-          answer: answerMatch[1],
-          order: parseInt(orderMatch[1]),
-          isActive: activeMatch[1] === 'true'
-        })
-      }
+    // Use Function constructor to safely evaluate the FAQ array
+    try {
+      const faqs = new Function('return [' + faqContent + ']')() as FAQ[]
+      return NextResponse.json(faqs)
+    } catch (error) {
+      console.error('Error parsing FAQ data:', error)
+      return NextResponse.json({ error: 'Failed to parse FAQ data' }, { status: 500 })
     }
-    
-    return NextResponse.json(faqs)
   } catch (error) {
     console.error('Error reading FAQ file:', error)
     return NextResponse.json({ error: 'Failed to read FAQ file' }, { status: 500 })

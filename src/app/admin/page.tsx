@@ -59,12 +59,14 @@ export default function AdminDashboard() {
   const [characterDialogOpen, setCharacterDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editCharacterDialogOpen, setEditCharacterDialogOpen] = useState(false);
+  const [createCharacterDialogOpen, setCreateCharacterDialogOpen] = useState(false);
   const [characterForm, setCharacterForm] = useState({
     displayName: '',
     backstory: '',
     hostNotes: '',
   });
   const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
+  const [unassignedCharacters, setUnassignedCharacters] = useState<any[]>([]);
   const [bulkEmailDialogOpen, setBulkEmailDialogOpen] = useState(false);
   const [bulkEmailForm, setBulkEmailForm] = useState({
     subject: '',
@@ -101,6 +103,7 @@ export default function AdminDashboard() {
     if (session) {
       console.log('Session found:', session);
       fetchGuests();
+      fetchUnassignedCharacters();
     } else {
       console.log('No session found, status:', status);
     }
@@ -131,6 +134,20 @@ export default function AdminDashboard() {
       alert('Network error fetching guests');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUnassignedCharacters = async () => {
+    try {
+      const response = await fetch('/api/admin/characters', {
+        credentials: 'include',
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUnassignedCharacters(data.characters);
+      }
+    } catch (error) {
+      console.error('Error fetching unassigned characters:', error);
     }
   };
 
@@ -321,9 +338,62 @@ export default function AdminDashboard() {
         setCharacterDialogOpen(false);
         setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
         fetchGuests();
+        fetchUnassignedCharacters();
       }
     } catch (error) {
       console.error('Error assigning character:', error);
+    }
+  };
+
+  const createCharacter = async () => {
+    try {
+      const response = await fetch('/api/admin/characters', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          displayName: characterForm.displayName,
+          backstory: characterForm.backstory,
+          hostNotes: characterForm.hostNotes,
+        }),
+      });
+
+      if (response.ok) {
+        setCreateCharacterDialogOpen(false);
+        setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
+        fetchGuests();
+        fetchUnassignedCharacters();
+      }
+    } catch (error) {
+      console.error('Error creating character:', error);
+    }
+  };
+
+  const assignExistingCharacter = async (characterId: string) => {
+    if (!selectedGuest) return;
+
+    try {
+      const response = await fetch('/api/admin/characters', {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          characterId: characterId,
+          guestId: selectedGuest.id,
+        }),
+      });
+
+      if (response.ok) {
+        setCharacterDialogOpen(false);
+        fetchGuests();
+        fetchUnassignedCharacters();
+      }
+    } catch (error) {
+      console.error('Error assigning existing character:', error);
     }
   };
 
@@ -570,68 +640,117 @@ export default function AdminDashboard() {
                                   Assign Character
                                 </Button>
                               </DialogTrigger>
-                              <DialogContent className="bg-gray-800 border-gray-600">
+                              <DialogContent className="bg-gray-800 border-gray-600 max-w-2xl">
                                 <DialogHeader>
                                   <DialogTitle className="text-white">
                                     Assign Character to {guest.legalName}
                                   </DialogTitle>
                                   <DialogDescription className="text-gray-300">
-                                    Create a character assignment for this guest
+                                    Choose to create a new character or assign an existing unassigned character
                                   </DialogDescription>
                                 </DialogHeader>
-                                <div className="space-y-4">
-                                  <div>
-                                    <Label htmlFor="displayName" className="text-white">
-                                      Character Name
-                                    </Label>
-                                    <Input
-                                      id="displayName"
-                                      value={characterForm.displayName}
-                                      onChange={(e) => setCharacterForm({
-                                        ...characterForm,
-                                        displayName: e.target.value
-                                      })}
-                                      className="bg-gray-700 border-gray-600 text-white"
-                                    />
+                                <div className="space-y-6">
+                                  {/* Option 1: Assign Existing Character */}
+                                  <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white">Assign Existing Character</h3>
+                                    <div className="max-h-60 overflow-y-auto space-y-2">
+                                      {unassignedCharacters.length > 0 ? (
+                                        unassignedCharacters.map((character) => (
+                                          <div key={character.id} className="bg-gray-700 p-3 rounded border border-gray-600">
+                                            <div className="flex justify-between items-start">
+                                              <div>
+                                                <h4 className="text-white font-medium">{character.displayName}</h4>
+                                                <p className="text-gray-300 text-sm mt-1">
+                                                  {(character.traits as any)?.backstory?.substring(0, 100)}...
+                                                </p>
+                                              </div>
+                                              <Button
+                                                size="sm"
+                                                onClick={() => assignExistingCharacter(character.id)}
+                                                className="bg-purple-600 hover:bg-purple-700 text-white"
+                                              >
+                                                Assign
+                                              </Button>
+                                            </div>
+                                          </div>
+                                        ))
+                                      ) : (
+                                        <div className="text-gray-400 text-sm italic">
+                                          No unassigned characters available. Create a new character below.
+                                        </div>
+                                      )}
+                                    </div>
                                   </div>
-                                  <div>
-                                    <Label htmlFor="backstory" className="text-white">
-                                      Backstory / History
-                                    </Label>
-                                    <Textarea
-                                      id="backstory"
-                                      value={characterForm.backstory}
-                                      onChange={(e) => setCharacterForm({
-                                        ...characterForm,
-                                        backstory: e.target.value
-                                      })}
-                                      className="bg-gray-700 border-gray-600 text-white"
-                                      rows={4}
-                                      placeholder="Describe the character's background, history, and personality..."
-                                    />
+
+                                  {/* Divider */}
+                                  <div className="border-t border-gray-600"></div>
+
+                                  {/* Option 2: Create New Character */}
+                                  <div className="space-y-4">
+                                    <h3 className="text-lg font-semibold text-white">Create New Character</h3>
+                                    <div>
+                                      <Label htmlFor="displayName" className="text-white">
+                                        Character Name
+                                      </Label>
+                                      <Input
+                                        id="displayName"
+                                        value={characterForm.displayName}
+                                        onChange={(e) => setCharacterForm({
+                                          ...characterForm,
+                                          displayName: e.target.value
+                                        })}
+                                        className="bg-gray-700 border-gray-600 text-white"
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="backstory" className="text-white">
+                                        Backstory / History
+                                      </Label>
+                                      <Textarea
+                                        id="backstory"
+                                        value={characterForm.backstory}
+                                        onChange={(e) => setCharacterForm({
+                                          ...characterForm,
+                                          backstory: e.target.value
+                                        })}
+                                        className="bg-gray-700 border-gray-600 text-white"
+                                        rows={4}
+                                        placeholder="Describe the character's background, history, and personality..."
+                                      />
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="hostNotes" className="text-white">
+                                        Host Notes
+                                      </Label>
+                                      <Textarea
+                                        id="hostNotes"
+                                        value={characterForm.hostNotes}
+                                        onChange={(e) => setCharacterForm({
+                                          ...characterForm,
+                                          hostNotes: e.target.value
+                                        })}
+                                        className="bg-gray-700 border-gray-600 text-white"
+                                        rows={3}
+                                        placeholder="Private notes for the host about this character..."
+                                      />
+                                    </div>
                                   </div>
-                                  <div>
-                                    <Label htmlFor="hostNotes" className="text-white">
-                                      Host Notes
-                                    </Label>
-                                    <Textarea
-                                      id="hostNotes"
-                                      value={characterForm.hostNotes}
-                                      onChange={(e) => setCharacterForm({
-                                        ...characterForm,
-                                        hostNotes: e.target.value
-                                      })}
-                                      className="bg-gray-700 border-gray-600 text-white"
-                                      rows={3}
-                                      placeholder="Private notes for the host about this character..."
-                                    />
+
+                                  <div className="flex gap-2">
+                                    <Button
+                                      onClick={assignCharacter}
+                                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                                    >
+                                      Assign Character
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      onClick={() => setCharacterDialogOpen(false)}
+                                      className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
+                                    >
+                                      Cancel
+                                    </Button>
                                   </div>
-                                  <Button
-                                    onClick={assignCharacter}
-                                    className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-                                  >
-                                    Assign Character
-                                  </Button>
                                 </div>
                               </DialogContent>
                             </Dialog>
@@ -679,102 +798,6 @@ export default function AdminDashboard() {
                       </CardContent>
                     </Card>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Characters Tab */}
-          <TabsContent value="characters">
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-white">
-                  Character Management
-                </CardTitle>
-                <CardDescription className="text-gray-300">
-                  Manage character assignments and details
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {guests.filter(guest => guest.character).map((guest) => (
-                    <Card key={guest.id} className="bg-gray-800/50 border-gray-600">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h3 className="text-lg font-semibold text-white">
-                              {guest.character?.displayName}
-                            </h3>
-                            <p className="text-gray-300">Assigned to: {guest.legalName}</p>
-                            <p className="text-sm text-gray-400">{guest.email}</p>
-                          </div>
-                          <Badge className="bg-purple-600 text-white">
-                            Assigned
-                          </Badge>
-                        </div>
-
-                        <div className="mb-4">
-                          <h4 className="text-sm font-medium text-gray-300 mb-2">Backstory:</h4>
-                          <div className="bg-gray-700 p-3 rounded text-sm text-gray-200">
-                            <pre className="whitespace-pre-wrap">
-                              {JSON.stringify(guest.character?.traits, null, 2)}
-                            </pre>
-                          </div>
-                        </div>
-
-                        {guest.character?.notesPrivate && (
-                          <div className="mb-4">
-                            <h4 className="text-sm font-medium text-gray-300 mb-2">Private Notes:</h4>
-                            <p className="text-sm text-gray-200 bg-gray-700 p-3 rounded">
-                              {guest.character.notesPrivate}
-                            </p>
-                          </div>
-                        )}
-
-                        <div className="flex gap-2 flex-wrap">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => openEditCharacterDialog(guest)}
-                            className="text-purple-300 border-purple-300 hover:bg-purple-300 hover:text-gray-900"
-                          >
-                            Edit Character
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => deleteCharacter(guest.character!.id)}
-                            className="text-red-300 border-red-300 hover:bg-red-300 hover:text-gray-900"
-                          >
-                            Delete Character
-                          </Button>
-                          <Link href={`/guest/${guest.token}`}>
-                            <Button size="sm" variant="outline" className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400">
-                              View Guest Portal
-                            </Button>
-                          </Link>
-                          
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => deleteGuest(guest.id)}
-                            className="bg-red-600 hover:bg-red-700 text-white"
-                          >
-                            Delete Registration
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-
-                  {guests.filter(guest => guest.character).length === 0 && (
-                    <div className="text-center py-8">
-                      <p className="text-gray-300">No characters assigned yet.</p>
-                      <p className="text-sm text-gray-400 mt-2">
-                        Assign characters to approved guests from the RSVPs tab.
-                      </p>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>

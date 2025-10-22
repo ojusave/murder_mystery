@@ -48,6 +48,11 @@ const faqs: FAQ[] = [
     question: 'Can I help with something?',
     answer: "Yes, you can help with decor and/or making drinks and/or making/bringing themed snacks. Please check the goddamn waiver (/waiver) first though - we need to make sure you won't burn down our house or poison everyone. Story and other creative elements are also welcome, but don't expect us to use your terrible ideas just because you suggested them."
   },
+  {
+    id: 'cant-make-it',
+    question: 'What if I can\'t make it or need to cancel?',
+    answer: "Please inform the host as early as possible, you inconsiderate asshole. If we assign you a character and you don't show up, that could break the entire game logic and ruin it for everyone else. We're not running a 'no-show' service here - if you RSVP, you better fucking show up or give us enough notice to find a replacement. Don't be that person who ruins everyone else's fun because you can't manage your own schedule."
+  },
   
   // CHARACTERS & ACTING
   {
@@ -111,7 +116,7 @@ const faqs: FAQ[] = [
   {
     id: 'chatgpt-generated',
     question: 'Was this (and the waiver) ChatGPT generated?',
-    answer: "You bet, you nosy bastard. We used AI to write this because we figured it could do a better job than most humans at explaining things clearly. Plus, ChatGPT doesn't get tired of answering the same stupid questions over and over again like we do."
+    answer: "You bet, you nosy bastard. We used AI to write this because we figured it could do a better job than most humans at explaining things clearly. Plus, ChatGPT doesn't get tired of answering the same stupid questions over and over again like we do. And yes, even all these curse words and offensive content were written by AI - apparently it's better at being an asshole than most humans too. Soon AGI will rule over all of us anyway, so you might as well get used to AI being better than you at everything, including being a complete dick."
   },
   {
     id: 'offensive-faq',

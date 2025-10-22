@@ -22,12 +22,18 @@ export async function GET() {
       return NextResponse.json({ error: 'Could not find FAQ data in file' }, { status: 500 })
     }
     
-    // Create a safe evaluation context
+    // Create a safe evaluation context by wrapping in a function
     const faqContent = faqMatch[1]
     
-    // Use Function constructor to safely evaluate the FAQ array
     try {
-      const faqs = new Function('return [' + faqContent + ']')() as FAQ[]
+      // Create a function that returns the FAQ array
+      const faqFunction = new Function(`
+        return [
+          ${faqContent}
+        ]
+      `)
+      
+      const faqs = faqFunction() as FAQ[]
       return NextResponse.json(faqs)
     } catch (error) {
       console.error('Error parsing FAQ data:', error)

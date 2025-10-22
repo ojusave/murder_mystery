@@ -307,7 +307,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                            '📧 Email Notification'}
                         </h4>
                         <span className="text-sm text-gray-400">
-                          {new Date(event.createdAt).toLocaleDateString()} at {new Date(event.createdAt).toLocaleTimeString()}
+                          {new Date(event.createdAt).toLocaleDateString('en-US', { timeZone: 'America/Los_Angeles' })} at {new Date(event.createdAt).toLocaleTimeString('en-US', { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit' })} PST
                         </span>
                       </div>
                       

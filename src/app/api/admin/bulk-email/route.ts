@@ -6,7 +6,7 @@ import { sendBulkEmail } from '@/lib/email';
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerAuth();
+    const session = await getServerAuth(request);
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -52,6 +52,7 @@ export async function POST(request: NextRequest) {
       type: 'bulk_email',
       subject,
       message,
+      status: 'sent',
       sentAt: new Date(),
     }));
 

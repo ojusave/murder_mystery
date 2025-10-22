@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
         errors.push({
           guestId: guest.id,
           email: guest.email,
-          error: error.message,
+          error: error instanceof Error ? error.message : 'Unknown error',
         });
       }
     }
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in cron job:', error);
     return NextResponse.json(
-      { error: 'Cron job failed', details: error.message },
+      { error: 'Cron job failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

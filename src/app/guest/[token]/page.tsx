@@ -295,7 +295,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                            '📧 Email Notification'}
                         </h4>
                         <span className="text-sm text-gray-400">
-                          {new Date(event.sentAt).toLocaleDateString()} at {new Date(event.sentAt).toLocaleTimeString()}
+                          {event.sentAt ? new Date(event.sentAt).toLocaleDateString() : 'Unknown'} at {event.sentAt ? new Date(event.sentAt).toLocaleTimeString() : 'Unknown'}
                         </span>
                       </div>
                       {event.subject && (

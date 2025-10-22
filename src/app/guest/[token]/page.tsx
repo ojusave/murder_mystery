@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import CancelRegistration from '@/components/cancel-registration';
 
 interface GuestPortalProps {
   params: Promise<{
@@ -250,6 +251,26 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
             </CardContent>
           </Card>
 
+          {/* Cancel Registration */}
+          {guest.status !== 'cancelled' && (
+            <Card className="bg-black/30 backdrop-blur-sm border-red-700">
+              <CardHeader>
+                <CardTitle className="text-xl font-bold text-white">
+                  ⚠️ Cancel Registration
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  If you can no longer attend, you can cancel your registration
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-300 mb-4">
+                  This action cannot be undone. You will receive a confirmation email and the hosts will be notified.
+                </p>
+                <CancelRegistration guestId={guest.id} onCancel={() => {}} />
+              </CardContent>
+            </Card>
+          )}
+
           {/* Email Timeline */}
           <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
             <CardHeader>
@@ -270,6 +291,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                           {event.type === 'bulk_email' ? '📢 Host Message' : 
                            event.type === 'approval' ? '✅ RSVP Approved' :
                            event.type === 'rejection' ? '❌ RSVP Update' :
+                           event.type === 'cancellation' ? '🚫 Registration Cancelled' :
                            '📧 Email Notification'}
                         </h4>
                         <span className="text-sm text-gray-400">

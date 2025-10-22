@@ -36,7 +36,12 @@ export const metadata: Metadata = {
   title: "The Black Lotus: A Halloween Murder Mystery",
   description: "A Halloween Murder Mystery Event hosted by BrO-J and Half-Chai",
   icons: {
-    icon: "/black-lotus-poster.jpg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 

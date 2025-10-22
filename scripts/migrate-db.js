@@ -28,7 +28,7 @@ async function migrateDatabase() {
     for (const column of columnsToAdd) {
       if (!column.exists) {
         console.log(`Adding column: ${column.name}`);
-        await prisma.$executeRaw`ALTER TABLE guests ADD COLUMN ${column.name} BOOLEAN DEFAULT FALSE`;
+        await prisma.$executeRawUnsafe(`ALTER TABLE guests ADD COLUMN ${column.name} BOOLEAN DEFAULT FALSE`);
         console.log(`✓ Added column: ${column.name}`);
       } else {
         console.log(`✓ Column already exists: ${column.name}`);

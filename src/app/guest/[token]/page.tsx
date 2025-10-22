@@ -83,8 +83,6 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
             <CardContent>
               <div className="space-y-4 text-gray-300">
                 <p><strong className="text-white">Email:</strong> {guest.email}</p>
-                <p><strong className="text-white">Interest Level:</strong> {guest.wantsToPlay}</p>
-                <p><strong className="text-white">Character Info Timing:</strong> {guest.charInfoTiming}</p>
                 {guest.suggestions && (
                   <div>
                     <strong className="text-white">Your Suggestions:</strong>

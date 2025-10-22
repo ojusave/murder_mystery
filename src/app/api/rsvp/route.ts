@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { v4 as uuidv4 } from 'uuid';
-import { sendRSVPConfirmationEmail } from '@/lib/email';
+import { sendRSVPConfirmationEmail, sendHostNotificationEmail } from '@/lib/email';
 
 const rsvpSchema = z.object({
   email: z.string().email(),
@@ -94,6 +94,34 @@ export async function POST(request: NextRequest) {
           status: 'sent',
         },
       });
+
+      // Send host notification email
+      try {
+        console.log('Sending host notification email for:', guest.email);
+        await sendHostNotificationEmail(guest);
+        console.log('Host notification email sent successfully');
+        
+        // Create email event for host notification
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guest.id,
+            type: 'host_notification',
+            status: 'sent',
+          },
+        });
+      } catch (hostEmailError) {
+        console.error('Host notification email failed:', hostEmailError);
+        
+        // Still create email event for tracking, but mark as failed
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guest.id,
+            type: 'host_notification',
+            status: 'failed',
+            error: hostEmailError instanceof Error ? hostEmailError.message : 'Unknown error',
+          },
+        });
+      }
     } catch (emailError) {
       console.error('RSVP confirmation email failed:', emailError);
       console.error('Email error details:', {

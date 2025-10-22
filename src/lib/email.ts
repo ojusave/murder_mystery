@@ -66,7 +66,7 @@ export async function sendRSVPConfirmationEmail(guest: any) {
     
       
       <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>BrO-J</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
     </div>
   `;
 
@@ -123,6 +123,58 @@ export async function sendRejectionEmail(guest: any) {
     console.log(`Rejection email sent to ${guest.email}`);
   } catch (error) {
     console.error(`Error sending rejection email to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
+export async function sendHostNotificationEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  const adminUrl = `${APP_BASE_URL}/admin`;
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">🔔 New RSVP Received!</h2>
+      <p>Hello Host,</p>
+      <p>A new RSVP has been submitted for The Black Lotus: A Halloween Murder Mystery!</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #f59e0b;">Guest Details:</h3>
+        <p><strong>Name:</strong> ${guest.legalName}</p>
+        <p><strong>Email:</strong> ${guest.email}</p>
+        <p><strong>Costume Commitment:</strong> ${guest.willDressUp}</p>
+        <p><strong>Character Preference:</strong> ${guest.charNameMode}</p>
+        ${guest.charNameOther ? `<p><strong>Custom Character Name:</strong> ${guest.charNameOther}</p>` : ''}
+        <p><strong>Submitted:</strong> ${guest.createdAt.toLocaleDateString()} at ${guest.createdAt.toLocaleTimeString()}</p>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${adminUrl}" style="background: #7c3aed; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; margin-right: 10px;">
+          Review in Admin Panel
+        </a>
+        <a href="${guestPortalUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Guest Portal
+        </a>
+      </div>
+      
+      <p style="font-size: 14px; color: #d1d5db;">
+        This is an automated notification. Please review the RSVP in your admin panel to approve or reject the application.
+      </p>
+      
+      <p>Best regards,<br>The Black Lotus System</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: 'delkajuer@gmail.com',
+      subject: `New RSVP: ${guest.legalName} - The Black Lotus Murder Mystery`,
+      html,
+    });
+    console.log(`Host notification email sent for ${guest.legalName} (${guest.email})`);
+  } catch (error) {
+    console.error(`Error sending host notification email for ${guest.email}:`, error);
     throw error;
   }
 }

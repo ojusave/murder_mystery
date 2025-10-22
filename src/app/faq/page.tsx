@@ -70,6 +70,11 @@ const faqs: FAQ[] = [
     question: "What if I'm not good at acting?",
     answer: "Neither are most people, you dumbass. That's what makes it fun. We're not expecting Oscar-worthy performances here - just try not to embarrass yourself too much. If you can't handle pretending to be someone else for a few hours, maybe you should work on being yourself first."
   },
+  {
+    id: 'plus-one-pairing',
+    question: 'Will I get paired with someone I don\'t know?',
+    answer: "Yes you creepy pervert, you may be paired with a 'plus one' who may not be your partner and could be of any gender. This pairing is solely for the purpose of the game and does not imply or necessitate any form of romantic or physical interaction. If you can't handle being paired with someone without making it weird, maybe you should stay home and work on your social skills instead of making everyone uncomfortable with your creepy assumptions."
+  },
   
   // DRESS CODE & WHAT TO BRING
   {

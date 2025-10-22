@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 // Simplified validation schema
 const formSchema = z.object({
@@ -37,11 +38,40 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
+// Calculate form completion progress
+const calculateProgress = (data: Partial<FormData>): number => {
+  const fields = [
+    'email',
+    'legalName', 
+    'willDressUp',
+    'charNameMode',
+    'ackPairing',
+    'ackAdultThemes',
+    'ackWaiver',
+    'ackOffensiveEmails'
+  ];
+  
+  let completed = 0;
+  fields.forEach(field => {
+    const value = data[field as keyof FormData];
+    if (field === 'charNameMode' && value === 'Other:') {
+      // If "Other" is selected, charNameOther must also be filled
+      if (data.charNameOther && data.charNameOther.trim()) {
+        completed++;
+      }
+    } else if (value !== undefined && value !== '' && value !== false) {
+      completed++;
+    }
+  });
+  
+  return Math.round((completed / fields.length) * 100);
+};
 
 export default function RSVPForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
+  const [formProgress, setFormProgress] = useState(0);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -86,6 +116,7 @@ export default function RSVPForm() {
   useEffect(() => {
     const subscription = form.watch((data) => {
       localStorage.setItem('rsvp-form-data', JSON.stringify(data));
+      setFormProgress(calculateProgress(data));
     });
     return () => subscription.unsubscribe();
   }, [form]);
@@ -231,57 +262,87 @@ export default function RSVPForm() {
             <CardDescription className="text-gray-300 text-center">
               Black Lotus Halloween Murder Mystery Party
             </CardDescription>
+            
+            {/* Progress Indicator */}
+            <div className="mt-6 space-y-2">
+              <div className="flex justify-between text-sm text-gray-300">
+                <span>Form Progress</span>
+                <span>{formProgress}% Complete</span>
+              </div>
+              <Progress 
+                value={formProgress} 
+                className="h-2 bg-gray-700"
+              />
+            </div>
           </CardHeader>
 
           <CardContent className="space-y-8">
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="space-y-6">
-                {/* Email */}
-                <div>
-                  <Label htmlFor="email" className="text-white">
-                    Email Address *
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    {...form.register('email')}
-                    className="bg-gray-800 border-gray-600 text-white"
-                    onChange={(e) => {
-                      form.setValue('email', e.target.value);
-                      form.trigger('email');
-                    }}
-                  />
-                  {form.formState.errors.email && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {form.formState.errors.email.message}
-                    </p>
-                  )}
-                </div>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" aria-label="RSVP Form for Black Lotus Murder Mystery Party">
+              {/* Personal Information Section */}
+              <fieldset className="space-y-6">
+                <legend className="text-xl font-semibold text-white mb-4 border-b border-gray-600 pb-4 w-full">
+                  Personal Information
+                </legend>
+                
+                <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
+                  {/* Email */}
+                  <div>
+                    <Label htmlFor="email" className="text-white font-medium">
+                      Email Address *
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      {...form.register('email')}
+                      className="bg-gray-800 border-gray-600 text-white mt-2 focus:border-purple-500 focus:ring-purple-500"
+                      placeholder="your.email@example.com"
+                      onChange={(e) => {
+                        form.setValue('email', e.target.value);
+                        form.trigger('email');
+                      }}
+                    />
+                    {form.formState.errors.email && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <span>⚠️</span>
+                        {form.formState.errors.email.message}
+                      </p>
+                    )}
+                  </div>
 
-                {/* Legal Name */}
-                <div>
-                  <Label htmlFor="legalName" className="text-white">
-                    Legal Name *
-                  </Label>
-                  <Input
-                    id="legalName"
-                    {...form.register('legalName')}
-                    className="bg-gray-800 border-gray-600 text-white"
-                    onChange={(e) => {
-                      form.setValue('legalName', e.target.value);
-                      form.trigger('legalName');
-                    }}
-                  />
-                  {form.formState.errors.legalName && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {form.formState.errors.legalName.message}
-                    </p>
-                  )}
+                  {/* Legal Name */}
+                  <div>
+                    <Label htmlFor="legalName" className="text-white font-medium">
+                      Legal Name *
+                    </Label>
+                    <Input
+                      id="legalName"
+                      {...form.register('legalName')}
+                      className="bg-gray-800 border-gray-600 text-white mt-2 focus:border-purple-500 focus:ring-purple-500"
+                      placeholder="Your full legal name"
+                      onChange={(e) => {
+                        form.setValue('legalName', e.target.value);
+                        form.trigger('legalName');
+                      }}
+                    />
+                    {form.formState.errors.legalName && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <span>⚠️</span>
+                        {form.formState.errors.legalName.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
+              </fieldset>
+
+              {/* Event Preferences Section */}
+              <fieldset className="space-y-6">
+                <legend className="text-xl font-semibold text-white mb-4 border-b border-gray-600 pb-4 w-full">
+                  Event Preferences
+                </legend>
 
                 {/* Costume Commitment */}
                 <div>
-                  <Label className="text-white mb-4 block">
+                  <Label className="text-white font-medium mb-4 block">
                     Costume Commitment *
                   </Label>
                   <RadioGroup
@@ -290,31 +351,32 @@ export default function RSVPForm() {
                       form.setValue('willDressUp', value as 'Of course, who goes to a halloween murder mystery without dressing up?' | 'I will try, but no commitments');
                       form.trigger('willDressUp');
                     }}
-                    className="space-y-2"
+                    className="space-y-3"
                   >
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start space-x-3 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800/70 transition-colors">
                       <RadioGroupItem 
                         value="Of course, who goes to a halloween murder mystery without dressing up?" 
                         id="dress-yes" 
-                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
+                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black mt-1"
                       />
-                      <Label htmlFor="dress-yes" className="text-gray-300 cursor-pointer">
+                      <Label htmlFor="dress-yes" className="text-gray-300 cursor-pointer flex-1">
                         Of course, who goes to a halloween murder mystery without dressing up?
                       </Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start space-x-3 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800/70 transition-colors">
                       <RadioGroupItem 
                         value="I will try, but no commitments" 
                         id="dress-maybe" 
-                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
+                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black mt-1"
                       />
-                      <Label htmlFor="dress-maybe" className="text-gray-300 cursor-pointer">
+                      <Label htmlFor="dress-maybe" className="text-gray-300 cursor-pointer flex-1">
                         I will try, but no commitments
                       </Label>
                     </div>
                   </RadioGroup>
                   {form.formState.errors.willDressUp && (
-                    <p className="text-red-400 text-sm mt-1">
+                    <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                      <span>⚠️</span>
                       {form.formState.errors.willDressUp.message}
                     </p>
                   )}
@@ -322,7 +384,7 @@ export default function RSVPForm() {
 
                 {/* Character Name Preference */}
                 <div>
-                  <Label className="text-white mb-4 block">
+                  <Label className="text-white font-medium mb-4 block">
                     Character Name Preference *
                   </Label>
                   <RadioGroup
@@ -331,81 +393,100 @@ export default function RSVPForm() {
                       form.setValue('charNameMode', value as 'I leave the fate of my character in your capable hands' | 'Other:');
                       form.trigger('charNameMode');
                     }}
-                    className="space-y-2"
+                    className="space-y-3"
                   >
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start space-x-3 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800/70 transition-colors">
                       <RadioGroupItem 
                         value="I leave the fate of my character in your capable hands" 
                         id="name-fate" 
-                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
+                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black mt-1"
                       />
-                      <Label htmlFor="name-fate" className="text-gray-300 cursor-pointer">
+                      <Label htmlFor="name-fate" className="text-gray-300 cursor-pointer flex-1">
                         I leave the fate of my character in your capable hands
                       </Label>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-start space-x-3 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800/70 transition-colors">
                       <RadioGroupItem 
                         value="Other:" 
                         id="name-other" 
-                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black"
+                        className="text-white border-white data-[state=checked]:bg-white data-[state=checked]:text-black mt-1"
                       />
-                      <Label htmlFor="name-other" className="text-gray-300 cursor-pointer">Other:</Label>
+                      <Label htmlFor="name-other" className="text-gray-300 cursor-pointer flex-1">Other:</Label>
                     </div>
                   </RadioGroup>
                   {form.watch('charNameMode') === 'Other:' && (
-                    <Input
-                      {...form.register('charNameOther')}
-                      placeholder="Please specify your character name preference"
-                      className="bg-gray-800 border-gray-600 text-white mt-2"
-                    />
+                    <div className="mt-3">
+                      <Input
+                        {...form.register('charNameOther')}
+                        placeholder="Please specify your character name preference"
+                        className="bg-gray-800 border-gray-600 text-white focus:border-purple-500 focus:ring-purple-500"
+                      />
+                    </div>
                   )}
                   {form.formState.errors.charNameMode && (
-                    <p className="text-red-400 text-sm mt-1">
+                    <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                      <span>⚠️</span>
                       {form.formState.errors.charNameMode.message}
                     </p>
                   )}
                   {form.formState.errors.charNameOther && (
-                    <p className="text-red-400 text-sm mt-1">
+                    <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                      <span>⚠️</span>
                       {form.formState.errors.charNameOther.message}
                     </p>
                   )}
                 </div>
+              </fieldset>
 
-                {/* Acknowledgements */}
-                <div className="space-y-4">
-                  <div className="p-4 bg-purple-900/30 rounded-lg">
-                    <p className="text-gray-300 mb-4">
-                      I have read, understood and agree to every single thing that is written here. 
-                      By selecting Yes, I agree, accept and promise to adhere to the terms and conditions 
-                      and the definitions provided in this{' '}
-                      <Link 
-                        href="/waiver"
-                        className="text-purple-300 hover:text-purple-200 underline"
-                      >
-                        waiver document
-                      </Link>
-                    </p>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="ackWaiver"
-                        checked={form.watch('ackWaiver')}
-                        onCheckedChange={(checked) => {
-                          form.setValue('ackWaiver', checked as boolean);
-                          form.trigger('ackWaiver');
-                        }}
-                      />
-                      <Label htmlFor="ackWaiver" className="text-white">
-                        I agree to the waiver *
+              {/* Agreements & Acknowledgements Section */}
+              <fieldset className="space-y-6">
+                <legend className="text-xl font-semibold text-white mb-4 border-b border-gray-600 pb-4 w-full">
+                  Agreements & Acknowledgements
+                </legend>
+                <p className="text-gray-400 text-sm mb-6">
+                  Please read each section carefully and check the boxes to acknowledge your understanding.
+                </p>
+
+                {/* Waiver Agreement */}
+                <div className="p-4 bg-purple-900/30 rounded-lg border border-purple-700/50">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="ackWaiver"
+                      checked={form.watch('ackWaiver')}
+                      onCheckedChange={(checked) => {
+                        form.setValue('ackWaiver', checked as boolean);
+                        form.trigger('ackWaiver');
+                      }}
+                      className="mt-1"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="ackWaiver" className="text-white font-medium cursor-pointer">
+                        Waiver Agreement *
                       </Label>
-                    </div>
-                    {form.formState.errors.ackWaiver && (
-                      <p className="text-red-400 text-sm mt-1">
-                        {form.formState.errors.ackWaiver.message}
+                      <p className="text-gray-300 text-sm mt-2">
+                        I have read, understood and agree to every single thing that is written here. 
+                        By selecting Yes, I agree, accept and promise to adhere to the terms and conditions 
+                        and the definitions provided in this{' '}
+                        <Link 
+                          href="/waiver"
+                          className="text-purple-300 hover:text-purple-200 underline font-medium"
+                        >
+                          waiver document
+                        </Link>
                       </p>
-                    )}
+                      {form.formState.errors.ackWaiver && (
+                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                          <span>⚠️</span>
+                          {form.formState.errors.ackWaiver.message}
+                        </p>
+                      )}
+                    </div>
                   </div>
+                </div>
 
-                  <div className="flex items-center space-x-2">
+                {/* Pairing Acknowledgment */}
+                <div className="p-4 bg-gray-800/50 rounded-lg border border-gray-600/50">
+                  <div className="flex items-start space-x-3">
                     <Checkbox
                       id="ackPairing"
                       checked={form.watch('ackPairing')}
@@ -413,18 +494,28 @@ export default function RSVPForm() {
                         form.setValue('ackPairing', checked as boolean);
                         form.trigger('ackPairing');
                       }}
+                      className="mt-1"
                     />
-                    <Label htmlFor="ackPairing" className="text-white">
-                      I understand that in the murder mystery, I may be paired with a 'plus one' who may not be my partner and could be of any gender. I acknowledge that this pairing is solely for the purpose of the game and does not imply or necessitate any form of romantic or physical interaction. *
-                    </Label>
+                    <div className="flex-1">
+                      <Label htmlFor="ackPairing" className="text-white font-medium cursor-pointer">
+                        Character Pairing Understanding *
+                      </Label>
+                      <p className="text-gray-300 text-sm mt-2">
+                        I understand that in the murder mystery, I may be paired with a 'plus one' who may not be my partner and could be of any gender. I acknowledge that this pairing is solely for the purpose of the game and does not imply or necessitate any form of romantic or physical interaction.
+                      </p>
+                      {form.formState.errors.ackPairing && (
+                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                          <span>⚠️</span>
+                          {form.formState.errors.ackPairing.message}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  {form.formState.errors.ackPairing && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {form.formState.errors.ackPairing.message}
-                    </p>
-                  )}
+                </div>
 
-                  <div className="flex items-center space-x-2">
+                {/* Adult Themes Acknowledgment */}
+                <div className="p-4 bg-gray-800/50 rounded-lg border border-gray-600/50">
+                  <div className="flex items-start space-x-3">
                     <Checkbox
                       id="ackAdultThemes"
                       checked={form.watch('ackAdultThemes')}
@@ -432,82 +523,135 @@ export default function RSVPForm() {
                         form.setValue('ackAdultThemes', checked as boolean);
                         form.trigger('ackAdultThemes');
                       }}
+                      className="mt-1"
                     />
-                    <Label htmlFor="ackAdultThemes" className="text-white">
-                      I understand that the Murder Mystery Party may contain adult themes, dark humor, suggestive content, and potentially disturbing or controversial scenarios. I am choosing to participate with this knowledge and will not hold the host responsible for any discomfort or offense I may experience. *
-                    </Label>
-                  </div>
-                  {form.formState.errors.ackAdultThemes && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {form.formState.errors.ackAdultThemes.message}
-                    </p>
-                  )}
-
-                  <div className="p-4 bg-red-900/30 rounded-lg">
-                    <p className="text-gray-300 mb-4">
-                      I understand that the hosts of The Black Lotus Murder Mystery Party have a brutally dismissive communication style. 
-                      By checking this box, I acknowledge that I will receive emails that may be offensive, condescending, sarcastic, 
-                      and designed to make me feel like a worthless piece of shit. I agree to receive these emails and will not complain 
-                      about their tone, content, or delivery method. I understand this is part of the experience and I'm here for it. 
-                      If you can't handle harsh words,{' '}
-                      <Link 
-                        href="/faq"
-                        className="text-red-300 hover:text-red-200 underline"
-                      >
-                        check the FAQ
-                      </Link>
-                      {' '}to see what you're getting into.
-                    </p>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="ackOffensiveEmails"
-                        checked={form.watch('ackOffensiveEmails')}
-                        onCheckedChange={(checked) => {
-                          form.setValue('ackOffensiveEmails', checked as boolean);
-                          form.trigger('ackOffensiveEmails');
-                        }}
-                      />
-                      <Label htmlFor="ackOffensiveEmails" className="text-white">
-                        I agree to receive brutally dismissive and offensive emails *
+                    <div className="flex-1">
+                      <Label htmlFor="ackAdultThemes" className="text-white font-medium cursor-pointer">
+                        Adult Content Acknowledgment *
                       </Label>
-                    </div>
-                    {form.formState.errors.ackOffensiveEmails && (
-                      <p className="text-red-400 text-sm mt-1">
-                        {form.formState.errors.ackOffensiveEmails.message}
+                      <p className="text-gray-300 text-sm mt-2">
+                        I understand that the Murder Mystery Party may contain adult themes, dark humor, suggestive content, and potentially disturbing or controversial scenarios. I am choosing to participate with this knowledge and will not hold the host responsible for any discomfort or offense I may experience.
                       </p>
-                    )}
+                      {form.formState.errors.ackAdultThemes && (
+                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                          <span>⚠️</span>
+                          {form.formState.errors.ackAdultThemes.message}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                {/* Submit Button */}
-                <div className="flex justify-center pt-8">
+                {/* Communication Style Acknowledgment */}
+                <div className="p-4 bg-red-900/30 rounded-lg border border-red-700/50">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="ackOffensiveEmails"
+                      checked={form.watch('ackOffensiveEmails')}
+                      onCheckedChange={(checked) => {
+                        form.setValue('ackOffensiveEmails', checked as boolean);
+                        form.trigger('ackOffensiveEmails');
+                      }}
+                      className="mt-1"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="ackOffensiveEmails" className="text-white font-medium cursor-pointer">
+                        Communication Style Agreement *
+                      </Label>
+                      <p className="text-gray-300 text-sm mt-2">
+                        I understand that the hosts of The Black Lotus Murder Mystery Party have a brutally dismissive communication style. 
+                        By checking this box, I acknowledge that I will receive emails that may be offensive, condescending, sarcastic, 
+                        and designed to make me feel like a worthless piece of shit. I agree to receive these emails and will not complain 
+                        about their tone, content, or delivery method. I understand this is part of the experience and I'm here for it. 
+                        If you can't handle harsh words,{' '}
+                        <Link 
+                          href="/faq"
+                          className="text-red-300 hover:text-red-200 underline font-medium"
+                        >
+                          check the FAQ
+                        </Link>
+                        {' '}to see what you're getting into.
+                      </p>
+                      {form.formState.errors.ackOffensiveEmails && (
+                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                          <span>⚠️</span>
+                          {form.formState.errors.ackOffensiveEmails.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+
+              {/* Submit Section */}
+              <div className="pt-8 border-t border-gray-600">
+                <div className="text-center space-y-4">
+                  <div id="submit-status" className="text-sm text-gray-400" role="status" aria-live="polite">
+                    {formProgress === 100 ? (
+                      <span className="text-green-400 flex items-center justify-center gap-2">
+                        <span>✅</span>
+                        Form is complete and ready to submit!
+                      </span>
+                    ) : (
+                      <span className="text-yellow-400 flex items-center justify-center gap-2">
+                        <span>⚠️</span>
+                        Please complete all required fields ({formProgress}% complete)
+                      </span>
+                    )}
+                  </div>
+                  
                   <Button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg"
+                    disabled={isSubmitting || formProgress < 100}
+                    className="bg-purple-600 hover:bg-purple-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                     onClick={(e) => {
                       e.preventDefault();
                       onSubmit(form.getValues());
                     }}
+                    aria-describedby="submit-status"
                   >
-                    {isSubmitting ? (isUpdating ? 'Updating...' : 'Submitting...') : (isUpdating ? 'Update RSVP' : 'Submit RSVP')}
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <span className="animate-spin">⏳</span>
+                        {isUpdating ? 'Updating...' : 'Submitting...'}
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <span>🚀</span>
+                        {isUpdating ? 'Update RSVP' : 'Submit RSVP'}
+                      </span>
+                    )}
                   </Button>
+                  
+                  <p className="text-xs text-gray-500">
+                    Your progress is automatically saved as you fill out the form
+                  </p>
                 </div>
               </div>
 
               {submitError && (
-                <div className="bg-red-900/30 border border-red-500 rounded-lg p-4 mb-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-red-400">⚠️</span>
+                <div className="bg-red-900/30 border border-red-500 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="text-red-400 text-xl">⚠️</span>
                     <div className="flex-1">
-                      <p className="text-red-300 font-medium">{submitError}</p>
+                      <h4 className="text-red-300 font-semibold mb-2">Submission Error</h4>
+                      <p className="text-red-200 mb-3">{submitError}</p>
+                      
                       {Object.keys(form.formState.errors).length > 0 && (
-                        <p className="text-red-200 text-sm mt-2">
-                          Missing fields: {Object.keys(form.formState.errors).join(', ')}
-                        </p>
+                        <div className="bg-red-800/30 rounded p-3 mb-3">
+                          <p className="text-red-200 text-sm font-medium mb-1">Missing or invalid fields:</p>
+                          <ul className="text-red-200 text-sm list-disc list-inside">
+                            {Object.keys(form.formState.errors).map((field) => (
+                              <li key={field} className="capitalize">
+                                {field.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       )}
+                      
                       {isUpdating && (
-                        <div className="mt-3 flex gap-2">
+                        <div className="flex gap-2">
                           <Button
                             type="button"
                             variant="outline"

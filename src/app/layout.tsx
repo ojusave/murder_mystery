@@ -55,6 +55,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${creepster.variable} ${nosifer.variable} ${butcherman.variable} antialiased`}
       >
+        <div className="bg-red-900 text-white text-center py-2 px-4 border-b-2 border-red-700">
+          <p className="font-bold text-sm md:text-base">
+            PRIVATE EVENT SITE – NOT FOR PUBLIC DISTRIBUTION
+          </p>
+          <p className="text-xs md:text-sm opacity-90">
+            This site is satire for a private Halloween party. Not affiliated with any employer, company, or organization.
+          </p>
+        </div>
         <AuthProvider>
           {children}
           <BackgroundMusic />

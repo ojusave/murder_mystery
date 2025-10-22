@@ -73,7 +73,7 @@ export default function StickyNavigation({ items, className = '' }: StickyNaviga
   return (
     <>
       {/* Desktop Navigation */}
-      <div className={`hidden lg:block fixed right-4 top-1/2 transform -translate-y-1/2 z-50 transition-opacity duration-300 ${isScrolledIntoView ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${className}`}>
+      <div className={`hidden lg:block fixed left-4 top-1/2 transform -translate-y-1/2 z-50 transition-opacity duration-300 ${isScrolledIntoView ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${className}`}>
         <nav className="bg-black/80 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent w-64">
           <div className="text-white text-sm font-semibold mb-3 text-center">
             Quick Jump
@@ -115,7 +115,7 @@ export default function StickyNavigation({ items, className = '' }: StickyNaviga
       </div>
 
       {/* Mobile Navigation */}
-      <div className={`lg:hidden fixed bottom-4 right-4 z-50 transition-opacity duration-300 ${isScrolledIntoView ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${className}`}>
+      <div className={`lg:hidden fixed bottom-4 left-4 z-50 transition-opacity duration-300 ${isScrolledIntoView ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${className}`}>
         <div className="relative">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -128,7 +128,7 @@ export default function StickyNavigation({ items, className = '' }: StickyNaviga
           </button>
           
           {isMobileMenuOpen && (
-            <div className="absolute bottom-16 right-0 bg-black/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 max-h-[60vh] overflow-y-auto w-64">
+            <div className="absolute bottom-16 left-0 bg-black/90 backdrop-blur-sm border border-purple-500/30 rounded-lg p-4 max-h-[60vh] overflow-y-auto w-64">
               <div className="text-white text-sm font-semibold mb-3 text-center">
                 Quick Jump
               </div>

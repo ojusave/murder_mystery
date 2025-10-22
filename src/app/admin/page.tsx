@@ -48,6 +48,13 @@ interface Guest {
   };
 }
 
+interface Faq {
+  id: string;
+  question: string;
+  answer: string;
+  order: number;
+}
+
 export default function AdminDashboard() {
   const sessionResult = useSession();
   const { data: session, status } = sessionResult || { data: null, status: 'loading' };
@@ -92,6 +99,17 @@ export default function AdminDashboard() {
     waiverVersion: '',
     suggestions: '',
   });
+  const [faqs, setFaqs] = useState<Faq[]>([]);
+  const [faqsLoading, setFaqsLoading] = useState(true);
+  const [faqListError, setFaqListError] = useState<string | null>(null);
+  const [faqDialogOpen, setFaqDialogOpen] = useState(false);
+  const [editingFaq, setEditingFaq] = useState<Faq | null>(null);
+  const [faqDialogError, setFaqDialogError] = useState<string | null>(null);
+  const [faqForm, setFaqForm] = useState({
+    question: '',
+    answer: '',
+    order: '',
+  });
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -104,6 +122,7 @@ export default function AdminDashboard() {
       console.log('Session found:', session);
       fetchGuests();
       fetchUnassignedCharacters();
+      fetchFaqs();
     } else {
       console.log('No session found, status:', status);
     }
@@ -148,6 +167,154 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error fetching unassigned characters:', error);
+    }
+  };
+
+  const fetchFaqs = async () => {
+    try {
+      setFaqsLoading(true);
+      setFaqListError(null);
+
+      const response = await fetch('/api/admin/faqs', {
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Failed to fetch FAQs');
+      }
+
+      setFaqs(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Error fetching FAQs:', error);
+      setFaqListError(
+        error instanceof Error ? error.message : 'Failed to fetch FAQs'
+      );
+    } finally {
+      setFaqsLoading(false);
+    }
+  };
+
+  const calculateNextFaqOrder = () => {
+    if (faqs.length === 0) {
+      return 10;
+    }
+    return Math.max(...faqs.map((faq) => faq.order ?? 0)) + 10;
+  };
+
+  const handleFaqDialogOpenChange = (open: boolean) => {
+    setFaqDialogOpen(open);
+    if (!open) {
+      setEditingFaq(null);
+      setFaqDialogError(null);
+      setFaqForm({ question: '', answer: '', order: '' });
+    }
+  };
+
+  const openCreateFaqDialog = () => {
+    setEditingFaq(null);
+    setFaqDialogError(null);
+    setFaqForm({
+      question: '',
+      answer: '',
+      order: calculateNextFaqOrder().toString(),
+    });
+    setFaqDialogOpen(true);
+  };
+
+  const openEditFaqDialog = (faq: Faq) => {
+    setEditingFaq(faq);
+    setFaqDialogError(null);
+    setFaqForm({
+      question: faq.question,
+      answer: faq.answer,
+      order: (faq.order ?? 0).toString(),
+    });
+    setFaqDialogOpen(true);
+  };
+
+  const handleSaveFaq = async () => {
+    const trimmedQuestion = faqForm.question.trim();
+    const trimmedAnswer = faqForm.answer.trim();
+
+    if (!trimmedQuestion || !trimmedAnswer) {
+      setFaqDialogError('Question and answer are required.');
+      return;
+    }
+
+    const orderValue = faqForm.order === ''
+      ? (editingFaq ? editingFaq.order : calculateNextFaqOrder())
+      : Number(faqForm.order);
+
+    if (Number.isNaN(orderValue)) {
+      setFaqDialogError('Order must be a number.');
+      return;
+    }
+
+    const payload = {
+      question: trimmedQuestion,
+      answer: trimmedAnswer,
+      order: orderValue,
+    };
+
+    try {
+      const response = await fetch('/api/admin/faqs', {
+        method: editingFaq ? 'PUT' : 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+          editingFaq
+            ? { id: editingFaq.id, ...payload }
+            : payload
+        ),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.error || 'Failed to save FAQ');
+      }
+
+      handleFaqDialogOpenChange(false);
+      setFaqForm({ question: '', answer: '', order: '' });
+      setEditingFaq(null);
+      setFaqDialogError(null);
+      fetchFaqs();
+    } catch (error) {
+      console.error('Error saving FAQ:', error);
+      setFaqDialogError(
+        error instanceof Error ? error.message : 'Failed to save FAQ'
+      );
+    }
+  };
+
+  const handleDeleteFaq = async (faqId: string) => {
+    if (!confirm('Delete this FAQ? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/admin/faqs', {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: faqId }),
+      });
+
+      if (response.ok) {
+        fetchFaqs();
+      } else {
+        const data = await response.json();
+        alert(data?.error || 'Failed to delete FAQ');
+      }
+    } catch (error) {
+      console.error('Error deleting FAQ:', error);
+      alert('Failed to delete FAQ');
     }
   };
 
@@ -518,6 +685,7 @@ export default function AdminDashboard() {
           <TabsList className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
             <TabsTrigger value="guests" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">RSVPs</TabsTrigger>
             <TabsTrigger value="characters" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Characters</TabsTrigger>
+            <TabsTrigger value="faqs" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">FAQs</TabsTrigger>
             <TabsTrigger value="settings" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Settings</TabsTrigger>
           </TabsList>
 
@@ -1034,6 +1202,74 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* FAQs Tab */}
+          <TabsContent value="faqs">
+            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
+              <CardHeader>
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div>
+                    <CardTitle className="text-2xl font-bold text-white">
+                      FAQ Management
+                    </CardTitle>
+                    <CardDescription className="text-gray-300">
+                      Create, edit, and remove frequently asked questions displayed on the public site
+                    </CardDescription>
+                  </div>
+                  <Button
+                    onClick={openCreateFaqDialog}
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                  >
+                    Add FAQ
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {faqListError && (
+                  <div className="mb-4 text-red-400 text-sm">{faqListError}</div>
+                )}
+
+                {faqsLoading ? (
+                  <div className="text-gray-300">Loading FAQs...</div>
+                ) : faqs.length === 0 ? (
+                  <div className="text-gray-300">No FAQs created yet. Add your first entry to populate the FAQ page.</div>
+                ) : (
+                  <div className="space-y-4">
+                    {faqs.map((faq) => (
+                      <div
+                        key={faq.id}
+                        className="bg-gray-800/70 border border-gray-700 rounded-lg p-6 flex flex-col gap-4 md:flex-row md:items-start md:justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="text-xs uppercase tracking-wide text-purple-300 font-semibold">Order {faq.order}</span>
+                            <h3 className="text-xl font-semibold text-white">{faq.question}</h3>
+                          </div>
+                          <p className="text-gray-300 whitespace-pre-line">{faq.answer}</p>
+                        </div>
+                        <div className="flex gap-2 md:flex-col">
+                          <Button
+                            variant="outline"
+                            onClick={() => openEditFaqDialog(faq)}
+                            className="text-purple-800 bg-purple-100 border-purple-300 hover:bg-purple-200 hover:text-purple-900 hover:border-purple-400"
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            onClick={() => handleDeleteFaq(faq.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white"
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Settings Tab */}
           <TabsContent value="settings">
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
@@ -1052,6 +1288,82 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </main>
+
+      {/* FAQ Dialog */}
+      <Dialog open={faqDialogOpen} onOpenChange={handleFaqDialogOpenChange}>
+        <DialogContent className="bg-gray-800 border-gray-600">
+          <DialogHeader>
+            <DialogTitle className="text-white">
+              {editingFaq ? 'Edit FAQ' : 'Create FAQ'}
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              {editingFaq
+                ? 'Update the question, answer, or display order.'
+                : 'Add a new FAQ entry for the public page.'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            {faqDialogError && (
+              <div className="text-red-400 text-sm">{faqDialogError}</div>
+            )}
+            <div>
+              <Label htmlFor="faq-question" className="text-white">
+                Question
+              </Label>
+              <Input
+                id="faq-question"
+                value={faqForm.question}
+                onChange={(e) => setFaqForm({ ...faqForm, question: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="faq-answer" className="text-white">
+                Answer
+              </Label>
+              <Textarea
+                id="faq-answer"
+                value={faqForm.answer}
+                onChange={(e) => setFaqForm({ ...faqForm, answer: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={6}
+                placeholder="Provide the answer that will appear on the FAQ page."
+              />
+            </div>
+            <div>
+              <Label htmlFor="faq-order" className="text-white">
+                Display Order
+              </Label>
+              <Input
+                id="faq-order"
+                type="number"
+                value={faqForm.order}
+                onChange={(e) => setFaqForm({ ...faqForm, order: e.target.value })}
+                className="bg-gray-700 border-gray-600 text-white"
+                placeholder="e.g. 10, 20, 30"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Lower numbers appear first. Leave blank to auto-assign the next position.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleSaveFaq}
+                className="bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                {editingFaq ? 'Save Changes' : 'Create FAQ'}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => handleFaqDialogOpenChange(false)}
+                className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Edit Guest Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>

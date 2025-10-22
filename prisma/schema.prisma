@@ -94,11 +94,23 @@ model EmailEvent {
   error     String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  
+
   // Relations
   guest     Guest    @relation(fields: [guestId], references: [id], onDelete: Cascade)
-  
+
   @@index([status])
   @@index([type])
   @@map("email_events")
+}
+
+model Faq {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([order])
+  @@map("faqs")
 }

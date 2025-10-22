@@ -37,8 +37,8 @@ export const metadata: Metadata = {
   description: "A Halloween Murder Mystery Event hosted by BrO-J and Half-Chai",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" }
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" }
     ],
     shortcut: "/favicon.ico",
     apple: "/favicon.ico",

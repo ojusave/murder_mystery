@@ -51,6 +51,12 @@ model Guest {
   status            String   @default("pending") // "pending" | "approved" | "rejected"
   token             String   @unique
   
+  // Reminder tracking
+  reminderOneWeekSent    Boolean @default(false) @map("reminder_one_week_sent")
+  reminderTwoDaySent     Boolean @default(false) @map("reminder_two_day_sent")
+  reminderOneDaySent     Boolean @default(false) @map("reminder_one_day_sent")
+  reminderFiveHourSent   Boolean @default(false) @map("reminder_five_hour_sent")
+  
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
   

@@ -351,3 +351,248 @@ export async function sendCancellationNotificationEmail(guest: any) {
     throw error;
   }
 }
+
+// Reminder email functions
+export async function sendOneWeekReminderEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  
+  // Calendar event details
+  const eventTitle = 'The Black Lotus: A Halloween Murder Mystery';
+  const eventDate = '20251101';
+  const startTime = '200000';
+  const endTime = '000000';
+  const eventDescription = 'Join us for an unforgettable evening of mystery and intrigue at The Black Lotus Halloween Murder Mystery Party!';
+  
+  // Calendar links
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${eventDate}T${startTime}/${eventDate}T${endTime}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(REAL_ADDRESS)}`;
+  const outlookUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(eventTitle)}&startdt=2025-11-01T20:00:00&enddt=2025-11-02T00:00:00&body=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(REAL_ADDRESS)}`;
+  const appleCalendarUrl = `data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20251101T200000%0ADTEND:20251102T000000%0ASUMMARY:${encodeURIComponent(eventTitle)}%0ADESCRIPTION:${encodeURIComponent(eventDescription)}%0ALOCATION:${encodeURIComponent(REAL_ADDRESS)}%0AEND:VEVENT%0AEND:VCALENDAR`;
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">📅 One Week Reminder!</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Just one week until The Black Lotus: A Halloween Murder Mystery! We're getting excited to see you there.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Event Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Dress Code:</strong> Costumes encouraged! Get creative with your character.</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">🎭 Preparation Tips:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Start thinking about your costume</li>
+          <li>Review any character information you've received</li>
+          <li>Plan your transportation</li>
+          <li>Bring your mystery-solving skills!</li>
+        </ul>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Your Guest Portal
+        </a>
+      </div>
+      
+      <div style="text-align: center; margin: 20px 0;">
+        <h4 style="margin-bottom: 15px; color: #f59e0b;">📅 Add to Calendar:</h4>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+            📅 Google Calendar
+          </a>
+          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+            📅 Outlook
+          </a>
+          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+            📅 Apple Calendar
+          </a>
+        </div>
+      </div>
+      
+      <p>If you have any questions or need to make changes to your RSVP, please contact us.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'One Week Reminder - The Black Lotus Murder Mystery',
+      html,
+    });
+    console.log(`One week reminder sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending one week reminder to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
+export async function sendTwoDayReminderEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">🎃 Two Days to Go!</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>The Black Lotus: A Halloween Murder Mystery is just two days away! The excitement is building.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Final Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Arrival:</strong> Please arrive between 7:45-8:00 PM</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">🎭 Last-Minute Checklist:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Finalize your costume</li>
+          <li>Check the weather forecast</li>
+          <li>Plan your route to the venue</li>
+          <li>Bring a valid ID</li>
+          <li>Charge your phone (for photos!)</li>
+        </ul>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Your Guest Portal
+        </a>
+      </div>
+      
+      <p>We can't wait to see you there! Get ready for an unforgettable evening of mystery and intrigue.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'Two Days to Go - The Black Lotus Murder Mystery',
+      html,
+    });
+    console.log(`Two day reminder sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending two day reminder to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
+export async function sendOneDayReminderEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">🎭 Tomorrow's the Big Night!</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Tomorrow is the night! The Black Lotus: A Halloween Murder Mystery is finally here. We're so excited to see you!</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Event Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025 (TOMORROW!)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Arrival:</strong> Please arrive between 7:45-8:00 PM</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">🎃 Tonight's Preparation:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Lay out your costume</li>
+          <li>Check your route and traffic</li>
+          <li>Get a good night's sleep</li>
+          <li>Prepare your mystery-solving mindset</li>
+        </ul>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Your Guest Portal
+        </a>
+      </div>
+      
+      <p style="text-align: center; font-size: 18px; color: #f59e0b; font-weight: bold;">
+        See you tomorrow night for an unforgettable evening of mystery and intrigue!
+      </p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'Tomorrow\'s the Big Night - The Black Lotus Murder Mystery',
+      html,
+    });
+    console.log(`One day reminder sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending one day reminder to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
+export async function sendFiveHourReminderEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">🕐 Final Countdown!</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Just 5 hours until The Black Lotus: A Halloween Murder Mystery begins! The mystery awaits...</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Tonight's Event:</h3>
+        <p><strong>Date:</strong> November 1st, 2025</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Arrival:</strong> Please arrive between 7:45-8:00 PM</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">🎭 Final Preparations:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Put on your costume</li>
+          <li>Check traffic conditions</li>
+          <li>Bring your ID</li>
+          <li>Prepare for mystery and intrigue!</li>
+        </ul>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Your Guest Portal
+        </a>
+      </div>
+      
+      <p style="text-align: center; font-size: 20px; color: #f59e0b; font-weight: bold;">
+        🎃 The mystery begins in just a few hours! 🎃
+      </p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'Final Countdown - The Black Lotus Murder Mystery',
+      html,
+    });
+    console.log(`Five hour reminder sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending five hour reminder to ${guest.email}:`, error);
+    throw error;
+  }
+}

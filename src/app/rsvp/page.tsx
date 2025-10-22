@@ -23,6 +23,7 @@ const formSchema = z.object({
   ackPairing: z.boolean().refine(val => val === true, 'You must acknowledge pairing'),
   ackAdultThemes: z.boolean().refine(val => val === true, 'You must acknowledge adult themes'),
   ackWaiver: z.boolean().refine(val => val === true, 'You must agree to the waiver'),
+  ackOffensiveEmails: z.boolean().refine(val => val === true, 'You must agree to receive offensive emails'),
 }).refine((data) => {
   // If charNameMode is "Other:", then charNameOther must be provided
   if (data.charNameMode === 'Other:' && (!data.charNameOther || data.charNameOther.trim() === '')) {
@@ -55,6 +56,7 @@ export default function RSVPForm() {
       ackPairing: false,
       ackAdultThemes: false,
       ackWaiver: false,
+      ackOffensiveEmails: false,
     },
   });
 
@@ -204,11 +206,18 @@ export default function RSVPForm() {
           <Link href="/" className="text-2xl font-bold text-white">
             Black Lotus
           </Link>
-          <Link href="/waiver">
-            <Button variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
-              Read Waiver
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href="/faq">
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
+                FAQ
+              </Button>
+            </Link>
+            <Link href="/waiver">
+              <Button variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
+                Read Waiver
+              </Button>
+            </Link>
+          </div>
         </nav>
       </header>
 
@@ -433,6 +442,41 @@ export default function RSVPForm() {
                       {form.formState.errors.ackAdultThemes.message}
                     </p>
                   )}
+
+                  <div className="p-4 bg-red-900/30 rounded-lg">
+                    <p className="text-gray-300 mb-4">
+                      I understand that the hosts of The Black Lotus Murder Mystery Party have a brutally dismissive communication style. 
+                      By checking this box, I acknowledge that I will receive emails that may be offensive, condescending, sarcastic, 
+                      and designed to make me feel like a worthless piece of shit. I agree to receive these emails and will not complain 
+                      about their tone, content, or delivery method. I understand this is part of the experience and I'm here for it. 
+                      If you can't handle harsh words,{' '}
+                      <Link 
+                        href="/faq"
+                        className="text-red-300 hover:text-red-200 underline"
+                      >
+                        check the FAQ
+                      </Link>
+                      {' '}to see what you're getting into.
+                    </p>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="ackOffensiveEmails"
+                        checked={form.watch('ackOffensiveEmails')}
+                        onCheckedChange={(checked) => {
+                          form.setValue('ackOffensiveEmails', checked as boolean);
+                          form.trigger('ackOffensiveEmails');
+                        }}
+                      />
+                      <Label htmlFor="ackOffensiveEmails" className="text-white">
+                        I agree to receive brutally dismissive and offensive emails *
+                      </Label>
+                    </div>
+                    {form.formState.errors.ackOffensiveEmails && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {form.formState.errors.ackOffensiveEmails.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 {/* Submit Button */}

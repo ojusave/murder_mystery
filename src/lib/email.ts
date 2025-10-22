@@ -23,16 +23,16 @@ export async function sendApprovalEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #10b981;">🎉 RSVP Approved!</h2>
-      <p>Hi ${guest.legalName},</p>
-      <p>Great news! Your RSVP for The Black Lotus: A Halloween Murder Mystery has been approved!</p>
-      <p>We're excited to have you join us for this unforgettable evening of mystery and intrigue.</p>
+      <h2 style="color: #10b981;">Plot Twist: You're Actually Invited (Against Our Better Judgment)</h2>
+      <p>Hey ${guest.legalName},</p>
+      <p>Surprise! Your RSVP didn't get lost in our digital void. You're officially invited to The Black Lotus Murder Mystery - which is great because we already bought snacks and it would be wasteful to throw them away.</p>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
-        <p><strong>Date:</strong> November 1st, 2025</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
-        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Date:</strong> November 1st, 2025 (mark your calendar or don't, we're not your mom)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (that's 4 hours of mystery, folks)</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS} (GPS exists for a reason)</p>
+        <p><strong>Dress Code:</strong> Costumes encouraged (or required, depending on how much we like your outfit)</p>
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
@@ -58,13 +58,14 @@ export async function sendApprovalEmail(guest: any) {
       
       <p>In your guest portal, you can:</p>
       <ul>
-        <li>View your character assignment (coming soon!)</li>
-        <li>Update your RSVP details</li>
-        <li>Get the latest event information</li>
+        <li>View your character assignment (coming soon to a theater near you)</li>
+        <li>Update your RSVP details (because people change their minds like they change their socks)</li>
+        <li>Get the latest event information (spoiler: it's still happening)</li>
       </ul>
       
-      <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Black Lotus Team</p>
+      <p>Questions? Concerns? Existential dread about attending a murder mystery? We're here for you, but we're not thrilled about it.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - The murder is fictional. The mystery is real. The snacks are delicious. You're still annoying.)</p>
     </div>
   `;
 
@@ -86,14 +87,13 @@ export async function sendRSVPConfirmationEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #e5e7eb;">RSVP Received!</h2>
+      <h2 style="color: #e5e7eb;">RSVP Received - Don't Get Too Excited</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Thank you for your RSVP to The Black Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.</p>
-      <p>You'll receive another email within 24-48 hours with our decision and next steps.</p>
-    
-      
-      <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p>We got your RSVP. Congratulations on successfully clicking a button - it's harder than it looks for some people.</p>
+      <p>We'll review it when we feel like it. Or maybe we won't. Time is relative when you're planning a murder mystery and dealing with people who can't even fill out forms properly.</p>
+      <p>If you have questions, keep them to yourself. We're not your personal assistants.</p>
+      <p>Whatever,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - We're not actually murderers. Probably.)</p>
     </div>
   `;
 
@@ -130,13 +130,13 @@ export async function sendRejectionEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #e5e7eb;">RSVP Update</h2>
-      <p>Hi ${guest.legalName},</p>
-      <p>Thank you for your interest in The Black Lotus: A Halloween Murder Mystery.</p>
-      <p>Unfortunately, we're unable to accommodate your RSVP at this time due to capacity constraints.</p>
-      <p>We appreciate your understanding and hope you'll consider joining us for future events.</p>
-      <p>If you have any questions, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Black Lotus Team</p>
+      <h2 style="color: #e5e7eb;">Your RSVP Status: Declined (As Expected)</h2>
+      <p>Dear ${guest.legalName},</p>
+      <p>We regret to inform you that your RSVP for The Black Lotus Murder Mystery has been declined. The event has reached its capacity limit, much like a cemetery on a busy day.</p>
+      <p>While we appreciate your interest in our macabre gathering, we cannot accommodate additional guests. Perhaps you can find solace in the darkness elsewhere, or plan your own murder mystery party (though we doubt you'd be capable of organizing anything more complex than a grocery list).</p>
+      <p>Should you have questions about this decision, feel free to inquire. We maintain records of all rejected applications, should circumstances change (though we sincerely hope they don't).</p>
+      <p>Sincerely,<br>The Black Lotus Team</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - We keep your information on file in case someone mysteriously disappears before the event. You're our backup plan.)</p>
     </div>
   `;
 
@@ -307,6 +307,198 @@ export async function sendCancellationEmail(guest: any) {
   }
 }
 
+export async function sendCharacterAssignedEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  const character = guest.character;
+  
+  if (!character) {
+    throw new Error('Character not found for guest');
+  }
+
+  // Calendar event details
+  const eventTitle = 'The Black Lotus: A Halloween Murder Mystery';
+  const eventDate = '20251101';
+  const startTime = '200000';
+  const endTime = '000000';
+  const eventDescription = 'Join us for an unforgettable evening of mystery and intrigue at The Black Lotus Halloween Murder Mystery Party!';
+  
+  // Calendar links
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${eventDate}T${startTime}/${eventDate}T${endTime}&details=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(REAL_ADDRESS)}`;
+  const outlookUrl = `https://outlook.live.com/calendar/0/deeplink/compose?subject=${encodeURIComponent(eventTitle)}&startdt=2025-11-01T20:00:00&enddt=2025-11-02T00:00:00&body=${encodeURIComponent(eventDescription)}&location=${encodeURIComponent(REAL_ADDRESS)}`;
+  const appleCalendarUrl = `data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:20251101T200000%0ADTEND:20251102T000000%0ASUMMARY:${encodeURIComponent(eventTitle)}%0ADESCRIPTION:${encodeURIComponent(eventDescription)}%0ALOCATION:${encodeURIComponent(REAL_ADDRESS)}%0AEND:VEVENT%0AEND:VCALENDAR`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #a855f7;">Your Character Assignment - Try Not to Ruin It</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>We've assigned you a character for The Black Lotus Murder Mystery. Try not to embarrass yourself too much.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #a855f7;">Character Details:</h3>
+        <p><strong>Name:</strong> ${character.displayName}</p>
+        <p><strong>Background:</strong> ${character.traits.backstory}</p>
+        <p><strong>Your Role:</strong> Try to act like you belong here</p>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Event Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025 (in case you forgot)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (that's 4 hours of your life we're wasting)</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS} (still the same place, still not moving)</p>
+        <p><strong>Dress Code:</strong> Costumes encouraged! (seriously, don't be that person who shows up in jeans)</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">Preparation Tips:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Read your character background (if you can read)</li>
+          <li>Practice your lines (if you can remember them)</li>
+          <li>Don't be late (we're not waiting for you)</li>
+          <li>Bring snacks (because we're not feeding you)</li>
+        </ul>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #a855f7; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Your Guest Portal
+        </a>
+      </div>
+      
+      <div style="text-align: center; margin: 20px 0;">
+        <h4 style="margin-bottom: 15px; color: #f59e0b;">📅 Add to Calendar:</h4>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+            📅 Google Calendar
+          </a>
+          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+            📅 Outlook
+          </a>
+          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+            📅 Apple Calendar
+          </a>
+        </div>
+      </div>
+      
+      <p>We're not excited to see you there, but we'll pretend to be until you actually show up.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen?)</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'Your Character Assignment - Try Not to Ruin It',
+      html,
+    });
+    console.log(`Character assignment email sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending character assignment email to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
+export async function sendCharacterUpdatedEmail(guest: any) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  const character = guest.character;
+  
+  if (!character) {
+    throw new Error('Character not found for guest');
+  }
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">Character Details Updated - Because You Probably Messed Up</h2>
+      <p>Hey ${guest.legalName},</p>
+      <p>Your character details have been updated! Because apparently, you couldn't handle the original assignment.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #f59e0b;">Updated Character: ${character.displayName}</h3>
+        <p><strong>Background:</strong> ${character.traits.backstory}</p>
+        <p><strong>Your Role:</strong> Try to act like you belong here (still)</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">Changes Made:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>We fixed your character because you probably would have ruined it</li>
+          <li>Updated the backstory because the original was too complex for you</li>
+          <li>Simplified everything because we don't trust you with anything complicated</li>
+        </ul>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Event Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025 (still the same date, still not changing)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (still 4 hours of your life we're wasting)</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS} (still the same place, still not moving)</p>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #7c3aed; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Updated Character Details
+        </a>
+      </div>
+      
+      <p>Please review the updated character information and try not to mess it up this time.</p>
+      <p>Questions? Concerns? Existential dread about your inability to handle simple tasks? We're here for you, but we're not happy about it.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - The character is fictional. The mystery is real. Your incompetence is legendary.)</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'Character Details Updated - Because You Probably Messed Up',
+      html,
+    });
+    console.log(`Character updated email sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending character updated email to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
+export async function sendCharacterRemovedEmail(guest: any) {
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #ef4444;">Character Assignment Removed - You Probably Deserved It</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Your character assignment for The Black Lotus Murder Mystery has been removed. You probably deserved it.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #ef4444;">What This Means:</h3>
+        <p>This may be due to changes in the event planning or character assignments. Or maybe we just realized you're not cut out for this.</p>
+        <p>You may receive a new character assignment soon. Or maybe you won't. We'll see how we feel about it.</p>
+        <p>Don't worry - you're still invited to the event! We're just adjusting the character assignments because apparently, you couldn't handle the responsibility.</p>
+      </div>
+      
+      <p>If you have any questions about this change, feel free to ask. We probably won't answer them, but you can try.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - Maybe next time you'll be more careful with your character assignment. Or maybe not.)</p>
+    </div>
+  `;
+
+  try {
+    await resend.emails.send({
+      from: EMAIL_FROM,
+      to: guest.email,
+      subject: 'Character Assignment Removed - You Probably Deserved It',
+      html,
+    });
+    console.log(`Character removed email sent to ${guest.email}`);
+  } catch (error) {
+    console.error(`Error sending character removed email to ${guest.email}:`, error);
+    throw error;
+  }
+}
+
 export async function sendCancellationNotificationEmail(guest: any) {
   const adminUrl = `${APP_BASE_URL}/admin`;
   
@@ -371,25 +563,25 @@ export async function sendOneWeekReminderEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #f59e0b;">📅 One Week Reminder!</h2>
-      <p>Hi ${guest.legalName},</p>
-      <p>Just one week until The Black Lotus: A Halloween Murder Mystery! We're getting excited to see you there.</p>
+      <h2 style="color: #f59e0b;">One Week Warning - The Mystery Approaches (Prepare for Disappointment)</h2>
+      <p>Dear ${guest.legalName},</p>
+      <p>One week until The Black Lotus Murder Mystery. The anticipation builds like a storm before the inevitable chaos you'll bring.</p>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
-        <p><strong>Date:</strong> November 1st, 2025</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
-        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
-        <p><strong>Dress Code:</strong> Costumes encouraged! Get creative with your character.</p>
+        <p><strong>Date:</strong> November 1st, 2025 (that's next week, in case you forgot)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (prime time for mystery and mayhem)</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS} (still the same place, still not moving)</p>
+        <p><strong>Dress Code:</strong> Costumes encouraged! (seriously, don't be that person who shows up in jeans)</p>
       </div>
       
       <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <h4 style="margin-top: 0; color: #f59e0b;">🎭 Preparation Tips:</h4>
+        <h4 style="margin-top: 0; color: #f59e0b;">Preparation Tips:</h4>
         <ul style="margin: 0; padding-left: 20px;">
-          <li>Start thinking about your costume</li>
-          <li>Review any character information you've received</li>
-          <li>Plan your transportation</li>
-          <li>Bring your mystery-solving skills!</li>
+          <li>Start thinking about your costume (or panic-buy one on Amazon like the rest of us)</li>
+          <li>Review any character information you've received (if you've received any)</li>
+          <li>Plan your transportation (Uber, Lyft, or teleportation - your choice)</li>
+          <li>Bring your mystery-solving skills (or at least bring snacks)</li>
         </ul>
       </div>
       
@@ -414,8 +606,9 @@ export async function sendOneWeekReminderEmail(guest: any) {
         </div>
       </div>
       
-      <p>If you have any questions or need to make changes to your RSVP, please contact us.</p>
+      <p>We're getting excited to see you there! Or at least pretending to be excited while secretly hoping everyone shows up on time.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're running late, just say you were investigating a lead. We'll probably believe you.)</p>
     </div>
   `;
 

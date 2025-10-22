@@ -262,16 +262,14 @@ async function sendCharacterAssignedEmail(guest) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #a855f7;">Your Character is Ready!</h2>
+      <h2 style="color: #a855f7;">Your Character Assignment - Try Not to Ruin It</h2>
       <p>Hi ${guest.legalName},</p>
-      <p>Your character assignment for The Black Lotus Murder Mystery is ready!</p>
+      <p>We've assigned you a character for The Black Lotus Murder Mystery. Try not to embarrass yourself too much.</p>
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
-        <h3 style="margin-top: 0; color: #a855f7;">Meet ${character.displayName}</h3>
-        <div style="margin: 15px 0;">
-          ${Object.entries(character.traits).map(([key, value]) => 
-            `<p><strong style="color: #e5e7eb;">${key}:</strong> ${value}</p>`
-          ).join('')}
-        </div>
+        <h3 style="margin-top: 0; color: #a855f7;">Character Details:</h3>
+        <p><strong>Name:</strong> ${character.displayName}</p>
+        <p><strong>Background:</strong> ${character.traits.backstory}</p>
+        <p><strong>Your Role:</strong> Try to act like you belong here</p>
       </div>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -306,16 +304,16 @@ async function sendCharacterAssignedEmail(guest) {
           View Full Character Details
         </a>
       </div>
-      <p>Study your character carefully and get ready to bring them to life on November 1st!</p>
-      <p>If you have any questions about your character or the event, please don't hesitate to contact us.</p>
-      <p>Best regards,<br>The Black Lotus Team</p>
+      <p>We're not excited to see you there, but we'll pretend to be until you actually show up.</p>
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen?)</p>
     </div>
   `;
 
   await resend.emails.send({
     from: EMAIL_FROM,
     to: guest.email,
-    subject: 'Your Character is Ready - The Black Lotus',
+    subject: 'Your Character Assignment - Try Not to Ruin It',
     html,
   });
 }
@@ -331,9 +329,9 @@ async function sendCharacterUpdatedEmail(guest) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #f59e0b;">Character Details Updated</h2>
-      <p>Hi ${guest.legalName},</p>
-      <p>Your character details for The Black Lotus Murder Mystery have been updated!</p>
+      <h2 style="color: #f59e0b;">Character Details Updated - Because You Probably Messed Up</h2>
+      <p>Hey ${guest.legalName},</p>
+      <p>Your character details have been updated! Because apparently, you couldn't handle the original assignment.</p>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0; color: #f59e0b;">Updated Character: ${character.displayName}</h3>

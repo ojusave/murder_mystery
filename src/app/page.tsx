@@ -63,6 +63,11 @@ export default function Home() {
                 Read Waiver
               </Button>
             </Link>
+            <Link href="/faq">
+              <Button variant="outline" size="lg" className="text-gray-300 bg-black/30 border-gray-600 hover:bg-gray-900/50 hover:text-gray-100 hover:border-gray-500 px-8 py-4 text-lg shadow-lg shadow-gray-900/50">
+                FAQ
+              </Button>
+            </Link>
           </div>
 
           {/* Audio Hint */}

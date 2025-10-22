@@ -205,8 +205,7 @@ export default function FAQPage() {
                     className="w-full text-left px-6 py-5 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                   >
                     <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm uppercase tracking-wide text-purple-400 font-semibold">FAQ</span>
+                      <div className="flex items-center">
                         <span className="text-xl font-semibold text-white">{faq.question}</span>
                       </div>
                       <span className={`text-2xl font-bold text-purple-400 transform transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>

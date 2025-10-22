@@ -284,7 +284,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
             <CardContent>
               {guest.emailEvents && guest.emailEvents.length > 0 ? (
                 <div className="space-y-4">
-                  {guest.emailEvents.map((event, index) => (
+                  {guest.emailEvents.map((event) => (
                     <div key={event.id} className="bg-gray-800/50 rounded-lg p-4 border-l-4 border-purple-500">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="text-lg font-semibold text-white">
@@ -322,22 +322,6 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
-          <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold text-white">
-                Need Help?
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-300">
-                If you have any questions or need assistance, please contact us at{' '}
-                <a href="mailto:host@darklotus.party" className="text-purple-300 hover:text-purple-200 underline">
-                  host@darklotus.party
-                </a>
-              </p>
-            </CardContent>
-          </Card>
         </div>
       </main>
 

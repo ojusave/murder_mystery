@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     console.log(`Cron job running. Event in ${daysDiff} days, ${hoursDiff} hours`);
 
     let remindersSent = 0;
-    let errors = [];
+    const errors = [];
 
     // Get all approved guests who haven't cancelled
     const guests = await prisma.guest.findMany({
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Allow GET for testing
-export async function GET(request: NextRequest) {
+export async function GET() {
   const eventDate = new Date('2025-11-01T20:00:00Z');
   const now = new Date();
   const timeDiff = eventDate.getTime() - now.getTime();

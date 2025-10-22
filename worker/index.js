@@ -130,6 +130,15 @@ async function processEmailEvent(emailEvent) {
     case 'character_assigned':
       await sendCharacterAssignedEmail(guest);
       break;
+    case 'character_updated':
+      await sendCharacterUpdatedEmail(guest);
+      break;
+    case 'character_removed':
+      await sendCharacterRemovedEmail(guest);
+      break;
+    case 'registration_deleted':
+      await sendRegistrationDeletedEmail(guest);
+      break;
     default:
       throw new Error(`Unknown email type: ${emailEvent.type}`);
   }
@@ -307,6 +316,120 @@ async function sendCharacterAssignedEmail(guest) {
     from: EMAIL_FROM,
     to: guest.email,
     subject: 'Your Character is Ready - The Black Lotus',
+    html,
+  });
+}
+
+async function sendCharacterUpdatedEmail(guest) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest/${guest.token}`;
+  const character = guest.character;
+  
+  if (!character) {
+    throw new Error('Character not found for guest');
+  }
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #f59e0b;">Character Details Updated</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Your character details for The Black Lotus Murder Mystery have been updated!</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #f59e0b;">Updated Character: ${character.displayName}</h3>
+        <div style="margin: 15px 0;">
+          ${Object.entries(character.traits).map(([key, value]) => 
+            `<p><strong style="color: #e5e7eb;">${key}:</strong> ${value}</p>`
+          ).join('')}
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #7c3aed; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Updated Character Details
+        </a>
+      </div>
+      
+      <p>Please review the updated character information and prepare accordingly for the event.</p>
+      <p>If you have any questions about the changes, please don't hesitate to contact us.</p>
+      <p>Best regards,<br>BrO-J and Half-Chai (A D T)</p>
+    </div>
+  `;
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: guest.email,
+    subject: 'Character Updated - The Black Lotus Murder Mystery',
+    html,
+  });
+}
+
+async function sendCharacterRemovedEmail(guest) {
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #ef4444;">Character Assignment Removed</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Your character assignment for The Black Lotus Murder Mystery has been removed.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #ef4444;">What This Means:</h3>
+        <p>This may be due to changes in the event planning or character assignments. You may receive a new character assignment soon.</p>
+        <p>Don't worry - you're still invited to the event! We're just adjusting the character assignments.</p>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Event Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Dress Code:</strong> Costumes encouraged!</p>
+      </div>
+      
+      <p>If you have any questions about this change, please contact us directly.</p>
+      <p>Best regards,<br>BrO-J and Half-Chai (A D T)</p>
+    </div>
+  `;
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: guest.email,
+    subject: 'Character Assignment Removed - The Black Lotus Murder Mystery',
+    html,
+  });
+}
+
+async function sendRegistrationDeletedEmail(guest) {
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #ef4444;">Registration Deleted</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Your registration for The Black Lotus Murder Mystery has been deleted by the hosts.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #ef4444;">What This Means:</h3>
+        <p>This means you are no longer registered for the event. If you believe this was done in error, please contact the hosts immediately.</p>
+        <p>If you wish to re-register, you can submit a new RSVP.</p>
+      </div>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0;">Event Details:</h3>
+        <p><strong>Date:</strong> November 1st, 2025</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
+        <p><strong>Dress Code:</strong> Costumes encouraged!</p>
+      </div>
+      
+      <p>If you have any questions about this change, please contact us directly.</p>
+      <p>Best regards,<br>BrO-J and Half-Chai (A D T)</p>
+    </div>
+  `;
+
+  await resend.emails.send({
+    from: EMAIL_FROM,
+    to: guest.email,
+    subject: 'Registration Deleted - The Black Lotus Murder Mystery',
     html,
   });
 }

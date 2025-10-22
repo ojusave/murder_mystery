@@ -300,7 +300,10 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                            event.type === 'approved' ? '✅ RSVP Approved' :
                            event.type === 'rejected' ? '❌ RSVP Update' :
                            event.type === 'character_assigned' ? '🎭 Character Assigned' :
+                           event.type === 'character_updated' ? '🎭 Character Updated' :
+                           event.type === 'character_removed' ? '🎭 Character Removed' :
                            event.type === 'cancellation' ? '🚫 Registration Cancelled' :
+                           event.type === 'registration_deleted' ? '🗑️ Registration Deleted' :
                            '📧 Email Notification'}
                         </h4>
                         <span className="text-sm text-gray-400">
@@ -337,8 +340,17 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                           {event.type === 'character_assigned' && (
                             <p>🎭 Your character has been assigned! Check the Character Assignment section above to see your role details.</p>
                           )}
+                          {event.type === 'character_updated' && (
+                            <p>🎭 Your character details have been updated! Check the Character Assignment section above to see the changes.</p>
+                          )}
+                          {event.type === 'character_removed' && (
+                            <p>🎭 Your character assignment has been removed. You may receive a new character assignment soon.</p>
+                          )}
                           {event.type === 'cancellation' && (
                             <p>Your registration has been cancelled. If this was done in error, please contact the hosts immediately.</p>
+                          )}
+                          {event.type === 'registration_deleted' && (
+                            <p>🗑️ Your registration has been deleted by the hosts. If you believe this was done in error, please contact them immediately.</p>
                           )}
                           {event.type === 'bulk_email' && (
                             <p>This is a message from the hosts. Please check the subject and content above for details.</p>

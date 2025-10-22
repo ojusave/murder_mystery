@@ -188,6 +188,34 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    // Get the guest info before deletion to send email notification
+    const guest = await prisma.guest.findUnique({
+      where: { id: guestId },
+    });
+
+    if (!guest) {
+      return NextResponse.json(
+        { error: 'Guest not found' },
+        { status: 404 }
+      );
+    }
+
+    // Send email notification before deletion
+    try {
+      await prisma.emailEvent.create({
+        data: {
+          guestId: guestId,
+          type: 'registration_deleted',
+          status: 'queued',
+          subject: 'Registration Deleted - The Black Lotus Murder Mystery',
+          message: `Hi ${guest.legalName},\n\nYour registration for The Black Lotus Murder Mystery has been deleted by the hosts.\n\nThis means you are no longer registered for the event. If you believe this was done in error, please contact the hosts immediately.\n\nIf you wish to re-register, you can submit a new RSVP.\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+        },
+      });
+    } catch (emailError) {
+      console.error('Failed to create email event for registration deletion:', emailError);
+      // Continue with deletion even if email event creation fails
+    }
+
     // Delete the guest and all related records (cascade delete)
     await prisma.guest.delete({
       where: { id: guestId },

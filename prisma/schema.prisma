@@ -102,3 +102,17 @@ model EmailEvent {
   @@index([type])
   @@map("email_events")
 }
+
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  order     Int      @default(0) // For custom ordering
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@index([isActive])
+  @@index([order])
+  @@map("faqs")
+}

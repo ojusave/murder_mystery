@@ -19,10 +19,11 @@ export default function BackgroundMusic() {
 
     // Handle audio events
     const handleCanPlay = () => {
-      // Auto-play after user interaction (required for mobile browsers)
-      if (hasUserInteracted && !isPlaying) {
-        audio.play().catch(console.error);
-      }
+      // Try to auto-play immediately
+      audio.play().catch((error) => {
+        console.log('Auto-play prevented, waiting for user interaction:', error);
+        // If auto-play fails, we'll wait for user interaction
+      });
     };
 
     const handlePlay = () => setIsPlaying(true);
@@ -32,16 +33,32 @@ export default function BackgroundMusic() {
       setIsPlaying(false);
     };
 
+    // Global click handler to enable audio on any user interaction
+    const handleUserInteraction = () => {
+      if (!hasUserInteracted && !isPlaying) {
+        setHasUserInteracted(true);
+        audio.play().catch(console.error);
+      }
+    };
+
     audio.addEventListener('canplay', handleCanPlay);
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
     audio.addEventListener('error', handleError);
+    
+    // Add global event listeners for user interaction
+    document.addEventListener('click', handleUserInteraction);
+    document.addEventListener('touchstart', handleUserInteraction);
+    document.addEventListener('keydown', handleUserInteraction);
 
     return () => {
       audio.removeEventListener('canplay', handleCanPlay);
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
       audio.removeEventListener('error', handleError);
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
     };
   }, [hasUserInteracted, isPlaying]);
 

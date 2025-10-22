@@ -66,7 +66,7 @@ export default function Home() {
           {/* Audio Hint */}
           <div className="text-center mb-8">
             <p className="text-sm text-gray-400 italic">
-              🎵 Atmospheric music available - click the music controls in the bottom right
+              🎵 Atmospheric music will start automatically - click anywhere if needed
             </p>
           </div>
         </div>

@@ -128,12 +128,19 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                     <div className="bg-purple-900/30 rounded-lg p-4">
                       <h4 className="text-lg font-semibold text-white mb-3">Character Traits</h4>
                       <div className="space-y-2 text-gray-300">
-                        {typeof guest.character.traits === 'object' && guest.character.traits !== null ? (
-                          Object.entries(guest.character.traits as Record<string, unknown>).map(([key, value]) => (
-                            <div key={key}>
-                              <strong className="text-white">{key}:</strong> {String(value)}
+                        {guest.character.traits && typeof guest.character.traits === 'object' && guest.character.traits !== null ? (
+                          (guest.character.traits as any).backstory ? (
+                            <div>
+                              <strong className="text-white">Backstory:</strong>
+                              <p className="mt-1">{String((guest.character.traits as any).backstory)}</p>
                             </div>
-                          ))
+                          ) : (
+                            Object.entries(guest.character.traits as Record<string, unknown>).map(([key, value]) => (
+                              <div key={key}>
+                                <strong className="text-white">{key}:</strong> {String(value)}
+                              </div>
+                            ))
+                          )
                         ) : (
                           <p>{String(guest.character.traits)}</p>
                         )}

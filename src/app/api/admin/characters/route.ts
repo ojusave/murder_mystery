@@ -10,22 +10,11 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { guestId, displayName, traits, notesPrivate } = await request.json();
+    const { guestId, displayName, backstory, hostNotes } = await request.json();
 
-    if (!guestId || !displayName || !traits) {
+    if (!guestId || !displayName || !backstory) {
       return NextResponse.json(
-        { error: 'Guest ID, display name, and traits are required' },
-        { status: 400 }
-      );
-    }
-
-    // Parse traits if it's a JSON string
-    let parsedTraits;
-    try {
-      parsedTraits = typeof traits === 'string' ? JSON.parse(traits) : traits;
-    } catch {
-      return NextResponse.json(
-        { error: 'Invalid traits format. Must be valid JSON.' },
+        { error: 'Guest ID, display name, and backstory are required' },
         { status: 400 }
       );
     }
@@ -34,8 +23,8 @@ export async function POST(request: NextRequest) {
       data: {
         guestId,
         displayName,
-        traits: parsedTraits,
-        notesPrivate,
+        traits: { backstory: backstory },
+        notesPrivate: hostNotes,
         assignedAt: new Date(),
       },
     });
@@ -67,7 +56,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { characterId, displayName, traits, notesPrivate } = await request.json();
+    const { characterId, displayName, backstory, hostNotes } = await request.json();
 
     if (!characterId) {
       return NextResponse.json(
@@ -79,21 +68,10 @@ export async function PATCH(request: NextRequest) {
     const updateData: any = {};
     
     if (displayName !== undefined) updateData.displayName = displayName;
-    if (notesPrivate !== undefined) updateData.notesPrivate = notesPrivate;
+    if (hostNotes !== undefined) updateData.notesPrivate = hostNotes;
     
-    if (traits !== undefined) {
-      let parsedTraits = traits;
-      if (typeof traits === 'string') {
-        try {
-          parsedTraits = JSON.parse(traits);
-        } catch {
-          return NextResponse.json(
-            { error: 'Invalid traits format. Must be valid JSON.' },
-            { status: 400 }
-          );
-        }
-      }
-      updateData.traits = parsedTraits;
+    if (backstory !== undefined) {
+      updateData.traits = { backstory: backstory };
     }
 
     const character = await prisma.character.update({

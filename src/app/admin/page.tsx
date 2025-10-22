@@ -61,8 +61,8 @@ export default function AdminDashboard() {
   const [editCharacterDialogOpen, setEditCharacterDialogOpen] = useState(false);
   const [characterForm, setCharacterForm] = useState({
     displayName: '',
-    traits: '',
-    notesPrivate: '',
+    backstory: '',
+    hostNotes: '',
   });
   const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
   const [bulkEmailDialogOpen, setBulkEmailDialogOpen] = useState(false);
@@ -312,14 +312,14 @@ export default function AdminDashboard() {
         body: JSON.stringify({
           guestId: selectedGuest.id,
           displayName: characterForm.displayName,
-          traits: characterForm.traits,
-          notesPrivate: characterForm.notesPrivate,
+          backstory: characterForm.backstory,
+          hostNotes: characterForm.hostNotes,
         }),
       });
 
       if (response.ok) {
         setCharacterDialogOpen(false);
-        setCharacterForm({ displayName: '', traits: '', notesPrivate: '' });
+        setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
         fetchGuests();
       }
     } catch (error) {
@@ -333,8 +333,10 @@ export default function AdminDashboard() {
     setSelectedGuest(guest);
     setCharacterForm({
       displayName: guest.character.displayName,
-      traits: JSON.stringify(guest.character.traits, null, 2),
-      notesPrivate: guest.character.notesPrivate || '',
+      backstory: typeof guest.character.traits === 'object' 
+        ? JSON.stringify(guest.character.traits, null, 2) 
+        : guest.character.traits || '',
+      hostNotes: guest.character.notesPrivate || '',
     });
     setEditCharacterDialogOpen(true);
   };
@@ -352,14 +354,14 @@ export default function AdminDashboard() {
         body: JSON.stringify({
           characterId: selectedGuest.character.id,
           displayName: characterForm.displayName,
-          traits: characterForm.traits,
-          notesPrivate: characterForm.notesPrivate,
+          backstory: characterForm.backstory,
+          hostNotes: characterForm.hostNotes,
         }),
       });
 
       if (response.ok) {
         setEditCharacterDialogOpen(false);
-        setCharacterForm({ displayName: '', traits: '', notesPrivate: '' });
+        setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
         fetchGuests();
       }
     } catch (error) {
@@ -593,34 +595,35 @@ export default function AdminDashboard() {
                                     />
                                   </div>
                                   <div>
-                                    <Label htmlFor="traits" className="text-white">
-                                      Character Traits (JSON)
+                                    <Label htmlFor="backstory" className="text-white">
+                                      Backstory / History
                                     </Label>
                                     <Textarea
-                                      id="traits"
-                                      value={characterForm.traits}
+                                      id="backstory"
+                                      value={characterForm.backstory}
                                       onChange={(e) => setCharacterForm({
                                         ...characterForm,
-                                        traits: e.target.value
+                                        backstory: e.target.value
                                       })}
                                       className="bg-gray-700 border-gray-600 text-white"
                                       rows={4}
-                                      placeholder='{"personality": "mysterious", "background": "wealthy merchant"}'
+                                      placeholder="Describe the character's background, history, and personality..."
                                     />
                                   </div>
                                   <div>
-                                    <Label htmlFor="notesPrivate" className="text-white">
-                                      Private Notes
+                                    <Label htmlFor="hostNotes" className="text-white">
+                                      Host Notes
                                     </Label>
                                     <Textarea
-                                      id="notesPrivate"
-                                      value={characterForm.notesPrivate}
+                                      id="hostNotes"
+                                      value={characterForm.hostNotes}
                                       onChange={(e) => setCharacterForm({
                                         ...characterForm,
-                                        notesPrivate: e.target.value
+                                        hostNotes: e.target.value
                                       })}
                                       className="bg-gray-700 border-gray-600 text-white"
                                       rows={3}
+                                      placeholder="Private notes for the host about this character..."
                                     />
                                   </div>
                                   <Button
@@ -926,35 +929,35 @@ export default function AdminDashboard() {
               />
             </div>
             <div>
-              <Label htmlFor="edit-char-traits" className="text-white">
-                Character Traits (JSON)
+              <Label htmlFor="edit-char-backstory" className="text-white">
+                Backstory / History
               </Label>
               <Textarea
-                id="edit-char-traits"
-                value={characterForm.traits}
+                id="edit-char-backstory"
+                value={characterForm.backstory}
                 onChange={(e) => setCharacterForm({
                   ...characterForm,
-                  traits: e.target.value
+                  backstory: e.target.value
                 })}
                 className="bg-gray-700 border-gray-600 text-white"
                 rows={6}
-                placeholder='{"personality": "mysterious", "background": "wealthy merchant", "motivation": "seeking revenge"}'
+                placeholder="Describe the character's background, history, and personality..."
               />
             </div>
             <div>
-              <Label htmlFor="edit-char-notesPrivate" className="text-white">
-                Private Notes
+              <Label htmlFor="edit-char-hostNotes" className="text-white">
+                Host Notes
               </Label>
               <Textarea
-                id="edit-char-notesPrivate"
-                value={characterForm.notesPrivate}
+                id="edit-char-hostNotes"
+                value={characterForm.hostNotes}
                 onChange={(e) => setCharacterForm({
                   ...characterForm,
-                  notesPrivate: e.target.value
+                  hostNotes: e.target.value
                 })}
                 className="bg-gray-700 border-gray-600 text-white"
                 rows={3}
-                placeholder="Internal notes about this character..."
+                placeholder="Private notes for the host about this character..."
               />
             </div>
             <div className="flex gap-2">

@@ -505,8 +505,17 @@ export default function AdminDashboard() {
   };
 
   const createFaq = async () => {
+    // Validate form
+    if (!faqForm.question.trim() || !faqForm.answer.trim()) {
+      alert('Please fill in both question and answer fields');
+      return;
+    }
+
+    console.log('Creating FAQ with data:', faqForm);
+
     try {
       const newFaqs = [...faqs, { ...faqForm, id: `faq-${Date.now()}` }];
+      console.log('Sending FAQs to API:', newFaqs.length, 'total FAQs');
       
       const response = await fetch('/api/admin/faq-file', {
         method: 'POST',
@@ -517,12 +526,17 @@ export default function AdminDashboard() {
         body: JSON.stringify({ faqs: newFaqs }),
       });
 
+      console.log('API response status:', response.status);
+
       if (response.ok) {
+        const result = await response.json();
+        console.log('FAQ created successfully:', result);
         setCreateFaqDialogOpen(false);
         setFaqForm({ question: '', answer: '', order: 0, isActive: true });
         fetchFaqs();
       } else {
         const error = await response.json();
+        console.error('API error:', error);
         alert(`Failed to create FAQ: ${error.error}`);
       }
     } catch (error) {

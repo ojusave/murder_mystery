@@ -3,12 +3,12 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     console.log('Starting FAQ database fix...')
     
     // Check if FAQ table exists
-    const tableExists = await prisma.$queryRaw`
+    const tableExists = await prisma.$queryRaw<[{exists: boolean}]>`
       SELECT EXISTS (
         SELECT FROM information_schema.tables 
         WHERE table_schema = 'public' 

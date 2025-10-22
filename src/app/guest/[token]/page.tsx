@@ -266,7 +266,7 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                 <p className="text-sm text-gray-300 mb-4">
                   This action cannot be undone. You will receive a confirmation email and the hosts will be notified.
                 </p>
-                <CancelRegistration guestId={guest.id} onCancel={() => {}} />
+                <CancelRegistration guestId={guest.id} />
               </CardContent>
             </Card>
           )}

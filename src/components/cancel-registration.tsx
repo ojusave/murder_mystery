@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 interface CancelRegistrationProps {
   guestId: string;
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 export default function CancelRegistration({ guestId, onCancel }: CancelRegistrationProps) {
@@ -23,7 +23,7 @@ export default function CancelRegistration({ guestId, onCancel }: CancelRegistra
 
       if (response.ok) {
         alert('Your registration has been cancelled. You will receive a confirmation email.');
-        onCancel(); // Refresh the page or update state
+        onCancel?.(); // Call onCancel if provided
         window.location.reload(); // Simple refresh for now
       } else {
         const error = await response.json();

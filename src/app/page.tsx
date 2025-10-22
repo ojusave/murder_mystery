@@ -32,12 +32,11 @@ export default function Home() {
           <h2 className="text-3xl text-red-400 mb-8 drop-shadow-lg font-nosifer tracking-wide">
             A Halloween Murder Mystery
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto drop-shadow-md">
-          After decades sealed in silence, The Black Lotus Hotel reopens its iron gates for one night only. 
-          The Addams Family invites you to a gathering of exquisite darkness
-          —a celebration of death, devotion, and dangerous secrets. 
-          But beware: this is no ordinary reunion. Within these halls, the walls remember what happened here… and tonight, they are ready to speak.
-          </p>
+          <div className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto drop-shadow-md space-y-4">
+            <p>After decades sealed in silence, The Black Lotus Hotel reopens its iron gates for one night only.</p>
+            <p>The Addams Family invites you to a gathering of exquisite darkness—a celebration of death, devotion, and dangerous secrets.</p>
+            <p>But beware: this is no ordinary reunion. Within these halls, the walls remember what happened here… and tonight, they are ready to speak.</p>
+          </div>
           
           {/* Event Details */}
           <div className="bg-black/50 backdrop-blur-sm rounded-lg p-8 mb-12 max-w-2xl mx-auto border border-white/20">

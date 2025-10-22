@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/button";
 import StickyNavigation from "@/components/sticky-navigation";
 
 export default function WaiverPage() {
-  const handlePrint = () => {
-    window.print();
-  };
 
   const navigationItems = [
     // Terms and Conditions

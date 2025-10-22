@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface FAQ {
   id: string;
@@ -240,18 +241,18 @@ export default function FAQPage() {
               maybe you should reconsider your life choices.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
+              <Link
                 href="/rsvp"
                 className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
               >
                 RSVP Now
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/"
                 className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
               >
                 Back to Home
-              </a>
+              </Link>
             </div>
           </div>
         </div>

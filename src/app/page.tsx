@@ -16,7 +16,7 @@ export default function Home() {
         <nav className="flex justify-between items-center">
           <div></div>
           <Link href="/admin/login">
-            <Button variant="outline" className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400">
+            <Button variant="outline" className="text-white bg-transparent border-white hover:bg-white hover:text-gray-900 hover:border-white">
               Host Login
             </Button>
           </Link>
@@ -57,7 +57,7 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/waiver">
-              <Button variant="outline" size="lg" className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400 px-8 py-4 text-lg">
+              <Button variant="outline" size="lg" className="text-white bg-transparent border-white hover:bg-white hover:text-gray-900 hover:border-white px-8 py-4 text-lg">
                 Read Waiver
               </Button>
             </Link>

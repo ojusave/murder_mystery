@@ -76,6 +76,12 @@ export async function PATCH(request: NextRequest) {
             guestId: guest.id,
             type: status === 'approved' ? 'approved' : 'rejected',
             status: 'sent',
+            subject: status === 'approved' 
+              ? 'RSVP Approved - The Black Lotus Murder Mystery' 
+              : 'RSVP Update - The Black Lotus Murder Mystery',
+            message: status === 'approved'
+              ? `🎉 Congratulations ${guest.legalName}!\n\nYour RSVP has been approved! You're officially invited to The Black Lotus Murder Mystery event.\n\nEvent Details:\n• Date: November 1st, 2025\n• Time: 8:00 PM - 12:00 AM\n• Location: Fremont\n• Dress Code: Costumes required\n\nYou can view your guest portal and character assignment (when available) at: ${process.env.APP_BASE_URL}/guest/${guest.token}\n\nWe're excited to see you there!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`
+              : `Hi ${guest.legalName},\n\nThank you for your interest in The Black Lotus Murder Mystery event. Unfortunately, we're unable to accommodate your RSVP at this time.\n\nIf you have any questions or believe this was sent in error, please contact us directly.\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
           },
         });
       } catch (emailError) {
@@ -87,6 +93,12 @@ export async function PATCH(request: NextRequest) {
             type: status === 'approved' ? 'approved' : 'rejected',
             status: 'failed',
             error: emailError instanceof Error ? emailError.message : 'Unknown error',
+            subject: status === 'approved' 
+              ? 'RSVP Approved - The Black Lotus Murder Mystery' 
+              : 'RSVP Update - The Black Lotus Murder Mystery',
+            message: status === 'approved'
+              ? `🎉 Congratulations ${guest.legalName}!\n\nYour RSVP has been approved! You're officially invited to The Black Lotus Murder Mystery event.\n\nEvent Details:\n• Date: November 1st, 2025\n• Time: 8:00 PM - 12:00 AM\n• Location: Fremont\n• Dress Code: Costumes required\n\nYou can view your guest portal and character assignment (when available) at: ${process.env.APP_BASE_URL}/guest/${guest.token}\n\nWe're excited to see you there!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`
+              : `Hi ${guest.legalName},\n\nThank you for your interest in The Black Lotus Murder Mystery event. Unfortunately, we're unable to accommodate your RSVP at this time.\n\nIf you have any questions or believe this was sent in error, please contact us directly.\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
           },
         });
       }

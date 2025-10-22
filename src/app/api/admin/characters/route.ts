@@ -63,6 +63,8 @@ export async function POST(request: NextRequest) {
           guestId: guestId,
           type: 'character_assigned',
           status: 'queued',
+          subject: 'Character Assigned - The Black Lotus Murder Mystery',
+          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
         },
       });
     }
@@ -119,6 +121,8 @@ export async function PATCH(request: NextRequest) {
           guestId: guestId,
           type: 'character_assigned',
           status: 'queued',
+          subject: 'Character Assigned - The Black Lotus Murder Mystery',
+          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
         },
       });
     }

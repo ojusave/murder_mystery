@@ -296,8 +296,10 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="text-lg font-semibold text-white">
                           {event.type === 'bulk_email' ? '📢 Host Message' : 
-                           event.type === 'approval' ? '✅ RSVP Approved' :
-                           event.type === 'rejection' ? '❌ RSVP Update' :
+                           event.type === 'rsvp_received' ? '📧 RSVP Confirmation' :
+                           event.type === 'approved' ? '✅ RSVP Approved' :
+                           event.type === 'rejected' ? '❌ RSVP Update' :
+                           event.type === 'character_assigned' ? '🎭 Character Assigned' :
                            event.type === 'cancellation' ? '🚫 Registration Cancelled' :
                            '📧 Email Notification'}
                         </h4>
@@ -305,14 +307,42 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                           {new Date(event.createdAt).toLocaleDateString()} at {new Date(event.createdAt).toLocaleTimeString()}
                         </span>
                       </div>
+                      
+                      {/* Show subject if available */}
                       {(event as any).subject && (
                         <h5 className="text-md font-medium text-purple-300 mb-2">
                           {(event as any).subject}
                         </h5>
                       )}
+                      
+                      {/* Show message content if available */}
                       {(event as any).message && (
-                        <div className="text-gray-300 whitespace-pre-wrap">
+                        <div className="text-gray-300 whitespace-pre-wrap mb-3">
                           {(event as any).message}
+                        </div>
+                      )}
+                      
+                      {/* Show meaningful content based on email type */}
+                      {!((event as any).subject || (event as any).message) && (
+                        <div className="text-gray-300">
+                          {event.type === 'rsvp_received' && (
+                            <p>Your RSVP has been received and is being reviewed by the hosts. You'll receive an update once it's processed.</p>
+                          )}
+                          {event.type === 'approved' && (
+                            <p>🎉 Congratulations! Your RSVP has been approved. You're officially invited to The Black Lotus Murder Mystery event!</p>
+                          )}
+                          {event.type === 'rejected' && (
+                            <p>Your RSVP status has been updated. Please contact the hosts if you have any questions.</p>
+                          )}
+                          {event.type === 'character_assigned' && (
+                            <p>🎭 Your character has been assigned! Check the Character Assignment section above to see your role details.</p>
+                          )}
+                          {event.type === 'cancellation' && (
+                            <p>Your registration has been cancelled. If this was done in error, please contact the hosts immediately.</p>
+                          )}
+                          {event.type === 'bulk_email' && (
+                            <p>This is a message from the hosts. Please check the subject and content above for details.</p>
+                          )}
                         </div>
                       )}
                     </div>

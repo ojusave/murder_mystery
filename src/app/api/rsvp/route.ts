@@ -116,6 +116,8 @@ export async function POST(request: NextRequest) {
             guestId: guest.id,
             type: 'rsvp_received',
             status: 'sent',
+            subject: 'RSVP Received - The Black Lotus Murder Mystery',
+            message: `Hi ${guest.legalName},\n\nThank you for your RSVP to The Black Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.\n\nYou'll receive another email within 24-48 hours with our decision and next steps.\n\nEvent Details:\n• Date: November 1st, 2025\n• Time: 8:00 PM - 12:00 AM\n• Location: Fremont\n\nIf you have any questions, please don't hesitate to contact us.\n\nBest regards,\nThe Black Lotus Team`,
           },
         });
       } catch (emailEventError) {

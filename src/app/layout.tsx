@@ -32,8 +32,8 @@ const butcherman = Butcherman({
 });
 
 export const metadata: Metadata = {
-  title: "The Black Lotus Murder Mystery",
-  description: "A Halloween Murder Mystery Event",
+  title: "The Black Lotus: A Halloween Murder Mystery",
+  description: "A Halloween Murder Mystery Event hosted by BrO-J and Half-Chai",
   icons: {
     icon: "/black-lotus-poster.jpg",
   },

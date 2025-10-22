@@ -178,3 +178,49 @@ export async function sendHostNotificationEmail(guest: any) {
     throw error;
   }
 }
+
+export async function sendBulkEmail(guests: any[], subject: string, message: string) {
+  const guestPortalUrl = `${APP_BASE_URL}/guest`;
+  
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
+      <h2 style="color: #e5e7eb;">Message from the Hosts</h2>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #f59e0b;">${subject}</h3>
+        <div style="white-space: pre-wrap; line-height: 1.6;">${message}</div>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${guestPortalUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          Visit Your Guest Portal
+        </a>
+      </div>
+      
+      <p style="font-size: 14px; color: #d1d5db;">
+        This message was sent to all guests of The Black Lotus Murder Mystery event.
+      </p>
+      
+      <p>Best regards,<br>BrO-J & Half-Chai</p>
+    </div>
+  `;
+
+  try {
+    // Send emails to all guests
+    const emailPromises = guests.map(guest => 
+      resend.emails.send({
+        from: EMAIL_FROM,
+        to: guest.email,
+        subject: `The Black Lotus: ${subject}`,
+        html,
+      })
+    );
+
+    await Promise.all(emailPromises);
+    console.log(`Bulk email sent to ${guests.length} guests`);
+  } catch (error) {
+    console.error(`Error sending bulk email to ${guests.length} guests:`, error);
+    throw error;
+  }
+}

@@ -64,6 +64,12 @@ export default function AdminDashboard() {
     traits: '',
     notesPrivate: '',
   });
+  const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
+  const [bulkEmailDialogOpen, setBulkEmailDialogOpen] = useState(false);
+  const [bulkEmailForm, setBulkEmailForm] = useState({
+    subject: '',
+    message: '',
+  });
   const [editForm, setEditForm] = useState({
     email: '',
     legalName: '',
@@ -175,6 +181,50 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Error deleting guest:', error);
       alert('Failed to delete registration');
+    }
+  };
+
+  // Bulk selection functions
+  const handleSelectGuest = (guestId: string) => {
+    setSelectedGuests(prev => 
+      prev.includes(guestId) 
+        ? prev.filter(id => id !== guestId)
+        : [...prev, guestId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectedGuests.length === guests.length) {
+      setSelectedGuests([]);
+    } else {
+      setSelectedGuests(guests.map(guest => guest.id));
+    }
+  };
+
+  const handleBulkEmail = async () => {
+    if (selectedGuests.length === 0) return;
+    
+    try {
+      const response = await fetch('/api/admin/bulk-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          guestIds: selectedGuests,
+          subject: bulkEmailForm.subject,
+          message: bulkEmailForm.message,
+        }),
+      });
+
+      if (response.ok) {
+        setBulkEmailDialogOpen(false);
+        setBulkEmailForm({ subject: '', message: '' });
+        setSelectedGuests([]);
+        alert(`Bulk email sent to ${selectedGuests.length} guests!`);
+      } else {
+        console.error('Failed to send bulk email');
+      }
+    } catch (error) {
+      console.error('Error sending bulk email:', error);
     }
   };
 
@@ -420,19 +470,52 @@ export default function AdminDashboard() {
                   />
                 </div>
 
+                {/* Bulk Actions */}
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 text-white">
+                      <input
+                        type="checkbox"
+                        checked={selectedGuests.length === filteredGuests.length && filteredGuests.length > 0}
+                        onChange={handleSelectAll}
+                        className="rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500"
+                      />
+                      Select All ({selectedGuests.length} selected)
+                    </label>
+                  </div>
+                  <div className="flex gap-2">
+                    {selectedGuests.length > 0 && (
+                      <Button
+                        onClick={() => setBulkEmailDialogOpen(true)}
+                        className="bg-purple-600 hover:bg-purple-700 text-white"
+                      >
+                        Bulk Email ({selectedGuests.length})
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
                 <div className="space-y-4">
                   {filteredGuests.map((guest) => (
                     <Card key={guest.id} className="bg-gray-800/50 border-gray-600">
                       <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h3 className="text-lg font-semibold text-white">
-                              {guest.legalName}
-                            </h3>
-                            <p className="text-gray-300">{guest.email}</p>
-                            <p className="text-sm text-gray-400">
-                              Submitted: {new Date(guest.createdAt).toLocaleDateString()}
-                            </p>
+                          <div className="flex items-start gap-3">
+                            <input
+                              type="checkbox"
+                              checked={selectedGuests.includes(guest.id)}
+                              onChange={() => handleSelectGuest(guest.id)}
+                              className="mt-1 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500"
+                            />
+                            <div>
+                              <h3 className="text-lg font-semibold text-white">
+                                {guest.legalName}
+                              </h3>
+                              <p className="text-gray-300">{guest.email}</p>
+                              <p className="text-sm text-gray-400">
+                                Submitted: {new Date(guest.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
                           </div>
                           <Badge className={`${getStatusColor(guest.status)} text-white`}>
                             {guest.status}
@@ -874,53 +957,6 @@ export default function AdminDashboard() {
                 placeholder="Internal notes about this character..."
               />
             </div>
-            <div>
-              <Label htmlFor="edit-char-characterName" className="text-white">
-                Character Name
-              </Label>
-              <Input
-                id="edit-char-characterName"
-                value={characterForm.characterName || ''}
-                onChange={(e) => setCharacterForm({
-                  ...characterForm,
-                  characterName: e.target.value
-                })}
-                className="bg-gray-700 border-gray-600 text-white"
-                placeholder="Character's actual name in the story..."
-              />
-            </div>
-            <div>
-              <Label htmlFor="edit-char-characterHistory" className="text-white">
-                Character History
-              </Label>
-              <Textarea
-                id="edit-char-characterHistory"
-                value={characterForm.characterHistory || ''}
-                onChange={(e) => setCharacterForm({
-                  ...characterForm,
-                  characterHistory: e.target.value
-                })}
-                className="bg-gray-700 border-gray-600 text-white"
-                rows={4}
-                placeholder="Character's background story and history..."
-              />
-            </div>
-            <div>
-              <Label htmlFor="edit-char-hostNotes" className="text-white">
-                Host Notes
-              </Label>
-              <Textarea
-                id="edit-char-hostNotes"
-                value={characterForm.hostNotes || ''}
-                onChange={(e) => setCharacterForm({
-                  ...characterForm,
-                  hostNotes: e.target.value
-                })}
-                className="bg-gray-700 border-gray-600 text-white"
-                rows={3}
-                placeholder="Host's private notes and instructions..."
-              />
-            </div>
             <div className="flex gap-2">
               <Button
                 onClick={updateCharacter}
@@ -931,6 +967,68 @@ export default function AdminDashboard() {
               <Button
                 variant="outline"
                 onClick={() => setEditCharacterDialogOpen(false)}
+                className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Bulk Email Dialog */}
+      <Dialog open={bulkEmailDialogOpen} onOpenChange={setBulkEmailDialogOpen}>
+        <DialogContent className="bg-gray-800 border-gray-600">
+          <DialogHeader>
+            <DialogTitle className="text-white">
+              Send Bulk Email
+            </DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Send an email to {selectedGuests.length} selected guests
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="bulk-email-subject" className="text-white">
+                Subject
+              </Label>
+              <Input
+                id="bulk-email-subject"
+                value={bulkEmailForm.subject}
+                onChange={(e) => setBulkEmailForm({
+                  ...bulkEmailForm,
+                  subject: e.target.value
+                })}
+                className="bg-gray-700 border-gray-600 text-white"
+                placeholder="Email subject..."
+              />
+            </div>
+            <div>
+              <Label htmlFor="bulk-email-message" className="text-white">
+                Message
+              </Label>
+              <Textarea
+                id="bulk-email-message"
+                value={bulkEmailForm.message}
+                onChange={(e) => setBulkEmailForm({
+                  ...bulkEmailForm,
+                  message: e.target.value
+                })}
+                className="bg-gray-700 border-gray-600 text-white"
+                rows={8}
+                placeholder="Your message to the guests..."
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleBulkEmail}
+                className="bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                Send Email to {selectedGuests.length} Guests
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setBulkEmailDialogOpen(false)}
                 className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
               >
                 Cancel

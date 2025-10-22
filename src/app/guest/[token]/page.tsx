@@ -14,6 +14,11 @@ async function getGuestByToken(token: string) {
     where: { token },
     include: {
       character: true,
+      emailEvents: {
+        orderBy: {
+          sentAt: 'desc',
+        },
+      },
     },
   });
 
@@ -242,6 +247,56 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                   </p>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Email Timeline */}
+          <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-white">
+                📧 Email Timeline
+              </CardTitle>
+              <CardDescription className="text-gray-300">
+                Messages sent to you from the hosts
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {guest.emailEvents && guest.emailEvents.length > 0 ? (
+                <div className="space-y-4">
+                  {guest.emailEvents.map((event, index) => (
+                    <div key={event.id} className="bg-gray-800/50 rounded-lg p-4 border-l-4 border-purple-500">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-lg font-semibold text-white">
+                          {event.type === 'bulk_email' ? '📢 Host Message' : 
+                           event.type === 'approval' ? '✅ RSVP Approved' :
+                           event.type === 'rejection' ? '❌ RSVP Update' :
+                           '📧 Email Notification'}
+                        </h4>
+                        <span className="text-sm text-gray-400">
+                          {new Date(event.sentAt).toLocaleDateString()} at {new Date(event.sentAt).toLocaleTimeString()}
+                        </span>
+                      </div>
+                      {event.subject && (
+                        <h5 className="text-md font-medium text-purple-300 mb-2">
+                          {event.subject}
+                        </h5>
+                      )}
+                      {event.message && (
+                        <div className="text-gray-300 whitespace-pre-wrap">
+                          {event.message}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-400">No messages yet</p>
+                  <p className="text-sm text-gray-500 mt-2">
+                    You'll see host messages and updates here
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

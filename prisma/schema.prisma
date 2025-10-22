@@ -69,9 +69,6 @@ model Character {
   displayName     String    @map("display_name")
   traits          Json
   notesPrivate    String?   @map("notes_private")
-  characterName   String?   @map("character_name")
-  characterHistory String?  @map("character_history")
-  hostNotes       String?   @map("host_notes")
   assignedAt      DateTime? @map("assigned_at")
   
   // Relations
@@ -83,8 +80,11 @@ model Character {
 model EmailEvent {
   id        String   @id @default(uuid())
   guestId   String   @map("guest_id")
-  type      String   // "rsvp_received" | "approved" | "rejected" | "character_assigned"
+  type      String   // "rsvp_received" | "approved" | "rejected" | "character_assigned" | "bulk_email"
   status    String   // "queued" | "sent" | "failed"
+  subject   String?  // Email subject for bulk emails
+  message   String?  // Email message content for bulk emails
+  sentAt    DateTime? @map("sent_at") // When the email was actually sent
   error     String?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

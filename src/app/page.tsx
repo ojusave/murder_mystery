@@ -63,6 +63,13 @@ export default function Home() {
               </Button>
             </Link>
           </div>
+
+          {/* Audio Hint */}
+          <div className="text-center mb-8">
+            <p className="text-sm text-gray-400 italic">
+              🎵 Atmospheric music available - click the music controls in the bottom right
+            </p>
+          </div>
         </div>
 
 

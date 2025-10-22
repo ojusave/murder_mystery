@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Creepster, Nosifer, Butcherman } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/auth-provider";
+import BackgroundMusic from "@/components/BackgroundMusic";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           {children}
+          <BackgroundMusic />
         </AuthProvider>
       </body>
     </html>

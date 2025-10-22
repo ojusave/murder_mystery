@@ -486,7 +486,7 @@ export default function AdminDashboard() {
   // FAQ functions
   const fetchFaqs = async () => {
     try {
-      const response = await fetch('/api/admin/faqs', {
+      const response = await fetch('/api/admin/faq-file', {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -506,13 +506,15 @@ export default function AdminDashboard() {
 
   const createFaq = async () => {
     try {
-      const response = await fetch('/api/admin/faqs', {
+      const newFaqs = [...faqs, { ...faqForm, id: `faq-${Date.now()}` }];
+      
+      const response = await fetch('/api/admin/faq-file', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(faqForm),
+        body: JSON.stringify({ faqs: newFaqs }),
       });
 
       if (response.ok) {
@@ -533,16 +535,19 @@ export default function AdminDashboard() {
     if (!selectedFaq) return;
 
     try {
-      const response = await fetch('/api/admin/faqs', {
-        method: 'PATCH',
+      const updatedFaqs = faqs.map(faq => 
+        faq.id === selectedFaq.id 
+          ? { ...faqForm, id: selectedFaq.id }
+          : faq
+      );
+      
+      const response = await fetch('/api/admin/faq-file', {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          id: selectedFaq.id,
-          ...faqForm,
-        }),
+        body: JSON.stringify({ faqs: updatedFaqs }),
       });
 
       if (response.ok) {
@@ -564,13 +569,15 @@ export default function AdminDashboard() {
     if (!confirm('Are you sure you want to delete this FAQ?')) return;
 
     try {
-      const response = await fetch('/api/admin/faqs', {
-        method: 'DELETE',
+      const filteredFaqs = faqs.filter(faq => faq.id !== faqId);
+      
+      const response = await fetch('/api/admin/faq-file', {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: faqId }),
+        body: JSON.stringify({ faqs: filteredFaqs }),
       });
 
       if (response.ok) {

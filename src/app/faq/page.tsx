@@ -133,7 +133,7 @@ const staticFaqs: FAQ[] = [
   },
   {
     id: 'faq-18',
-    question: 'Is this kids friendly?',
+    question: 'Can I bring my kids?',
     answer: "Yes, but just because you couldn't keep your legs closed or you couldn't pull out in time or your condom broke and you are now stuck with these little bastards you never planned for, it's not our responsibility to babysit. There will be alcohol, adult language, and Halloween themes.",
     order: 18,
     isActive: true

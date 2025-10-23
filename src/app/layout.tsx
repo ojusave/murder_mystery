@@ -60,7 +60,7 @@ export default function RootLayout({
             PRIVATE EVENT SITE – NOT FOR PUBLIC DISTRIBUTION
           </p>
           <p className="text-xs md:text-sm opacity-90">
-            This site is satire for a private Halloween party. Not affiliated with any employer, company, or organization.
+            This site is satire for a private event at a private residence for friends of the hosts. If you stumbled upon this site, you are not invited. Not affiliated with any employer, company, or organization.
           </p>
         </div>
         <AuthProvider>

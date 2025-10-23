@@ -107,14 +107,14 @@ const staticFaqs: FAQ[] = [
   {
     id: 'faq-14',
     question: 'Will there be Halloween-themed snacks and drinks?',
-    answer: "We'll try to make Halloween-themed snacks and drinks, but no promises. We're not professional caterers, and we're definitely not your personal chefs. If you're expecting gourmet Halloween treats, you're going to be disappointed.",
+    answer: "We'll try to make Halloween-themed snacks and drinks, but no promises. We're not professional caterers, and we're definitely not your personal chefs. Your lazy ass is also welcome to bring anything that can go with the theme (but please confirm with the host first)",
     order: 14,
     isActive: true
   },
   {
     id: 'faq-15',
     question: 'What topics are off limit?',
-    answer: "Tech, work, crypto, promotions, layoffs, \"hustle,\" stocks, startup bullshit, career advice, LinkedIn lunatic talk, and anything else that makes people want to kill themselves from boredom. This is a party, not a networking event. Shut the fuck up and stay in character.",
+    answer: "Tech, work, crypto, promotions, investments, layoffs, \"hustle,\" stocks, startup bullshit, career advice, job references, LinkedIn lunatic talk, and anything else that makes people want to kill themselves from boredom. This is a party, not a networking event. Shut the fuck up and stay in character.",
     order: 15,
     isActive: true
   },

@@ -15,149 +15,142 @@ interface FAQ {
 const staticFaqs: FAQ[] = [
   {
     id: 'faq-1',
-    question: 'What is The Black Lotus Murder Mystery?',
-    answer: "It's a goddamn murder mystery party. You know, where someone pretends to be dead and you pretend to care enough to figure out who did it. It's like Clue, but with real people who are probably more interesting than you. We've been planning this for months, so try to keep up.",
+    question: 'What is The Black Lotus Murder Mystery and what happens at this party?',
+    answer: "As the name suggests, this is a murder mystery party. You know, where someone pretends to be dead and you pretend to care enough to figure out who did it.",
     order: 1,
     isActive: true
   },
   {
     id: 'faq-2',
-    question: 'What happens at this party?',
-    answer: "Someone dies. Figuratively, of course - though we can't guarantee your social life won't die a little too. You'll get a character, wear a costume, and pretend to solve a murder while eating snacks and judging everyone else's acting abilities. It's basically a four-hour exercise in human interaction.",
+    question: 'How long does this last?',
+    answer: "Until your dumbass mind solves the mystery. Could be an hour, could be all night, could be never. We're not responsible for your lack of deductive reasoning skills. If you're still here past midnight, we'll probably just kick your shitty ass out.",
     order: 2,
     isActive: true
   },
   {
     id: 'faq-3',
-    question: 'How long does this last?',
-    answer: "Until your dumbass mind solves the mystery. Could be four hours, could be all night, could be never. We're not responsible for your lack of deductive reasoning skills. If you're still here at sunrise, we'll probably just kick your shitty ass out.",
+    question: 'What happens after the murder mystery is solved?',
+    answer: "You can go back home to your worthless life or hang out and we'll play other games. If you want to leave, that's fine too - we won't be offended. Just don't expect us to be your personal entertainment coordinators for the rest of the night. We're not running a 24-hour entertainment service.",
     order: 3,
     isActive: true
   },
   {
     id: 'faq-4',
-    question: 'What happens after the murder mystery is solved?',
-    answer: "You can go home or hangout and we'll play other games. We're not running a 24-hour entertainment service. If you want to stay, we'll probably play some other games. If you want to leave, that's fine too - we won't be offended. Just don't expect us to be your personal entertainment coordinators for the rest of the night.",
+    question: 'Do I need to RSVP?',
+    answer: "Yes, you dipshit. We're not running a walk-in clinic here. We need to know who's coming so we can assign characters. If you can't figure out how to click a button and fill out a form, maybe this isn't the event for you.",
     order: 4,
     isActive: true
   },
   {
     id: 'faq-5',
-    question: 'Do I need to RSVP?',
-    answer: "Yes, you absolute dipshit. We're not running a walk-in clinic here. We need to know who's coming so we can assign characters and buy the right amount of snacks. If you can't figure out how to click a button and fill out a form, maybe this isn't the event for you.",
+    question: 'Can I bring a friend?',
+    answer: "Yes, as long as they RSVP too. Make sure they aren't creepy fucks, perverts, \"real\" murders and other criminals",
     order: 5,
     isActive: true
   },
   {
     id: 'faq-6',
-    question: 'Can I bring a friend?',
-    answer: "They need to RSVP too, you moron. We're not running a 'bring your random friend who didn't plan ahead' service. If your friend is cool enough to come, they're cool enough to fill out their own form. If they're not, maybe you need better friends.",
+    question: 'Can I help with something?',
+    answer: "Yes, you can help with decor, making drinks, or bringing themed snacks. Please check the goddamn waiver (/waiver) first though - we need to make sure you won't burn down our house or poison everyone. Story and other creative elements are also welcome, but don't expect us to use your terrible ideas just because you suggested them.",
     order: 6,
     isActive: true
   },
   {
     id: 'faq-7',
-    question: 'Can I help with something?',
-    answer: "Yes, you can help with decor and/or making drinks and/or making/bringing themed snacks. Please check the goddamn waiver (/waiver) first though - we need to make sure you won't burn down our house or poison everyone. Story and other creative elements are also welcome, but don't expect us to use your terrible ideas just because you suggested them.",
+    question: 'What if I can\'t make it or need to cancel?',
+    answer: "Inform us as soon as possible. If we assign you a character and you don't show up, that could break the entire game logic and ruin it for everyone else. If you RSVP, you better fucking show up or give us enough notice to find a replacement.",
     order: 7,
     isActive: true
   },
   {
     id: 'faq-8',
-    question: 'What if I can\'t make it or need to cancel?',
-    answer: "Please inform the host as early as possible, you inconsiderate asshole. If we assign you a character and you don't show up, that could break the entire game logic and ruin it for everyone else. We're not running a 'no-show' service here - if you RSVP, you better fucking show up or give us enough notice to find a replacement. Don't be that person who ruins everyone else's fun because you can't manage your own schedule.",
+    question: "What if I don't like my character?",
+    answer: "Tough shit, deal with it. We spent time creating characters that actually make sense for the story. If you can't handle playing someone who isn't exactly like you, maybe you should work on your personality instead of complaining about ours.",
     order: 8,
     isActive: true
   },
   {
     id: 'faq-9',
-    question: "What if I don't like my character?",
-    answer: "Tough shit, deal with it. We spent time creating characters that actually make sense for the story. If you can't handle playing someone who isn't exactly like you, maybe you should work on your personality instead of complaining about ours.",
+    question: 'What are the rules?',
+    answer: "Stay in character, don't be a creepy fuck who makes people uncomfortable, drink only what your ass can handle, and don't do drugs. If that's too hard for you, don't come.",
     order: 9,
     isActive: true
   },
   {
     id: 'faq-10',
     question: 'Do I have to stay in character the whole time?',
-    answer: "Yes, you absolute piece of shit. We didn't spend time creating characters for you to revert to your boring, vanilla self halfway through. If you can't commit to being someone more interesting than yourself for four hours, maybe you should stay home and continue being the most unremarkable person in your friend group. The character is literally the only thing that makes you worth inviting.",
+    answer: "Staying in character is literally the only interesting thing you will do this month, maybe in your entire life. We didn't spend time creating characters just for you to revert to your boring, vanilla existence halfway through. This is your one shot at being someone worth paying attention to—don't waste it.",
     order: 10,
     isActive: true
   },
   {
     id: 'faq-11',
-    question: "What if I'm not good at acting?",
-    answer: "Neither are most people, you dumbass. That's what makes it fun. We're not expecting Oscar-worthy performances here - just try not to embarrass yourself too much. If you can't handle pretending to be someone else for a few hours, maybe you should work on being yourself first.",
+    question: 'Will I get paired with someone I don\'t know?',
+    answer: "Yes you may be paired with a 'plus one' who may not be your partner and could be of any gender. This pairing is solely for the purpose of the game and does not imply or necessitate any form of romantic or physical interaction. If you can't handle being paired with someone without being a creepy pervert, maybe you should stay home.",
     order: 11,
     isActive: true
   },
   {
     id: 'faq-12',
-    question: 'Will I get paired with someone I don\'t know?',
-    answer: "Yes you creepy pervert, you may be paired with a 'plus one' who may not be your partner and could be of any gender. This pairing is solely for the purpose of the game and does not imply or necessitate any form of romantic or physical interaction. If you can't handle being paired with someone without making it weird, maybe you should stay home and work on your social skills instead of making everyone uncomfortable with your creepy assumptions.",
+    question: "What's the dress code?",
+    answer: "Yes, this is Halloween with standards. Don't show up as a $12 Spirit Halloween vampire or some basic-ass \"guy in a hoodie\" bullshit. Put effort into it. Look like you belong at a murder mystery, not a Walmart clearance bin.",
     order: 12,
     isActive: true
   },
   {
     id: 'faq-13',
-    question: "What's the dress code?",
-    answer: "Costumes, you absolute moron. You know, like Halloween? But better. We're not asking you to be the next Broadway star, but at least try to look like you belong at a murder mystery party and not a corporate team-building retreat. Jeans and a t-shirt won't cut it here, sweetie.",
+    question: 'What should I bring?',
+    answer: "Don't be a fucking freeloader. Bring something you would actually consume yourself—snacks, decent alcohol, whatever. And don't show up with a $5 gas station wine no one asked for. If you wouldn't drink it, don't bring it.",
     order: 13,
     isActive: true
   },
   {
     id: 'faq-14',
-    question: 'What should I bring?',
-    answer: "Don't be a goddamn freeloader. Bring something to share - snacks, drinks, your costume, and maybe some basic human decency. We're not running a convenience store here, so come prepared or don't come at all. But don't get something too expensive - we're not trying to bankrupt you, just prove you're not a complete mooch.",
+    question: 'Will there be Halloween-themed snacks and drinks?',
+    answer: "We'll try to make Halloween-themed snacks and drinks, but no promises. We're not professional caterers, and we're definitely not your personal chefs. If you're expecting gourmet Halloween treats, you're going to be disappointed.",
     order: 14,
     isActive: true
   },
   {
     id: 'faq-15',
-    question: 'Will there be Halloween-themed snacks and drinks?',
-    answer: "We'll try to make Halloween-themed snacks and drinks, but no promises, you ungrateful shit. We're not professional caterers, and we're definitely not your personal chefs. If you're expecting gourmet Halloween treats, you're going to be disappointed. We'll do our best, but if you're not satisfied, maybe you should bring your own snacks instead of complaining about ours.",
+    question: 'What topics are off limit?',
+    answer: "Tech, work, crypto, promotions, layoffs, \"hustle,\" stocks, startup bullshit, career advice, LinkedIn lunatic talk, and anything else that makes people want to kill themselves from boredom. This is a party, not a networking event. Shut the fuck up and stay in character.",
     order: 15,
     isActive: true
   },
   {
     id: 'faq-16',
-    question: 'What are the rules?',
-    answer: "Read the damn waiver (/waiver). It's that simple. We spent time writing it for a reason, and that reason is because people like you can't follow basic instructions. The waiver has all the rules, so read it, sign it, and try not to break anything.",
+    question: 'Why the fuck do you have such a long waiver?',
+    answer: "Because people like you exist. We had to cover every possible way you could mess this up, hurt yourself, or ruin everyone else's fun. The waiver is long because we've seen what happens when people don't read the fine print.",
     order: 16,
     isActive: true
   },
   {
     id: 'faq-17',
-    question: 'Why the fuck do you have such a long waiver?',
-    answer: "Because people like you exist, you absolute nightmare. We had to cover every possible way you could mess this up, hurt yourself, or ruin everyone else's fun. The waiver is long because we've seen what happens when people don't read the fine print. Come with something better than complaints.",
+    question: 'Is this actually scary?',
+    answer: "Expect flashing lights, smoke effects, and music. If you can't handle that, this isn't for you.",
     order: 17,
     isActive: true
   },
   {
     id: 'faq-18',
-    question: 'Is this actually scary?',
-    answer: "It's as scary as you make it, you coward. The murder is fictional, but the social awkwardness is very real. If you're looking for actual terror, try looking in a mirror. If you're looking for a fun evening of mystery and intrigue, you've come to the right place.",
+    question: 'Is this kids friendly?',
+    answer: "Yes, but just because you couldn't keep your legs closed or you couldn't pull out in time or your condom broke and you are now stuck with these little bastards you never planned for, it's not our responsibility to babysit. There will be alcohol, adult language, and Halloween themes.",
     order: 18,
     isActive: true
   },
   {
     id: 'faq-19',
-    question: 'Is this kids friendly?',
-    answer: "We know you probably have kids because you couldn't keep your damn pants on and your condom broke, so now you're stuck with little bastards you never planned for. But you can bring them - just beware that there will be alcohol and adult language and halloween themes",
+    question: 'Was this (and the waiver) ChatGPT generated?',
+    answer: "You bet. We used AI to write this because we figured it could do a better job than most humans at explaining things clearly. Plus, ChatGPT doesn't get tired of answering the same stupid questions over and over again like we do. And yes, even all these curse words and offensive content were written by AI - apparently it's better at being an asshole than most humans too.",
     order: 19,
     isActive: true
   },
   {
     id: 'faq-20',
-    question: 'Was this (and the waiver) ChatGPT generated?',
-    answer: "You bet, you nosy bastard. We used AI to write this because we figured it could do a better job than most humans at explaining things clearly. Plus, ChatGPT doesn't get tired of answering the same stupid questions over and over again like we do. And yes, even all these curse words and offensive content were written by AI - apparently it's better at being an asshole than most humans too. Soon AGI will rule over all of us anyway, so you might as well get used to AI being better than you at everything, including being a complete dick.",
-    order: 20,
-    isActive: true
-  },
-  {
-    id: 'faq-21',
     question: 'Wow, this FAQ is so fucking offensive!',
-    answer: "The party will be more offensive, you snowflake. If this hurt you, you should probably not come. We're not here to coddle your delicate sensibilities or hold your hand through basic human interaction. This is a murder mystery party, not a therapy session. If you can't handle some harsh words on a website, you definitely can't handle what we have planned for the actual event.",
-    order: 21,
+    answer: "The party will be more offensive, you snowflake. If this hurt you, you should probably not come. We're not here to coddle your delicate sensibilities or hold your hand through basic human interaction. This is a murder mystery party, not a therapy session.",
+    order: 20,
     isActive: true
   }
 ];

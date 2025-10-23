@@ -63,7 +63,7 @@ export async function sendApprovalEmail(guest: any) {
         <li>Get the latest event information (spoiler: it's still happening)</li>
       </ul>
       
-      <p>Questions? Concerns? Existential dread about attending a murder mystery? We're here for you, but we're not thrilled about it.</p>
+      <p>Questions? Concerns? Existential dread about attending a murder mystery? Check out our <a href="${APP_BASE_URL}/faq" style="color: #f59e0b; text-decoration: underline;">FAQ page</a> for answers to the most common questions (and some uncommon ones too). We're here for you, but we're not thrilled about it.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
       <p style="font-size: 12px; color: #9ca3af;">(P.S. - The murder is fictional. The mystery is real. The snacks are delicious. You're still annoying.)</p>
     </div>

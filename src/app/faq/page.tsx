@@ -1,4 +1,3 @@
-import { prisma } from '@/lib/db';
 import Link from 'next/link';
 import FAQClient from './faq-client';
 
@@ -154,28 +153,13 @@ const staticFaqs: FAQ[] = [
   }
 ];
 
-async function getFAQs(): Promise<FAQ[]> {
-  try {
-    const faqs = await prisma.fAQ.findMany({
-      where: {
-        isActive: true
-      },
-      orderBy: [
-        { order: 'asc' },
-        { createdAt: 'asc' }
-      ]
-    });
-    
-    console.log('Fetched FAQs from database:', faqs.length);
-    return faqs.length > 0 ? faqs : staticFaqs;
-  } catch (error) {
-    console.error('Error fetching FAQs from database, using static data:', error);
-    return staticFaqs;
-  }
+function getFAQs(): FAQ[] {
+  // Use static data directly to ensure correct content
+  return staticFaqs;
 }
 
-export default async function FAQPage() {
-  const faqs = await getFAQs();
+export default function FAQPage() {
+  const faqs = getFAQs();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">

@@ -562,7 +562,7 @@ export default function RSVPForm() {
                         Communication Style Agreement *
                       </Label>
                       <p className="text-gray-300 text-sm mt-2">
-                        I understand that the hosts of The Black Lotus Murder Mystery Party have a brutally dismissive communication style 
+                        I understand that the host of the event has a brutally dismissive communication style 
                         <strong className="text-yellow-300"> that is intentionally humorous and satirical</strong>. 
                         By checking this box, I acknowledge that I will receive emails that may be offensive, condescending, sarcastic, 
                         and designed to make me feel like a worthless piece of shit - <strong className="text-yellow-300">all in good fun</strong>. 

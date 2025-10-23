@@ -696,7 +696,7 @@ export async function sendCancellationNotificationEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #f59e0b;">🚫 Registration Cancelled</h2>
+      <h2 style="color: #f59e0b;">Registration Cancelled</h2>
       <p>Hello Host,</p>
       <p>A guest has cancelled their registration for The Black Lotus: A Halloween Murder Mystery.</p>
       
@@ -836,7 +836,7 @@ export async function sendTwoDayReminderEmail(guest: any) {
       </div>
       
       <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <h4 style="margin-top: 0; color: #f59e0b;">🎭 Last-Minute Checklist:</h4>
+        <h4 style="margin-top: 0; color: #f59e0b;">Last-Minute Checklist:</h4>
         <ul style="margin: 0; padding-left: 20px;">
           <li>Finalize your costume</li>
           <li>Check the weather forecast</li>
@@ -877,7 +877,7 @@ export async function sendOneDayReminderEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #f59e0b;">🎭 Tomorrow's the Big Night!</h2>
+      <h2 style="color: #f59e0b;">Tomorrow's the Big Night!</h2>
       <p>Hi ${guest.legalName},</p>
       <p>Tomorrow is the night! The Black Lotus: A Halloween Murder Mystery is finally here. We're so excited to see you!</p>
       
@@ -945,7 +945,7 @@ export async function sendFiveHourReminderEmail(guest: any) {
       </div>
       
       <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <h4 style="margin-top: 0; color: #f59e0b;">🎭 Final Preparations:</h4>
+        <h4 style="margin-top: 0; color: #f59e0b;">Final Preparations:</h4>
         <ul style="margin: 0; padding-left: 20px;">
           <li>Put on your costume</li>
           <li>Check traffic conditions</li>

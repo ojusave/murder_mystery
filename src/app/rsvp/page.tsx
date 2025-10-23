@@ -657,7 +657,7 @@ export default function RSVPForm() {
                       </span>
                     ) : (
                       <span className="flex items-center gap-2">
-                        <span>🚀</span>
+                        <span>Submit</span>
                         {isUpdating ? 'Update RSVP' : 'Submit RSVP'}
                       </span>
                     )}

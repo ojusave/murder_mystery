@@ -44,14 +44,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Send bulk email
-    await sendBulkEmail(guests, subject, message);
+    const emailResult = await sendBulkEmail(guests, subject, message);
 
-    // Create email events for each guest
+    // Create email events for each guest using actual email content
     const emailEvents = guests.map(guest => ({
       guestId: guest.id,
       type: 'bulk_email',
-      subject,
-      message,
+      subject: emailResult.subject,
+      message: emailResult.plainTextContent,
       status: 'sent',
       sentAt: new Date(),
     }));

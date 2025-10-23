@@ -105,19 +105,19 @@ export async function POST(request: NextRequest) {
       console.log('RESEND_API_KEY available:', !!process.env.RESEND_API_KEY);
       console.log('EMAIL_FROM:', process.env.EMAIL_FROM);
       
-      await sendRSVPConfirmationEmail(guest);
+      const emailResult = await sendRSVPConfirmationEmail(guest);
       
       console.log('RSVP confirmation email sent successfully to:', guest.email);
       
-      // Create email event for tracking
+      // Create email event for tracking using actual email content
       try {
         await prisma.emailEvent.create({
           data: {
             guestId: guest.id,
             type: 'rsvp_received',
             status: 'sent',
-            subject: 'RSVP Received - The Black Lotus Murder Mystery',
-            message: `Hi ${guest.legalName},\n\nThank you for your RSVP to The Black Lotus: A Halloween Murder Mystery! We've received your submission and will review it shortly.\n\nYou'll receive another email within 24-48 hours with our decision and next steps.\n\nEvent Details:\n• Date: November 1st, 2025\n• Time: 8:00 PM - 12:00 AM\n• Location: Fremont\n\nIf you have any questions, please don't hesitate to contact us.\n\nBest regards,\nThe Black Lotus Team`,
+            subject: emailResult.subject,
+            message: emailResult.plainTextContent,
           },
         });
       } catch (emailEventError) {
@@ -286,17 +286,19 @@ export async function PUT(request: NextRequest) {
       console.log('Attempting to send RSVP update confirmation email to:', updatedGuest.email);
       console.log('RESEND_API_KEY available:', !!process.env.RESEND_API_KEY);
       
-      await sendRSVPConfirmationEmail(updatedGuest);
+      const emailResult = await sendRSVPConfirmationEmail(updatedGuest);
       
       console.log('RSVP update confirmation email sent successfully to:', updatedGuest.email);
       
-      // Create email event for tracking
+      // Create email event for tracking using actual email content
       try {
         await prisma.emailEvent.create({
           data: {
             guestId: updatedGuest.id,
             type: 'rsvp_updated',
             status: 'sent',
+            subject: emailResult.subject,
+            message: emailResult.plainTextContent,
           },
         });
       } catch (emailEventError) {

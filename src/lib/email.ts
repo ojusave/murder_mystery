@@ -69,14 +69,53 @@ export async function sendApprovalEmail(guest: any) {
     </div>
   `;
 
+  const plainText = `The Black Lotus
+Plot Twist: You're Actually Invited (Against Our Better Judgment)
+
+Hey ${guest.legalName},
+
+Surprise! Your RSVP didn't get lost in our digital void. You're officially invited to The Black Lotus Murder Mystery - which is great because we already bought snacks and it would be wasteful to throw them away.
+
+Event Details:
+• Date: November 1st, 2025 (mark your calendar or don't, we're not your mom)
+• Time: 8:00 PM - 12:00 AM (that's 4 hours of mystery, folks)
+• Location: ${REAL_ADDRESS} (GPS exists for a reason)
+• Dress Code: Costumes encouraged (or required, depending on how much we like your outfit)
+
+View Your Guest Portal: ${guestPortalUrl}
+
+Add to Calendar:
+• Google Calendar: ${googleCalendarUrl}
+• Outlook: ${outlookUrl}
+• Apple Calendar: ${appleCalendarUrl}
+
+In your guest portal, you can:
+• View your character assignment (coming soon to a theater near you)
+• Update your RSVP details (because people change their minds like they change their socks)
+• Get the latest event information (spoiler: it's still happening)
+
+Questions? Concerns? Existential dread about attending a murder mystery? Check out our FAQ page at ${APP_BASE_URL}/faq for answers to the most common questions (and some uncommon ones too). We're here for you, but we're not thrilled about it.
+
+Best regards,
+BrO-J & Half-Chai
+
+(P.S. - The murder is fictional. The mystery is real. The snacks are delicious. You're still annoying.)`;
+
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
       subject: 'RSVP Approved - The Black Lotus Murder Mystery',
       html,
     });
     console.log(`Approval email sent to ${guest.email}`);
+    
+    return {
+      success: true,
+      emailId: result.data?.id,
+      subject: 'RSVP Approved - The Black Lotus Murder Mystery',
+      plainTextContent: plainText
+    };
   } catch (error) {
     console.error(`Error sending approval email to ${guest.email}:`, error);
     throw error;
@@ -96,6 +135,22 @@ export async function sendRSVPConfirmationEmail(guest: any) {
       <p style="font-size: 12px; color: #9ca3af;">(P.S. - We're not actually murderers. Probably.)</p>
     </div>
   `;
+
+  const plainText = `The Black Lotus
+RSVP Received - Don't Get Too Excited
+
+Hi ${guest.legalName},
+
+We got your RSVP. Congratulations on successfully clicking a button - it's harder than it looks for some people.
+
+We'll review it when we feel like it. Or maybe we won't. Time is relative when you're planning a murder mystery and dealing with people who can't even fill out forms properly.
+
+If you have questions, keep them to yourself. We're not your personal assistants.
+
+Whatever,
+BrO-J & Half-Chai
+
+(P.S. - We're not actually murderers. Probably.)`;
 
   try {
     const result = await resend.emails.send({
@@ -120,6 +175,13 @@ export async function sendRSVPConfirmationEmail(guest: any) {
     }
     
     console.log('Email sent successfully with ID:', result.data.id);
+    
+    return {
+      success: true,
+      emailId: result.data.id,
+      subject: 'RSVP Received - The Black Lotus Murder Mystery',
+      plainTextContent: plainText
+    };
   } catch (error) {
     console.error(`Error sending RSVP confirmation email to ${guest.email}:`, error);
     throw error;
@@ -140,14 +202,37 @@ export async function sendRejectionEmail(guest: any) {
     </div>
   `;
 
+  const plainText = `The Black Lotus
+Your RSVP Status: Declined (As Expected)
+
+Dear ${guest.legalName},
+
+We regret to inform you that your RSVP for The Black Lotus Murder Mystery has been declined. The event has reached its capacity limit, much like a cemetery on a busy day.
+
+While we appreciate your interest in our macabre gathering, we cannot accommodate additional guests. Perhaps you can find solace in the darkness elsewhere, or plan your own murder mystery party (though we doubt you'd be capable of organizing anything more complex than a grocery list).
+
+Should you have questions about this decision, feel free to inquire. We maintain records of all rejected applications, should circumstances change (though we sincerely hope they don't).
+
+Sincerely,
+The Black Lotus Team
+
+(P.S. - We keep your information on file in case someone mysteriously disappears before the event. You're our backup plan.)`;
+
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
       subject: 'RSVP Update - The Black Lotus Murder Mystery',
       html,
     });
     console.log(`Rejection email sent to ${guest.email}`);
+    
+    return {
+      success: true,
+      emailId: result.data?.id,
+      subject: 'RSVP Update - The Black Lotus Murder Mystery',
+      plainTextContent: plainText
+    };
   } catch (error) {
     console.error(`Error sending rejection email to ${guest.email}:`, error);
     throw error;
@@ -260,6 +345,25 @@ export async function sendBulkEmail(guests: any[], subject: string, message: str
     </div>
   `;
 
+  const plainText = `The Black Lotus
+Message from the Hosts
+
+${subject}
+
+${message}
+
+Visit Your Guest Portal: ${guestPortalUrl}
+
+Add Event to Calendar:
+• Google Calendar: ${googleCalendarUrl}
+• Outlook: ${outlookUrl}
+• Apple Calendar: ${appleCalendarUrl}
+
+This message was sent to all guests of The Black Lotus Murder Mystery event.
+
+Best regards,
+BrO-J & Half-Chai`;
+
   try {
     // Send emails to all guests
     const emailPromises = guests.map(guest => 
@@ -273,6 +377,12 @@ export async function sendBulkEmail(guests: any[], subject: string, message: str
 
     await Promise.all(emailPromises);
     console.log(`Bulk email sent to ${guests.length} guests`);
+    
+    return {
+      success: true,
+      subject: `The Black Lotus: ${subject}`,
+      plainTextContent: plainText
+    };
   } catch (error) {
     console.error(`Error sending bulk email to ${guests.length} guests:`, error);
     throw error;

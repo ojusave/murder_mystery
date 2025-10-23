@@ -149,7 +149,7 @@ const staticFaqs: FAQ[] = [
   {
     id: 'faq-20',
     question: 'Wow, this FAQ is so fucking offensive!',
-    answer: "Look, we get it, you have daddy issues and a fragile heart that can't handle a little harsh language. Maybe you should work on that with your therapist instead of getting offended by a FAQ page. If a few curse words on a website are enough to hurt your feelings, you're definitely not ready for what we have planned at the actual party. Stay home and cry about it.",
+    answer: "Oh boo fucking hoo, you delicate little snowflake. You're crying about curse words on a FAQ page? This isn't your safe space, princess. If you can't handle some harsh language on a website, you're definitely not ready for what we have planned at the actual party. We're not here to coddle your fragile ego or validate your daddy issues. Stay home and cry to your therapist about how mean we are.",
     order: 20,
     isActive: true
   }

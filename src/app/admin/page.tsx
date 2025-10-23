@@ -48,16 +48,6 @@ interface Guest {
   };
 }
 
-interface FAQ {
-  id: string;
-  question: string;
-  answer: string;
-  order: number;
-  isActive: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export default function AdminDashboard() {
   const sessionResult = useSession();
   const { data: session, status } = sessionResult || { data: null, status: 'loading' };
@@ -83,17 +73,6 @@ export default function AdminDashboard() {
     message: '',
   });
   
-  // FAQ state
-  const [faqs, setFaqs] = useState<FAQ[]>([]);
-  const [createFaqDialogOpen, setCreateFaqDialogOpen] = useState(false);
-  const [editFaqDialogOpen, setEditFaqDialogOpen] = useState(false);
-  const [selectedFaq, setSelectedFaq] = useState<FAQ | null>(null);
-  const [faqForm, setFaqForm] = useState({
-    question: '',
-    answer: '',
-    order: 0,
-    isActive: true,
-  });
   const [editForm, setEditForm] = useState({
     email: '',
     legalName: '',
@@ -126,7 +105,6 @@ export default function AdminDashboard() {
       console.log('Session found:', session);
       fetchGuests();
       fetchUnassignedCharacters();
-      fetchFaqs();
     } else {
       console.log('No session found, status:', status);
     }
@@ -483,132 +461,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // FAQ functions
-  const fetchFaqs = async () => {
-    try {
-      const response = await fetch('/api/admin/faqs', {
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setFaqs(data);
-      } else {
-        console.error('Failed to fetch FAQs');
-      }
-    } catch (error) {
-      console.error('Error fetching FAQs:', error);
-    }
-  };
-
-  const createFaq = async () => {
-    // Validate form
-    if (!faqForm.question.trim() || !faqForm.answer.trim()) {
-      alert('Please fill in both question and answer fields');
-      return;
-    }
-
-    console.log('Creating FAQ with data:', faqForm);
-
-    try {
-      const response = await fetch('/api/admin/faqs', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(faqForm),
-      });
-
-      console.log('API response status:', response.status);
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('FAQ created successfully:', result);
-        setCreateFaqDialogOpen(false);
-        setFaqForm({ question: '', answer: '', order: 0, isActive: true });
-        fetchFaqs();
-      } else {
-        const error = await response.json();
-        console.error('API error:', error);
-        alert(`Failed to create FAQ: ${error.error}`);
-      }
-    } catch (error) {
-      console.error('Error creating FAQ:', error);
-      alert('Failed to create FAQ');
-    }
-  };
-
-  const updateFaq = async () => {
-    if (!selectedFaq) return;
-
-    try {
-      const response = await fetch('/api/admin/faqs', {
-        method: 'PATCH',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: selectedFaq.id,
-          ...faqForm
-        }),
-      });
-
-      if (response.ok) {
-        setEditFaqDialogOpen(false);
-        setFaqForm({ question: '', answer: '', order: 0, isActive: true });
-        setSelectedFaq(null);
-        fetchFaqs();
-      } else {
-        const error = await response.json();
-        alert(`Failed to update FAQ: ${error.error}`);
-      }
-    } catch (error) {
-      console.error('Error updating FAQ:', error);
-      alert('Failed to update FAQ');
-    }
-  };
-
-  const deleteFaq = async (faqId: string) => {
-    if (!confirm('Are you sure you want to delete this FAQ?')) return;
-
-    try {
-      const response = await fetch('/api/admin/faqs', {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: faqId }),
-      });
-
-      if (response.ok) {
-        fetchFaqs();
-      } else {
-        const error = await response.json();
-        alert(`Failed to delete FAQ: ${error.error}`);
-      }
-    } catch (error) {
-      console.error('Error deleting FAQ:', error);
-      alert('Failed to delete FAQ');
-    }
-  };
-
-  const openEditFaqDialog = (faq: FAQ) => {
-    setSelectedFaq(faq);
-    setFaqForm({
-      question: faq.question,
-      answer: faq.answer,
-      order: faq.order,
-      isActive: faq.isActive,
-    });
-    setEditFaqDialogOpen(true);
-  };
-
   const filteredGuests = guests.filter(guest =>
     guest.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     guest.legalName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -667,7 +519,6 @@ export default function AdminDashboard() {
           <TabsList className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
             <TabsTrigger value="guests" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">RSVPs</TabsTrigger>
             <TabsTrigger value="characters" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Characters</TabsTrigger>
-            <TabsTrigger value="faqs" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">FAQs</TabsTrigger>
             <TabsTrigger value="settings" className="text-gray-200 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Settings</TabsTrigger>
           </TabsList>
 
@@ -1184,183 +1035,6 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
-          {/* FAQs Tab */}
-          <TabsContent value="faqs">
-            <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <CardTitle className="text-2xl font-bold text-white">
-                      FAQ Management
-                    </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Manage frequently asked questions
-                    </CardDescription>
-                  </div>
-                  <Dialog open={createFaqDialogOpen} onOpenChange={setCreateFaqDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-                        Create FAQ
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="bg-gray-800 border-gray-600 max-w-2xl">
-                      <DialogHeader>
-                        <DialogTitle className="text-white">
-                          Create New FAQ
-                        </DialogTitle>
-                        <DialogDescription className="text-gray-300">
-                          Add a new frequently asked question
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="create-faq-question" className="text-white">
-                            Question
-                          </Label>
-                          <Input
-                            id="create-faq-question"
-                            value={faqForm.question}
-                            onChange={(e) => setFaqForm({
-                              ...faqForm,
-                              question: e.target.value
-                            })}
-                            className="bg-gray-700 border-gray-600 text-white"
-                            placeholder="Enter the question..."
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="create-faq-answer" className="text-white">
-                            Answer
-                          </Label>
-                          <Textarea
-                            id="create-faq-answer"
-                            value={faqForm.answer}
-                            onChange={(e) => setFaqForm({
-                              ...faqForm,
-                              answer: e.target.value
-                            })}
-                            className="bg-gray-700 border-gray-600 text-white"
-                            rows={6}
-                            placeholder="Enter the answer..."
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="create-faq-order" className="text-white">
-                              Order
-                            </Label>
-                            <Input
-                              id="create-faq-order"
-                              type="number"
-                              value={faqForm.order}
-                              onChange={(e) => setFaqForm({
-                                ...faqForm,
-                                order: parseInt(e.target.value) || 0
-                              })}
-                              className="bg-gray-700 border-gray-600 text-white"
-                              placeholder="0"
-                            />
-                          </div>
-                          <div className="flex items-center space-x-2 mt-6">
-                            <input
-                              type="checkbox"
-                              id="create-faq-active"
-                              checked={faqForm.isActive}
-                              onChange={(e) => setFaqForm({
-                                ...faqForm,
-                                isActive: e.target.checked
-                              })}
-                              className="rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500"
-                            />
-                            <Label htmlFor="create-faq-active" className="text-white">
-                              Active
-                            </Label>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={createFaq}
-                            className="bg-purple-600 hover:bg-purple-700 text-white"
-                          >
-                            Create FAQ
-                          </Button>
-                          <Button
-                            variant="outline"
-                            onClick={() => setCreateFaqDialogOpen(false)}
-                            className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {faqs.map((faq) => (
-                    <Card key={faq.id} className="bg-gray-800/50 border-gray-600">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-white mb-2">
-                              {faq.question}
-                            </h3>
-                            <div className="text-gray-300 text-sm leading-relaxed">
-                              {faq.answer}
-                            </div>
-                          </div>
-                          <div className="flex flex-col items-end gap-2 ml-4">
-                            <div className="flex gap-2">
-                              <Badge variant="outline" className="text-gray-300 border-gray-300">
-                                Order: {faq.order}
-                              </Badge>
-                              <Badge className={faq.isActive ? "bg-green-600 text-white" : "bg-red-600 text-white"}>
-                                {faq.isActive ? "Active" : "Inactive"}
-                              </Badge>
-                            </div>
-                            <div className="text-xs text-gray-400">
-                              Created: {new Date(faq.createdAt).toLocaleDateString()}
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex gap-2 flex-wrap">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => openEditFaqDialog(faq)}
-                            className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
-                          >
-                            Edit FAQ
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                            onClick={() => deleteFaq(faq.id)}
-                            className="bg-red-600 hover:bg-red-700 text-white"
-                          >
-                            Delete FAQ
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-
-                  {faqs.length === 0 && (
-                    <div className="text-center py-8">
-                      <p className="text-gray-300">No FAQs created yet.</p>
-                      <p className="text-sm text-gray-400 mt-2">
-                        Create your first FAQ using the button above.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
           {/* Settings Tab */}
           <TabsContent value="settings">
             <Card className="bg-gray-800/50 backdrop-blur-sm border-gray-600">
@@ -1613,101 +1287,6 @@ export default function AdminDashboard() {
               <Button
                 variant="outline"
                 onClick={() => setBulkEmailDialogOpen(false)}
-                className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Edit FAQ Dialog */}
-      <Dialog open={editFaqDialogOpen} onOpenChange={setEditFaqDialogOpen}>
-        <DialogContent className="bg-gray-800 border-gray-600 max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="text-white">
-              Edit FAQ
-            </DialogTitle>
-            <DialogDescription className="text-gray-300">
-              Update the frequently asked question
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="edit-faq-question" className="text-white">
-                Question
-              </Label>
-              <Input
-                id="edit-faq-question"
-                value={faqForm.question}
-                onChange={(e) => setFaqForm({
-                  ...faqForm,
-                  question: e.target.value
-                })}
-                className="bg-gray-700 border-gray-600 text-white"
-                placeholder="Enter the question..."
-              />
-            </div>
-            <div>
-              <Label htmlFor="edit-faq-answer" className="text-white">
-                Answer
-              </Label>
-              <Textarea
-                id="edit-faq-answer"
-                value={faqForm.answer}
-                onChange={(e) => setFaqForm({
-                  ...faqForm,
-                  answer: e.target.value
-                })}
-                className="bg-gray-700 border-gray-600 text-white"
-                rows={6}
-                placeholder="Enter the answer..."
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="edit-faq-order" className="text-white">
-                  Order
-                </Label>
-                <Input
-                  id="edit-faq-order"
-                  type="number"
-                  value={faqForm.order}
-                  onChange={(e) => setFaqForm({
-                    ...faqForm,
-                    order: parseInt(e.target.value) || 0
-                  })}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  placeholder="0"
-                />
-              </div>
-              <div className="flex items-center space-x-2 mt-6">
-                <input
-                  type="checkbox"
-                  id="edit-faq-active"
-                  checked={faqForm.isActive}
-                  onChange={(e) => setFaqForm({
-                    ...faqForm,
-                    isActive: e.target.checked
-                  })}
-                  className="rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500"
-                />
-                <Label htmlFor="edit-faq-active" className="text-white">
-                  Active
-                </Label>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={updateFaq}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                Update FAQ
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setEditFaqDialogOpen(false)}
                 className="text-gray-800 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-900 hover:border-gray-400"
               >
                 Cancel

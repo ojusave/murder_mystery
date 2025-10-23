@@ -231,32 +231,6 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
             </CardContent>
           </Card>
 
-          {/* Quick Actions */}
-          <Card className="bg-black/30 backdrop-blur-sm border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-xl font-bold text-white">
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-purple-900/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">📧 Check Email</h3>
-                  <p className="text-sm text-gray-300 mb-3">
-                    We'll send updates to {guest.email} about your RSVP status and character assignment.
-                  </p>
-                </div>
-                
-                <div className="bg-purple-900/30 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-white mb-2">🔗 Bookmark This Page</h3>
-                  <p className="text-sm text-gray-300 mb-3">
-                    Save this link to easily check your status: <br/>
-                    <code className="text-xs bg-gray-800 px-2 py-1 rounded">Your personal guest portal</code>
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Cancel Registration */}
           {guest.status !== 'cancelled' && (

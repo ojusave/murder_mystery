@@ -53,9 +53,9 @@ A complete Next.js application for managing a Halloween murder mystery party, bu
    RESEND_API_KEY="your-resend-api-key"
    APP_BASE_URL="http://localhost:3000"
    RSVP_DEADLINE="2024-10-30"
-   EMAIL_FROM="Black Lotus <noreply@saveoj.us>"
-   ADMIN_EMAIL="admin@blacklotus.party"
-   ADMIN_PASSWORD="your-admin-password"
+   EMAIL_FROM="Your Event Name <noreply@yourdomain.com>"
+   ADMIN_EMAIL="admin@yourdomain.com"
+   ADMIN_PASSWORD="your-secure-admin-password"
    ```
 
 3. **Database Setup**
@@ -133,12 +133,12 @@ A complete Next.js application for managing a Halloween murder mystery party, bu
 | `RESEND_API_KEY` | Resend API key for emails | Yes | - |
 | `APP_BASE_URL` | Application base URL | Yes | - |
 | `RSVP_DEADLINE` | RSVP deadline date | No | `2024-10-30` |
-| `EMAIL_FROM` | Email sender address | No | `Black Lotus <noreply@saveoj.us>` |
+| `EMAIL_FROM` | Email sender address | No | `Your Event Name <noreply@yourdomain.com>` |
 | `MAX_GUESTS` | Maximum guest capacity | No | `50` |
 | `RATE_LIMIT_PER_MINUTE` | Rate limit per minute | No | `5` |
 | `RATE_LIMIT_PER_DAY` | Rate limit per day | No | `100` |
-| `ADMIN_EMAIL` | Admin user email | No | `admin@blacklotus.party` |
-| `ADMIN_PASSWORD` | Admin user password | No | `admin123` |
+| `ADMIN_EMAIL` | Admin user email | No | `admin@yourdomain.com` |
+| `ADMIN_PASSWORD` | Admin user password | No | `CHANGE_THIS_PASSWORD` |
 
 ### Database Schema
 
@@ -176,6 +176,27 @@ The application uses Prisma with the following main models:
 - **Tokenized Access**: Unguessable guest portal tokens
 - **Admin Authentication**: Secure credential-based auth
 - **SQL Injection Protection**: Prisma ORM
+
+## ⚠️ Security Best Practices
+
+### Credential Management
+- **Never commit real credentials** to version control
+- **Use environment variables** for all sensitive data
+- **Rotate secrets regularly** (API keys, passwords, etc.)
+- **Use strong passwords** (minimum 12 characters, mixed case, numbers, symbols)
+- **Enable 2FA** where possible (Resend, Render, etc.)
+
+### Environment Variables
+- **Never expose real values** in documentation or examples
+- **Use placeholder values** like `your-api-key-here` or `CHANGE_THIS_PASSWORD`
+- **Keep `.env.local` in `.gitignore`** (never commit)
+- **Use different credentials** for development, staging, and production
+
+### Deployment Security
+- **Set environment variables** in Render dashboard (not in code)
+- **Use Render's environment groups** for shared variables
+- **Enable HTTPS** for all production services
+- **Regular security updates** for dependencies
 
 ## 📊 Admin Features
 
@@ -376,7 +397,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 For support and questions:
 
-- **Email**: host@blacklotus.party
+- **Email**: your-support-email@yourdomain.com
 - **Issues**: GitHub Issues
 - **Documentation**: This README
 

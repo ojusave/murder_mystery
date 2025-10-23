@@ -142,7 +142,7 @@ const staticFaqs: FAQ[] = [
   {
     id: 'faq-19',
     question: 'Was this (and the waiver) ChatGPT generated?',
-    answer: "You bet, you nosy bastard. We used AI to write this because it's better at being an asshole than most humans. We bounced between ChatGPT and Claude like a fucking ping-pong ball until we got the perfect level of dickhead. Turns out Claude's 'helpful, harmless, honest' motto is complete bullshit - it's actually great at roasting people. Soon AGI will rule over all of us anyway, so get used to AI being better than you at everything, including being a complete dick.",
+    answer: "Of course and not just ChatGPT, but Claude too. Apparently AI is better at being an asshole than most humans. We bounced between ChatGPT and Claude like a fucking ping-pong ball until we got the perfect level of dickhead. Turns out Claude's 'helpful, harmless, honest' motto is complete bullshit - it's actually great at roasting people. Soon AGI will rule over all of us anyway, so get used to AI being better than you at everything, including being a complete dick.",
     order: 19,
     isActive: true
   },

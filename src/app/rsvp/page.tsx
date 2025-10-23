@@ -565,6 +565,7 @@ export default function RSVPForm() {
                         and designed to make me feel like a worthless piece of shit - <strong className="text-yellow-300">all in good fun</strong>. 
                         I agree to receive these emails and will not complain about their tone, content, or delivery method. 
                         I understand this is part of the experience and I'm here for it. 
+                        <strong className="text-red-300">The hosts, email senders, and anyone associated with this event are not responsible for any mental breakdown, emotional distress, or psychological harm that may result from receiving these communications.</strong>
                         If you can't handle harsh words,{' '}
                         <Link 
                           href="/faq"

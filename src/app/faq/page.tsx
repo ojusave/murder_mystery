@@ -164,13 +164,19 @@ export default function FAQPage() {
   useEffect(() => {
     const fetchFAQs = async () => {
       try {
+        console.log('Fetching FAQs from database...');
         const response = await fetch('/api/faqs');
+        console.log('Response status:', response.status);
         if (response.ok) {
           const data = await response.json();
+          console.log('FAQ data received:', data.length, 'items');
           if (data && data.length > 0) {
             setFaqs(data);
             setOpenFAQ(data[0]?.id || null);
+            console.log('FAQs updated from database');
           }
+        } else {
+          console.error('Failed to fetch FAQs:', response.status, response.statusText);
         }
       } catch (error) {
         console.error('Failed to fetch FAQs from database, using static data:', error);

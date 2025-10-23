@@ -465,7 +465,6 @@ export async function sendCharacterAssignedEmail(guest: any) {
           <li>Read your character background (if you can read)</li>
           <li>Practice your lines (if you can remember them)</li>
           <li>Don't be late (we're not waiting for you)</li>
-          <li>Bring snacks (because we're not feeding you)</li>
           <li>Try not to break character (we know it's hard for you)</li>
         </ul>
       </div>
@@ -519,7 +518,6 @@ Preparation Tips (Because You'll Need Them):
 • Read your character background (if you can read)
 • Practice your lines (if you can remember them)
 • Don't be late (we're not waiting for you)
-• Bring snacks (because we're not feeding you)
 • Try not to break character (we know it's hard for you)
 
 View Your Guest Portal: ${guestPortalUrl}

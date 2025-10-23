@@ -1,7 +1,6 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import { prisma } from '@/lib/db';
 import Link from 'next/link';
+import FAQClient from './faq-client';
 
 interface FAQ {
   id: string;
@@ -155,42 +154,28 @@ const staticFaqs: FAQ[] = [
   }
 ];
 
-export default function FAQPage() {
-  const [faqs, setFaqs] = useState<FAQ[]>(staticFaqs);
-  const [loading, setLoading] = useState(true);
-  const [openFAQ, setOpenFAQ] = useState<string | null>(staticFaqs[0]?.id || null);
+async function getFAQs(): Promise<FAQ[]> {
+  try {
+    const faqs = await prisma.fAQ.findMany({
+      where: {
+        isActive: true
+      },
+      orderBy: [
+        { order: 'asc' },
+        { createdAt: 'asc' }
+      ]
+    });
+    
+    console.log('Fetched FAQs from database:', faqs.length);
+    return faqs.length > 0 ? faqs : staticFaqs;
+  } catch (error) {
+    console.error('Error fetching FAQs from database, using static data:', error);
+    return staticFaqs;
+  }
+}
 
-  // Fetch FAQs from database
-  useEffect(() => {
-    const fetchFAQs = async () => {
-      try {
-        console.log('Fetching FAQs from database...');
-        const response = await fetch('/api/faqs');
-        console.log('Response status:', response.status);
-        if (response.ok) {
-          const data = await response.json();
-          console.log('FAQ data received:', data.length, 'items');
-          if (data && data.length > 0) {
-            setFaqs(data);
-            setOpenFAQ(data[0]?.id || null);
-            console.log('FAQs updated from database');
-          }
-        } else {
-          console.error('Failed to fetch FAQs:', response.status, response.statusText);
-        }
-      } catch (error) {
-        console.error('Failed to fetch FAQs from database, using static data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFAQs();
-  }, []);
-
-  const toggleFAQ = (id: string) => {
-    setOpenFAQ(openFAQ === id ? null : id);
-  };
+export default async function FAQPage() {
+  const faqs = await getFAQs();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
@@ -208,49 +193,7 @@ export default function FAQPage() {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-4">
-          {faqs.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-300">No FAQs available yet. Check back soon!</p>
-            </div>
-          ) : (
-            faqs.map((faq) => {
-              const isOpen = openFAQ === faq.id;
-
-              return (
-                <div
-                  key={faq.id}
-                  className="bg-gray-800/60 rounded-xl shadow-xl overflow-hidden border border-gray-700 hover:border-purple-500/50 transition-all duration-300"
-                >
-                  <button
-                    onClick={() => toggleFAQ(faq.id)}
-                    className="w-full text-left px-6 py-5 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-                  >
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <span className="text-xl font-semibold text-white">{faq.question}</span>
-                      </div>
-                      <span className={`text-2xl font-bold text-purple-400 transform transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}>
-                        +
-                      </span>
-                    </div>
-                  </button>
-                  <div
-                    className={`px-6 transition-all duration-300 ease-in-out ${
-                      isOpen
-                        ? 'max-h-[500px] py-4 opacity-100'
-                        : 'max-h-0 py-0 opacity-0 overflow-hidden'
-                    }`}
-                  >
-                    <p className="text-gray-300 leading-relaxed text-lg">
-                      {faq.answer}
-                    </p>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
+        <FAQClient faqs={faqs} />
 
         <div className="text-center text-gray-400 mt-12">
           Still confused? <Link href="/rsvp" className="text-purple-400 hover:text-purple-300">RSVP</Link> or

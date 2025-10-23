@@ -306,7 +306,7 @@ async function sendCharacterAssignedEmail(guest) {
       </div>
       <p>We're not excited to see you there, but we'll pretend to be until you actually show up.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
-      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen?)</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: what's the worst that could happen?)</p>
     </div>
   `;
 

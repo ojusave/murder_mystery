@@ -30,7 +30,7 @@ export async function sendApprovalEmail(guest: any) {
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
         <p><strong>Date:</strong> November 1st, 2025 (mark your calendar or don't, we're not your mom)</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (that's 4 hours of mystery, folks)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
         <p><strong>Location:</strong> ${REAL_ADDRESS} (GPS exists for a reason)</p>
         <p><strong>Dress Code:</strong> Costumes encouraged (or required, depending on how much we like your outfit)</p>
       </div>
@@ -78,7 +78,7 @@ Surprise! Your RSVP didn't get lost in our digital void. You're officially invit
 
 Event Details:
 • Date: November 1st, 2025 (mark your calendar or don't, we're not your mom)
-• Time: 8:00 PM - 12:00 AM (that's 4 hours of mystery, folks)
+• Time: 8:00 PM - 12:00 AM
 • Location: ${REAL_ADDRESS} (GPS exists for a reason)
 • Dress Code: Costumes encouraged (or required, depending on how much we like your outfit)
 
@@ -490,7 +490,7 @@ export async function sendCharacterAssignedEmail(guest: any) {
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
         <p><strong>Date:</strong> November 1st, 2025 (in case you forgot)</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (that's 4 hours of your life we're wasting)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (that's your life we're wasting)</p>
         <p><strong>Location:</strong> ${REAL_ADDRESS} (still the same place, still not moving)</p>
         <p><strong>Dress Code:</strong> Costumes encouraged! (seriously, don't be that person who shows up in jeans)</p>
       </div>
@@ -528,7 +528,7 @@ export async function sendCharacterAssignedEmail(guest: any) {
       
       <p>We're not excited to see you there, but we'll pretend to be until you actually show up and inevitably disappoint us.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
-      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen? Besides ruining everyone else's fun, that is.)</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: what's the worst that could happen? Besides ruining everyone else's fun, that is.)</p>
     </div>
   `;
 
@@ -546,7 +546,7 @@ Character Details:
 
 Event Details:
 • Date: November 1st, 2025 (in case you forgot)
-• Time: 8:00 PM - 12:00 AM (that's 4 hours of your life we're wasting)
+• Time: 8:00 PM - 12:00 AM (that's your life we're wasting)
 • Location: ${REAL_ADDRESS} (still the same place, still not moving)
 • Dress Code: Costumes encouraged! (seriously, don't be that person who shows up in jeans)
 
@@ -568,7 +568,7 @@ We're not excited to see you there, but we'll pretend to be until you actually s
 Best regards,
 BrO-J & Half-Chai
 
-(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen? Besides ruining everyone else's fun, that is.)`;
+(P.S. - If you're having second thoughts, just remember: what's the worst that could happen? Besides ruining everyone else's fun, that is.)`;
 
   try {
     const result = await resend.emails.send({
@@ -624,7 +624,7 @@ export async function sendCharacterUpdatedEmail(guest: any) {
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
         <p><strong>Date:</strong> November 1st, 2025 (still the same date, still not changing)</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (still 4 hours of your life we're wasting)</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (still your life we're wasting)</p>
         <p><strong>Location:</strong> ${REAL_ADDRESS} (still the same place, still not moving)</p>
       </div>
       

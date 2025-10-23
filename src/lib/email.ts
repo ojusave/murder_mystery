@@ -441,14 +441,14 @@ export async function sendCharacterAssignedEmail(guest: any) {
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
       <h2 style="color: #a855f7;">Your Character Assignment - Try Not to Ruin It</h2>
-      <p>Hi ${guest.legalName},</p>
-      <p>We've assigned you a character for The Black Lotus Murder Mystery. Try not to embarrass yourself too much.</p>
+      <p>Hey ${guest.legalName},</p>
+      <p>We've assigned you a character for The Black Lotus Murder Mystery. Try not to embarrass yourself too much, but we're not holding our breath.</p>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0; color: #a855f7;">Character Details:</h3>
         <p><strong>Name:</strong> ${character.displayName}</p>
         <p><strong>Background:</strong> ${character.traits.backstory}</p>
-        <p><strong>Your Role:</strong> Try to act like you belong here</p>
+        <p><strong>Your Role:</strong> Try to act like you belong here (spoiler: you don't)</p>
       </div>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -460,12 +460,13 @@ export async function sendCharacterAssignedEmail(guest: any) {
       </div>
       
       <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <h4 style="margin-top: 0; color: #f59e0b;">Preparation Tips:</h4>
+        <h4 style="margin-top: 0; color: #f59e0b;">Preparation Tips (Because You'll Need Them):</h4>
         <ul style="margin: 0; padding-left: 20px;">
           <li>Read your character background (if you can read)</li>
           <li>Practice your lines (if you can remember them)</li>
           <li>Don't be late (we're not waiting for you)</li>
           <li>Bring snacks (because we're not feeding you)</li>
+          <li>Try not to break character (we know it's hard for you)</li>
         </ul>
       </div>
       
@@ -490,20 +491,66 @@ export async function sendCharacterAssignedEmail(guest: any) {
         </div>
       </div>
       
-      <p>We're not excited to see you there, but we'll pretend to be until you actually show up.</p>
+      <p>We're not excited to see you there, but we'll pretend to be until you actually show up and inevitably disappoint us.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
-      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen?)</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen? Besides ruining everyone else's fun, that is.)</p>
     </div>
   `;
 
+  const plainText = `The Black Lotus
+Your Character Assignment - Try Not to Ruin It
+
+Hey ${guest.legalName},
+
+We've assigned you a character for The Black Lotus Murder Mystery. Try not to embarrass yourself too much, but we're not holding our breath.
+
+Character Details:
+• Name: ${character.displayName}
+• Background: ${character.traits.backstory}
+• Your Role: Try to act like you belong here (spoiler: you don't)
+
+Event Details:
+• Date: November 1st, 2025 (in case you forgot)
+• Time: 8:00 PM - 12:00 AM (that's 4 hours of your life we're wasting)
+• Location: ${REAL_ADDRESS} (still the same place, still not moving)
+• Dress Code: Costumes encouraged! (seriously, don't be that person who shows up in jeans)
+
+Preparation Tips (Because You'll Need Them):
+• Read your character background (if you can read)
+• Practice your lines (if you can remember them)
+• Don't be late (we're not waiting for you)
+• Bring snacks (because we're not feeding you)
+• Try not to break character (we know it's hard for you)
+
+View Your Guest Portal: ${guestPortalUrl}
+
+Add to Calendar:
+• Google Calendar: ${googleCalendarUrl}
+• Outlook: ${outlookUrl}
+• Apple Calendar: ${appleCalendarUrl}
+
+We're not excited to see you there, but we'll pretend to be until you actually show up and inevitably disappoint us.
+
+Best regards,
+BrO-J & Half-Chai
+
+(P.S. - If you're having second thoughts, just remember: it's only 4 hours of your life. What's the worst that could happen? Besides ruining everyone else's fun, that is.)`;
+
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
       subject: 'Your Character Assignment - Try Not to Ruin It',
       html,
     });
     console.log(`Character assignment email sent to ${guest.email}`);
+    
+    return {
+      success: true,
+      emailId: result.data?.id,
+      subject: 'Your Character Assignment - Try Not to Ruin It',
+      plainTextContent: plainText
+    };
   } catch (error) {
     console.error(`Error sending character assignment email to ${guest.email}:`, error);
     throw error;

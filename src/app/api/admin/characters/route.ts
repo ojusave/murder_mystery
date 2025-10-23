@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { sendCharacterAssignedEmail, sendCharacterUpdatedEmail, sendCharacterRemovedEmail } from '@/lib/email';
 
 export async function GET(request: NextRequest) {
   const session = await getServerAuth(request);
@@ -56,17 +57,41 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Queue email notification only if character is assigned to a guest
+    // Send email notification immediately if character is assigned to a guest
     if (guestId) {
-      await prisma.emailEvent.create({
-        data: {
-          guestId: guestId,
-          type: 'character_assigned',
-          status: 'queued',
-          subject: 'Character Assigned - The Black Lotus Murder Mystery',
-          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
-        },
-      });
+      try {
+        // Get the guest with character info for email
+        const guestWithCharacter = await prisma.guest.findUnique({
+          where: { id: guestId },
+          include: { character: true },
+        });
+        
+        if (guestWithCharacter) {
+          await sendCharacterAssignedEmail(guestWithCharacter);
+          
+          // Create email event for tracking
+          await prisma.emailEvent.create({
+            data: {
+              guestId: guestId,
+              type: 'character_assigned',
+              status: 'sent',
+              subject: 'Character Assigned - The Black Lotus Murder Mystery',
+              message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/${guestWithCharacter.token}\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+            },
+          });
+        }
+      } catch (emailError) {
+        console.error('Error sending character assignment email:', emailError);
+        // Still create email event for tracking, but mark as failed
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guestId,
+            type: 'character_assigned',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      }
     }
 
     return NextResponse.json({ success: true, character });
@@ -128,29 +153,77 @@ export async function PATCH(request: NextRequest) {
       include: { guest: true },
     });
 
-    // Queue email notifications based on what changed
+    // Send email notifications immediately based on what changed
     if (guestId && !currentCharacter.guestId) {
       // Character is being assigned to a guest for the first time
-      await prisma.emailEvent.create({
-        data: {
-          guestId: guestId,
-          type: 'character_assigned',
-          status: 'queued',
-          subject: 'Character Assigned - The Black Lotus Murder Mystery',
-          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
-        },
-      });
+      try {
+        // Get the guest with updated character info
+        const guestWithCharacter = await prisma.guest.findUnique({
+          where: { id: guestId },
+          include: { character: true },
+        });
+        
+        if (guestWithCharacter) {
+          await sendCharacterAssignedEmail(guestWithCharacter);
+          
+          // Create email event for tracking
+          await prisma.emailEvent.create({
+            data: {
+              guestId: guestId,
+              type: 'character_assigned',
+              status: 'sent',
+              subject: 'Character Assigned - The Black Lotus Murder Mystery',
+              message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/${guestWithCharacter.token}\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+            },
+          });
+        }
+      } catch (emailError) {
+        console.error('Error sending character assignment email:', emailError);
+        // Still create email event for tracking, but mark as failed
+        await prisma.emailEvent.create({
+          data: {
+            guestId: guestId,
+            type: 'character_assigned',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      }
     } else if (currentCharacter.guestId && (displayName !== undefined || backstory !== undefined)) {
       // Character details are being updated for an assigned guest
-      await prisma.emailEvent.create({
-        data: {
-          guestId: currentCharacter.guestId,
-          type: 'character_updated',
-          status: 'queued',
-          subject: 'Character Updated - The Black Lotus Murder Mystery',
-          message: `🎭 Your character details have been updated!\n\nCheck your guest portal to see the updated character information and backstory.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/[your-token]\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
-        },
-      });
+      try {
+        // Get the guest with updated character info
+        const guestWithCharacter = await prisma.guest.findUnique({
+          where: { id: currentCharacter.guestId },
+          include: { character: true },
+        });
+        
+        if (guestWithCharacter) {
+          await sendCharacterUpdatedEmail(guestWithCharacter);
+          
+          // Create email event for tracking
+          await prisma.emailEvent.create({
+            data: {
+              guestId: currentCharacter.guestId,
+              type: 'character_updated',
+              status: 'sent',
+              subject: 'Character Updated - The Black Lotus Murder Mystery',
+              message: `🎭 Your character details have been updated!\n\nCheck your guest portal to see the updated character information and backstory.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/${guestWithCharacter.token}\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+            },
+          });
+        }
+      } catch (emailError) {
+        console.error('Error sending character updated email:', emailError);
+        // Still create email event for tracking, but mark as failed
+        await prisma.emailEvent.create({
+          data: {
+            guestId: currentCharacter.guestId,
+            type: 'character_updated',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      }
     }
 
     return NextResponse.json({ success: true, character });
@@ -193,17 +266,33 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Send email notification if character was assigned to a guest
+    // Send email notification immediately if character was assigned to a guest
     if (character.guestId) {
-      await prisma.emailEvent.create({
-        data: {
-          guestId: character.guestId,
-          type: 'character_removed',
-          status: 'queued',
-          subject: 'Character Assignment Removed - The Black Lotus Murder Mystery',
-          message: `🎭 Your character assignment has been removed.\n\nThis may be due to changes in the event planning or character assignments. You may receive a new character assignment soon.\n\nIf you have any questions, please contact the hosts directly.\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
-        },
-      });
+      try {
+        await sendCharacterRemovedEmail(character.guest);
+        
+        // Create email event for tracking
+        await prisma.emailEvent.create({
+          data: {
+            guestId: character.guestId,
+            type: 'character_removed',
+            status: 'sent',
+            subject: 'Character Assignment Removed - The Black Lotus Murder Mystery',
+            message: `🎭 Your character assignment has been removed.\n\nThis may be due to changes in the event planning or character assignments. You may receive a new character assignment soon.\n\nIf you have any questions, please contact the hosts directly.\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+          },
+        });
+      } catch (emailError) {
+        console.error('Error sending character removed email:', emailError);
+        // Still create email event for tracking, but mark as failed
+        await prisma.emailEvent.create({
+          data: {
+            guestId: character.guestId,
+            type: 'character_removed',
+            status: 'failed',
+            error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          },
+        });
+      }
     }
 
     // Delete the character

@@ -131,36 +131,10 @@ export async function POST(request: NextRequest) {
         await sendHostNotificationEmail(guest);
         console.log('Host notification email sent successfully');
         
-        // Create email event for host notification
-        try {
-          await prisma.emailEvent.create({
-            data: {
-              guestId: guest.id,
-              type: 'host_notification',
-              status: 'sent',
-            },
-          });
-        } catch (emailEventError) {
-          console.error('Failed to create email event for host notification:', emailEventError);
-          // Don't fail the entire request for email event creation failure
-        }
+        // Note: We don't create an email event for host notifications since they're internal
       } catch (hostEmailError) {
         console.error('Host notification email failed:', hostEmailError);
-        
-        // Still create email event for tracking, but mark as failed
-        try {
-          await prisma.emailEvent.create({
-            data: {
-              guestId: guest.id,
-              type: 'host_notification',
-              status: 'failed',
-              error: hostEmailError instanceof Error ? hostEmailError.message : 'Unknown error',
-            },
-          });
-        } catch (emailEventError) {
-          console.error('Failed to create email event for failed host notification:', emailEventError);
-          // Don't fail the entire request for email event creation failure
-        }
+        // Don't fail the entire request for host email failure
       }
     } catch (emailError) {
       console.error('RSVP confirmation email failed:', emailError);

@@ -1,7 +1,7 @@
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const APP_BASE_URL = process.env.APP_BASE_URL || 'https://murder-mystery-zumz.onrender.com';
+const APP_BASE_URL = process.env.APP_BASE_URL || 'https://mm.saveoj.us';
 const EMAIL_FROM = process.env.EMAIL_FROM || 'Black Lotus <noreply@saveoj.us>';
 const REAL_ADDRESS = process.env.REAL_ADDRESS || '40849 High Street, Fremont';
 
@@ -43,14 +43,14 @@ export async function sendApprovalEmail(guest: any) {
       
       <div style="text-align: center; margin: 20px 0;">
         <h4 style="margin-bottom: 15px; color: #f59e0b;">📅 Add to Calendar:</h4>
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center;">
+          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Google Calendar
           </a>
-          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Outlook
           </a>
-          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Apple Calendar
           </a>
         </div>
@@ -65,7 +65,7 @@ export async function sendApprovalEmail(guest: any) {
       
       <p>Questions? Concerns? Existential dread about attending a murder mystery? Check out our <a href="${APP_BASE_URL}/faq" style="color: #f59e0b; text-decoration: underline;">FAQ page</a> for answers to the most common questions (and some uncommon ones too). We're here for you, but we're not thrilled about it.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
-      <p style="font-size: 12px; color: #9ca3af;">(P.S. - The murder is fictional. The mystery is real. The snacks are delicious. You're still annoying.)</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - The murder is fictional. The mystery is real. You're still annoying.)</p>
     </div>
   `;
 
@@ -99,7 +99,7 @@ Questions? Concerns? Existential dread about attending a murder mystery? Check o
 Best regards,
 BrO-J & Half-Chai
 
-(P.S. - The murder is fictional. The mystery is real. The snacks are delicious. You're still annoying.)`;
+(P.S. - The murder is fictional. The mystery is real. You're still annoying.)`;
 
   try {
     const result = await resend.emails.send({
@@ -324,14 +324,14 @@ export async function sendBulkEmail(guests: any[], subject: string, message: str
       
       <div style="text-align: center; margin: 20px 0;">
         <h4 style="margin-bottom: 15px; color: #f59e0b;">📅 Add Event to Calendar:</h4>
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center;">
+          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Google Calendar
           </a>
-          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Outlook
           </a>
-          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Apple Calendar
           </a>
         </div>
@@ -477,14 +477,14 @@ export async function sendCharacterAssignedEmail(guest: any) {
       
       <div style="text-align: center; margin: 20px 0;">
         <h4 style="margin-bottom: 15px; color: #f59e0b;">📅 Add to Calendar:</h4>
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center;">
+          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Google Calendar
           </a>
-          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Outlook
           </a>
-          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Apple Calendar
           </a>
         </div>
@@ -703,14 +703,14 @@ export async function sendOneWeekReminderEmail(guest: any) {
       
       <div style="text-align: center; margin: 20px 0;">
         <h4 style="margin-bottom: 15px; color: #f59e0b;">📅 Add to Calendar:</h4>
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center;">
+          <a href="${googleCalendarUrl}" style="background: #4285f4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Google Calendar
           </a>
-          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${outlookUrl}" style="background: #0078d4; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Outlook
           </a>
-          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block;">
+          <a href="${appleCalendarUrl}" style="background: #007aff; color: white; padding: 12px 18px; text-decoration: none; border-radius: 6px; font-size: 14px; display: inline-block; margin: 5px;">
             📅 Apple Calendar
           </a>
         </div>

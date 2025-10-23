@@ -25,6 +25,7 @@ const formSchema = z.object({
   ackAdultThemes: z.boolean().refine(val => val === true, 'You must acknowledge adult themes'),
   ackWaiver: z.boolean().refine(val => val === true, 'You must agree to the waiver'),
   ackOffensiveEmails: z.boolean().refine(val => val === true, 'You must agree to receive offensive emails'),
+  ackIndemnification: z.boolean().refine(val => val === true, 'You must agree to the indemnification clause'),
 }).refine((data) => {
   // If charNameMode is "Other:", then charNameOther must be provided
   if (data.charNameMode === 'Other:' && (!data.charNameOther || data.charNameOther.trim() === '')) {
@@ -48,7 +49,8 @@ const calculateProgress = (data: Partial<FormData>): number => {
     'ackPairing',
     'ackAdultThemes',
     'ackWaiver',
-    'ackOffensiveEmails'
+    'ackOffensiveEmails',
+    'ackIndemnification'
   ];
   
   let completed = 0;
@@ -87,6 +89,7 @@ export default function RSVPForm() {
       ackAdultThemes: false,
       ackWaiver: false,
       ackOffensiveEmails: false,
+      ackIndemnification: false,
     },
   });
 
@@ -579,6 +582,40 @@ export default function RSVPForm() {
                         <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
                           <span>⚠️</span>
                           {form.formState.errors.ackOffensiveEmails.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Indemnification Agreement */}
+                <div className="p-4 bg-orange-900/30 rounded-lg border border-orange-700/50">
+                  <div className="flex items-start space-x-3">
+                    <Checkbox
+                      id="ackIndemnification"
+                      checked={form.watch('ackIndemnification')}
+                      onCheckedChange={(checked) => {
+                        form.setValue('ackIndemnification', checked as boolean);
+                        form.trigger('ackIndemnification');
+                      }}
+                      className="mt-1"
+                    />
+                    <div className="flex-1">
+                      <Label htmlFor="ackIndemnification" className="text-white font-medium cursor-pointer">
+                        Comprehensive Indemnification Agreement *
+                      </Label>
+                      <p className="text-gray-300 text-sm mt-2">
+                        Attendees agree to indemnify, protect, defend, release, and hold harmless the Host from all liability to them, 
+                        their invitees/guests, their next of kin, their conservators, assigns, heirs, guardians, or other legal representatives, 
+                        employers, government entities, law enforcement agencies, intelligence agencies, non-state actors, and any other third-party 
+                        entities for any and all claims, demands, losses, or damages, suits, fines, including court costs and attorneys' fees, 
+                        for any injury, illness, illegal activities, or mental harm including but not limited to offense, hurt, or shock arising 
+                        prior to, during, or after the Party. Attendees hereby waive all legal rights to pursue any form of legal action against the Host.
+                      </p>
+                      {form.formState.errors.ackIndemnification && (
+                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                          <span>⚠️</span>
+                          {form.formState.errors.ackIndemnification.message}
                         </p>
                       )}
                     </div>

@@ -42,8 +42,8 @@ const staticFaqs: FAQ[] = [
   },
   {
     id: 'faq-5',
-    question: 'Can I bring a friend?',
-    answer: "Yes, as long as they RSVP too. Make sure they aren't creepy fucks, perverts, \"real\" murders and other criminals",
+    question: 'Can I bring a friend, girlfriend, boyfriend, spouse, etc.?',
+    answer: "Yes, as long as they RSVP too. Make sure they aren't creepy fucks, perverts, \"real\" murders and other criminals, and you not getting them against their will",
     order: 5,
     isActive: true
   },

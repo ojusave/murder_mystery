@@ -114,7 +114,7 @@ const staticFaqs: FAQ[] = [
   {
     id: 'faq-15',
     question: 'What topics are off limit?',
-    answer: "Tech, work, crypto, promotions, investments, layoffs, \"hustle,\" stocks, startup bullshit, career advice, job references, LinkedIn lunatic talk, and anything else that makes people want to kill themselves from boredom. This is a party, not a networking event. Shut the fuck up and stay in character.",
+    answer: "Tech, work, crypto, promotions, investments, layoffs, \"hustle,\" stocks, startup bullshit, career advice, job references, visa, immigration, LinkedIn lunatic talk, and anything else that makes people want to kill themselves from boredom. This is a party, not a networking event. Shut the fuck up and stay in character.",
     order: 15,
     isActive: true
   },

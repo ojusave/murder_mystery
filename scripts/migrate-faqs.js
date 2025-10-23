@@ -128,7 +128,7 @@ async function main() {
   
   try {
     // Check if FAQs already exist
-    const existingCount = await prisma.fAQ.count()
+    const existingCount = await prisma.FAQ.count()
     if (existingCount > 0) {
       console.log(`Found ${existingCount} existing FAQs. Skipping migration.`)
       return
@@ -136,7 +136,7 @@ async function main() {
 
     // Create all FAQs
     for (const faq of existingFaqs) {
-      await prisma.fAQ.create({
+      await prisma.FAQ.create({
         data: {
           question: faq.question,
           answer: faq.answer,

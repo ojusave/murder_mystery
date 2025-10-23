@@ -146,7 +146,7 @@ export async function POST() {
         },
         {
           question: 'Was this (and the waiver) ChatGPT generated?',
-          answer: "You bet, you nosy bastard. We used AI to write this because we figured it could do a better job than most humans at explaining things clearly. Plus, ChatGPT doesn't get tired of answering the same stupid questions over and over again like we do. And yes, even all these curse words and offensive content were written by AI - apparently it's better at being an asshole than most humans too. Soon AGI will rule over all of us anyway, so you might as well get used to AI being better than you at everything, including being a complete dick.",
+          answer: "You bet, you nosy bastard. We used AI to write this because we figured it could do a better job than most humans at explaining things clearly. We bounced between ChatGPT and Claude like a fucking ping-pong ball until we got the perfect level of asshole. Turns out both of them are better at insulting you than any human could ever be. And yes, even all these curse words and offensive content were written by AI - apparently ChatGPT's got the creativity and Claude's got the 'helpful, harmless, and honest' thing completely backwards. Soon AGI will rule over all of us anyway, so you might as well get used to AI being better than you at everything, including being a complete dick.",
           order: 20
         },
         {

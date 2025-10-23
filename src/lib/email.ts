@@ -393,21 +393,57 @@ export async function sendCancellationEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #e5e7eb;">Registration Cancelled</h2>
-      <p>Hi ${guest.legalName},</p>
-      <p>Your registration for The Black Lotus: A Halloween Murder Mystery has been successfully cancelled.</p>
-      <p>We're sorry you won't be able to join us for this event, but we understand that circumstances change.</p>
-      <p>If you change your mind and would like to re-register, please visit our RSVP page again.</p>
-      <p>Thank you for your interest in our event, and we hope to see you at future gatherings!</p>
+      <h2 style="color: #ef4444;">Registration Cancelled - Good Riddance</h2>
+      <p>Hey ${guest.legalName},</p>
+      <p>Your registration for The Black Lotus: A Halloween Murder Mystery has been successfully cancelled. We're not surprised you couldn't handle the commitment.</p>
+      
+      <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3 style="margin-top: 0; color: #ef4444;">What This Means:</h3>
+        <p>You're officially out of our murder mystery. No more emails, no more character assignments, no more pretending you're interesting enough for our event.</p>
+        <p>We're honestly relieved. One less person to worry about disappointing us on the night of the event.</p>
+        <p>Your spot has been freed up for someone who actually has the backbone to follow through with their commitments.</p>
+      </div>
+      
+      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <h4 style="margin-top: 0; color: #f59e0b;">If You Change Your Mind (We Doubt You Will):</h4>
+        <p>You can try to re-register, but honestly, we're not holding our breath. Once a quitter, always a quitter.</p>
+        <p>Just know that if you do come crawling back, we'll remember this little display of cowardice.</p>
+      </div>
+      
+      <p>Thanks for wasting our time and proving our low expectations of you were correct.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
+      <p style="font-size: 12px; color: #9ca3af;">(P.S. - Don't worry, we'll find someone more interesting to fill your spot. It won't be hard.)</p>
     </div>
   `;
+
+  const plainText = `The Black Lotus
+Registration Cancelled - Good Riddance
+
+Hey ${guest.legalName},
+
+Your registration for The Black Lotus: A Halloween Murder Mystery has been successfully cancelled. We're not surprised you couldn't handle the commitment.
+
+What This Means:
+• You're officially out of our murder mystery. No more emails, no more character assignments, no more pretending you're interesting enough for our event.
+• We're honestly relieved. One less person to worry about disappointing us on the night of the event.
+• Your spot has been freed up for someone who actually has the backbone to follow through with their commitments.
+
+If You Change Your Mind (We Doubt You Will):
+• You can try to re-register, but honestly, we're not holding our breath. Once a quitter, always a quitter.
+• Just know that if you do come crawling back, we'll remember this little display of cowardice.
+
+Thanks for wasting our time and proving our low expectations of you were correct.
+
+Best regards,
+BrO-J & Half-Chai
+
+(P.S. - Don't worry, we'll find someone more interesting to fill your spot. It won't be hard.)`;
 
   try {
     await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
-      subject: 'Registration Cancelled - The Black Lotus Murder Mystery',
+      subject: 'Registration Cancelled - Good Riddance',
       html,
     });
     console.log(`Cancellation email sent to ${guest.email}`);

@@ -5,7 +5,7 @@ import { Resend } from 'resend';
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
+const APP_BASE_URL = process.env.APP_BASE_URL || 'https://mm.saveoj.us';
 const EMAIL_FROM = process.env.EMAIL_FROM || 'Black Lotus <noreply@saveoj.us>';
 const RSVP_DEADLINE = process.env.RSVP_DEADLINE || '2024-10-30';
 

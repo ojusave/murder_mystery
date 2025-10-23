@@ -5,7 +5,7 @@ const { Resend } = require('resend');
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3000';
+const APP_BASE_URL = process.env.APP_BASE_URL || 'https://mm.saveoj.us';
 const EMAIL_FROM = process.env.EMAIL_FROM || 'Black Lotus <noreply@saveoj.us>';
 const REAL_ADDRESS = process.env.REAL_ADDRESS || '123 Mystery Lane, Fremont, CA 94536';
 const EVENT_DATE = process.env.EVENT_DATE || '2025-11-01';

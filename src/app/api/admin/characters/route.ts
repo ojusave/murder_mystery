@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
           type: 'character_assigned',
           status: 'queued',
           subject: 'Character Assigned - The Black Lotus Murder Mystery',
-          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
         },
       });
     }
@@ -137,7 +137,7 @@ export async function PATCH(request: NextRequest) {
           type: 'character_assigned',
           status: 'queued',
           subject: 'Character Assigned - The Black Lotus Murder Mystery',
-          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+          message: `🎭 Your character has been assigned!\n\nCheck your guest portal to see your character details and backstory. This will help you prepare for your role in the murder mystery.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/[your-token]\n\nGet ready to bring your character to life!\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
         },
       });
     } else if (currentCharacter.guestId && (displayName !== undefined || backstory !== undefined)) {
@@ -148,7 +148,7 @@ export async function PATCH(request: NextRequest) {
           type: 'character_updated',
           status: 'queued',
           subject: 'Character Updated - The Black Lotus Murder Mystery',
-          message: `🎭 Your character details have been updated!\n\nCheck your guest portal to see the updated character information and backstory.\n\nVisit your guest portal: ${process.env.APP_BASE_URL}/guest/[your-token]\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
+          message: `🎭 Your character details have been updated!\n\nCheck your guest portal to see the updated character information and backstory.\n\nVisit your guest portal: ${process.env.APP_BASE_URL || 'https://mm.saveoj.us'}/guest/[your-token]\n\nBest regards,\nBrO-J and Half-Chai (A D T)`,
         },
       });
     }

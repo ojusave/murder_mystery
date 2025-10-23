@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface FAQ {
@@ -156,8 +156,31 @@ const staticFaqs: FAQ[] = [
 ];
 
 export default function FAQPage() {
-  const [faqs] = useState<FAQ[]>(staticFaqs);
+  const [faqs, setFaqs] = useState<FAQ[]>(staticFaqs);
+  const [loading, setLoading] = useState(true);
   const [openFAQ, setOpenFAQ] = useState<string | null>(staticFaqs[0]?.id || null);
+
+  // Fetch FAQs from database
+  useEffect(() => {
+    const fetchFAQs = async () => {
+      try {
+        const response = await fetch('/api/faqs');
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setFaqs(data);
+            setOpenFAQ(data[0]?.id || null);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch FAQs from database, using static data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFAQs();
+  }, []);
 
   const toggleFAQ = (id: string) => {
     setOpenFAQ(openFAQ === id ? null : id);

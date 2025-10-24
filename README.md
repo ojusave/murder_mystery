@@ -4,7 +4,8 @@ A complete Next.js application for managing a Halloween murder mystery party, bu
 
 ## 🎭 Features
 
-- **Public Landing Page**: Event details, schedule, and CTAs
+- **Public Landing Page**: Event details and information
+- **FAQ Page**: Frequently asked questions with static content
 - **Multi-Section RSVP Form**: Comprehensive form with validation and progress saving
 - **Waiver Management**: Hosted legal document with structured HTML
 - **Tokenized Guest Portal**: Secure, read-only access for guests
@@ -265,6 +266,7 @@ npm run dev
 
 ### Public
 - `GET /` - Landing page
+- `GET /faq` - FAQ page
 - `GET /rsvp` - RSVP form
 - `GET /waiver` - Waiver page
 - `GET /thanks` - Thank you page
@@ -277,9 +279,11 @@ npm run dev
 - `GET /api/admin/guests` - List guests
 - `PATCH /api/admin/guests` - Update guest status
 - `POST /api/admin/characters` - Assign character
+- `POST /api/admin/bulk-email` - Send bulk emails
 
 ### System
 - `GET /api/health` - Health check
+- `POST /api/guest/cancel` - Cancel guest registration
 
 ## 🧪 Testing
 

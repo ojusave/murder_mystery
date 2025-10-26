@@ -20,25 +20,14 @@ async function getGuestByToken(token: string) {
   return guest;
 }
 
-async function getAllApprovedGuestsWithCharacters() {
-  const guests = await prisma.guest.findMany({
-    where: {
-      status: 'approved',
-      character: {
-        isNot: null,
-      },
-    },
-    include: {
-      character: true,
-    },
+async function getAllCharacters() {
+  const characters = await prisma.character.findMany({
     orderBy: {
-      character: {
-        displayName: 'asc',
-      },
+      displayName: 'asc',
     },
   });
 
-  return guests;
+  return characters;
 }
 
 export default async function GuestListPortal({ params }: GuestListPortalProps) {
@@ -50,13 +39,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
     notFound();
   }
 
-  const allGuests = await getAllApprovedGuestsWithCharacters();
-
-  // Get host information (these should be added manually or from config)
-  const hosts = [
-    { name: 'BrO-J', occupation: 'Host' },
-    { name: 'Half-Chai', occupation: 'Host' },
-  ];
+  const allCharacters = await getAllCharacters();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
@@ -83,7 +66,6 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
           </CardHeader>
           <CardContent>
             <div className="mt-6">
-              <h3 className="text-xl font-semibold text-white mb-4">Hosts</h3>
               <Table>
                 <TableHeader>
                   <TableRow className="border-gray-700 hover:bg-gray-800/50">
@@ -92,35 +74,15 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {hosts.map((host, index) => (
-                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
-                      <TableCell className="text-white font-medium">{host.name}</TableCell>
-                      <TableCell className="text-gray-300">{host.occupation}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-white mb-4">Guests</h3>
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-gray-700 hover:bg-gray-800/50">
-                    <TableHead className="text-white">Character Name</TableHead>
-                    <TableHead className="text-white">Character Occupation</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {allGuests.map((guest) => {
+                  {allCharacters.map((character) => {
                     // Extract occupation from character traits
-                    const occupation = guest.character?.traits && typeof guest.character.traits === 'object' 
-                      ? (guest.character.traits as any).occupation || 'N/A'
+                    const occupation = character.traits && typeof character.traits === 'object' 
+                      ? (character.traits as any).occupation || 'N/A'
                       : 'N/A';
                     
                     return (
-                      <TableRow key={guest.id} className="border-gray-700 hover:bg-gray-800/30">
-                        <TableCell className="text-white font-medium">{guest.character?.displayName || 'N/A'}</TableCell>
+                      <TableRow key={character.id} className="border-gray-700 hover:bg-gray-800/30">
+                        <TableCell className="text-white font-medium">{character.displayName}</TableCell>
                         <TableCell className="text-gray-300">{occupation}</TableCell>
                       </TableRow>
                     );
@@ -131,8 +93,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
 
             <div className="mt-8 bg-purple-900/30 rounded-lg p-4">
               <p className="text-gray-300 text-sm text-center">
-                This page shows all approved guests and their character assignments. 
-                Real names are hidden for privacy - only character names are displayed.
+                This page shows all characters for The Black Lotus Murder Mystery.
               </p>
             </div>
           </CardContent>

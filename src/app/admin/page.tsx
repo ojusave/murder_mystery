@@ -62,6 +62,7 @@ export default function AdminDashboard() {
   const [createCharacterDialogOpen, setCreateCharacterDialogOpen] = useState(false);
   const [characterForm, setCharacterForm] = useState({
     displayName: '',
+    occupation: '',
     backstory: '',
     hostNotes: '',
   });
@@ -330,6 +331,7 @@ export default function AdminDashboard() {
         body: JSON.stringify({
           guestId: selectedGuest.id,
           displayName: characterForm.displayName,
+          occupation: characterForm.occupation,
           backstory: characterForm.backstory,
           hostNotes: characterForm.hostNotes,
         }),
@@ -337,7 +339,7 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         setCharacterDialogOpen(false);
-        setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
+        setCharacterForm({ displayName: '', occupation: '', backstory: '', hostNotes: '' });
         fetchGuests();
         fetchUnassignedCharacters();
       }
@@ -356,6 +358,7 @@ export default function AdminDashboard() {
         },
         body: JSON.stringify({
           displayName: characterForm.displayName,
+          occupation: characterForm.occupation,
           backstory: characterForm.backstory,
           hostNotes: characterForm.hostNotes,
         }),
@@ -363,7 +366,7 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         setCreateCharacterDialogOpen(false);
-        setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
+        setCharacterForm({ displayName: '', occupation: '', backstory: '', hostNotes: '' });
         fetchGuests();
         fetchUnassignedCharacters();
       }
@@ -401,12 +404,13 @@ export default function AdminDashboard() {
   const openEditCharacterDialog = (guest: Guest) => {
     if (!guest.character) return;
     
+    const traits = typeof guest.character.traits === 'object' ? guest.character.traits : {};
+    
     setSelectedGuest(guest);
     setCharacterForm({
       displayName: guest.character.displayName,
-      backstory: typeof guest.character.traits === 'object' 
-        ? JSON.stringify(guest.character.traits, null, 2) 
-        : guest.character.traits || '',
+      occupation: (traits as any)?.occupation || '',
+      backstory: (traits as any)?.backstory || '',
       hostNotes: guest.character.notesPrivate || '',
     });
     setEditCharacterDialogOpen(true);
@@ -425,6 +429,7 @@ export default function AdminDashboard() {
         body: JSON.stringify({
           characterId: selectedGuest.character.id,
           displayName: characterForm.displayName,
+          occupation: characterForm.occupation,
           backstory: characterForm.backstory,
           hostNotes: characterForm.hostNotes,
         }),
@@ -432,7 +437,7 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         setEditCharacterDialogOpen(false);
-        setCharacterForm({ displayName: '', backstory: '', hostNotes: '' });
+        setCharacterForm({ displayName: '', occupation: '', backstory: '', hostNotes: '' });
         fetchGuests();
       }
     } catch (error) {
@@ -704,6 +709,21 @@ export default function AdminDashboard() {
                                       />
                                     </div>
                                     <div>
+                                      <Label htmlFor="occupation" className="text-white">
+                                        Occupation
+                                      </Label>
+                                      <Input
+                                        id="occupation"
+                                        value={characterForm.occupation}
+                                        onChange={(e) => setCharacterForm({
+                                          ...characterForm,
+                                          occupation: e.target.value
+                                        })}
+                                        className="bg-gray-700 border-gray-600 text-white"
+                                        placeholder="e.g., Hotel Owner, Butler, Chef"
+                                      />
+                                    </div>
+                                    <div>
                                       <Label htmlFor="backstory" className="text-white">
                                         Backstory / History
                                       </Label>
@@ -845,6 +865,21 @@ export default function AdminDashboard() {
                               displayName: e.target.value
                             })}
                             className="bg-gray-700 border-gray-600 text-white"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="create-occupation" className="text-white">
+                            Occupation
+                          </Label>
+                          <Input
+                            id="create-occupation"
+                            value={characterForm.occupation}
+                            onChange={(e) => setCharacterForm({
+                              ...characterForm,
+                              occupation: e.target.value
+                            })}
+                            className="bg-gray-700 border-gray-600 text-white"
+                            placeholder="e.g., Hotel Owner, Butler, Chef"
                           />
                         </div>
                         <div>
@@ -1181,6 +1216,21 @@ export default function AdminDashboard() {
                   displayName: e.target.value
                 })}
                 className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="edit-char-occupation" className="text-white">
+                Occupation
+              </Label>
+              <Input
+                id="edit-char-occupation"
+                value={characterForm.occupation}
+                onChange={(e) => setCharacterForm({
+                  ...characterForm,
+                  occupation: e.target.value
+                })}
+                className="bg-gray-700 border-gray-600 text-white"
+                placeholder="e.g., Hotel Owner, Butler, Chef"
               />
             </div>
             <div>

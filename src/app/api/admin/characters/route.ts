@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { guestId, displayName, backstory, hostNotes } = await request.json();
+    const { guestId, displayName, occupation, backstory, hostNotes } = await request.json();
 
     if (!displayName || !backstory) {
       return NextResponse.json(
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       data: {
         guestId: guestId || null, // Allow null for unassigned characters
         displayName,
-        traits: { backstory: backstory },
+        traits: { occupation: occupation || '', backstory: backstory },
         notesPrivate: hostNotes,
         assignedAt: guestId ? new Date() : null, // Only set assignedAt if guestId is provided
       },
@@ -112,7 +112,7 @@ export async function PATCH(request: NextRequest) {
   }
 
   try {
-    const { characterId, guestId, displayName, backstory, hostNotes } = await request.json();
+    const { characterId, guestId, displayName, occupation, backstory, hostNotes } = await request.json();
 
     if (!characterId) {
       return NextResponse.json(
@@ -143,8 +143,13 @@ export async function PATCH(request: NextRequest) {
       updateData.assignedAt = guestId ? new Date() : null;
     }
     
-    if (backstory !== undefined) {
-      updateData.traits = { backstory: backstory };
+    if (backstory !== undefined || occupation !== undefined) {
+      // Get existing traits to preserve them
+      const currentTraits = currentCharacter.traits as any;
+      updateData.traits = {
+        occupation: occupation !== undefined ? (occupation || '') : (currentTraits?.occupation || ''),
+        backstory: backstory !== undefined ? backstory : (currentTraits?.backstory || ''),
+      };
     }
 
     const character = await prisma.character.update({

@@ -506,8 +506,11 @@ export async function sendCharacterAssignedEmail(guest: any) {
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
-        <a href="${guestPortalUrl}" style="background: #a855f7; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+        <a href="${guestPortalUrl}" style="background: #a855f7; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; margin-right: 10px;">
           View Your Guest Portal
+        </a>
+        <a href="${APP_BASE_URL}/guest-list/${guest.token}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold;">
+          View Guest List
         </a>
       </div>
       
@@ -557,6 +560,7 @@ Preparation Tips (Because You'll Need Them):
 • Try not to break character (we know it's hard for you)
 
 View Your Guest Portal: ${guestPortalUrl}
+View Guest List: ${APP_BASE_URL}/guest-list/${guest.token}
 
 Add to Calendar:
 • Google Calendar: ${googleCalendarUrl}

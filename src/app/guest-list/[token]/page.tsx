@@ -87,12 +87,6 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                 </TableBody>
               </Table>
             </div>
-
-            <div className="mt-8 bg-purple-900/30 rounded-lg p-4">
-              <p className="text-gray-300 text-sm text-center">
-                This page shows all characters for The Black Lotus Murder Mystery.
-              </p>
-            </div>
           </CardContent>
         </Card>
       </main>

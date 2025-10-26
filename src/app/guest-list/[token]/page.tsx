@@ -31,18 +31,19 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
 
   // Hardcoded character list as requested
   const allCharacters = [
-    { name: 'Gomez Adams', occupation: 'Hotel Owner' },
-    { name: 'Morticia Adams', occupation: 'Hotel Owner' },
-    { name: 'Lurch', occupation: 'Butler' },
-    { name: 'Chef Dumpsterella', occupation: 'Hotel Chef' },
-    { name: 'Meghan Sparkle', occupation: 'Failed Actress' },
-    { name: 'Harry "the spare" windsor', occupation: 'Ex Prince' },
-    { name: 'Mayor Dixie', occupation: 'Mayor' },
-    { name: 'Vincent Drake', occupation: 'Venture Capitalist' },
-    { name: 'Barney Stinson', occupation: 'Philanderer Husband' },
-    { name: 'Robin Stinson', occupation: 'Rich Socialite' },
-    { name: 'Todd Kohlhepp', occupation: 'Realtor who\'s also a psycho murderer' },
-    { name: 'Laura Kohlhepp', occupation: 'Police Chief' },
+    { name: 'Gomez Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight' },
+    { name: 'Morticia Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight' },
+    { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Hotel Butler' },
+    { name: 'Chef Dumpsterella', occupation: 'Hotel Chef', whatYouKnow: 'Hotel Chef' },
+    { name: 'Meghan Sparkle', occupation: 'Failed Actress', whatYouKnow: 'Wife of Harry Windsor' },
+    { name: 'Harry "the spare" windsor', occupation: 'Ex Prince', whatYouKnow: 'Husband to Meghan Sparkle. The second in line for the royal succession, but ousted by the royals because of his marriage to Meghan Sparkle' },
+    { name: 'Mayor Dixie', occupation: 'Mayor', whatYouKnow: '' },
+    { name: 'Vincent Drake', occupation: 'Banker', whatYouKnow: '' },
+    { name: 'Barney Stinson', occupation: 'Philanderer Husband', whatYouKnow: '' },
+    { name: 'Robin Stinson', occupation: 'Rich Socialite', whatYouKnow: 'Famous socialite and the organizer of "Sheet Gala". But her last gala was a scandal. The money was transferred to an offshore account and she has been accused of embezzling funds' },
+    { name: 'Todd Kohlhepp', occupation: 'Realtor', whatYouKnow: 'The best realtor in the city. There is not a single house that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
+    { name: 'Laura Kohlhepp', occupation: 'Police Chief', whatYouKnow: 'Commissioner of Police' },
+    { name: 'Pornhub Goswimmy', occupation: 'Journalist', whatYouKnow: '• Serial Killer in the city who finds and tortures people in basements\n• Last Sheet-Gala organized by Robin Stinson, all the money was embezzled, but by whom ?\n• Is all well between Megan and Prince Harry ?' },
   ];
 
   return (
@@ -74,7 +75,8 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                 <TableHeader>
                   <TableRow className="border-gray-700 hover:bg-gray-800/50">
                     <TableHead className="text-white">Character Name</TableHead>
-                    <TableHead className="text-white">Character Occupation</TableHead>
+                    <TableHead className="text-white">Occupation</TableHead>
+                    <TableHead className="text-white">What you know ?</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -82,6 +84,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                     <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
                       <TableCell className="text-white font-medium">{character.name}</TableCell>
                       <TableCell className="text-gray-300">{character.occupation}</TableCell>
+                      <TableCell className="text-gray-300 whitespace-pre-line">{character.whatYouKnow}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

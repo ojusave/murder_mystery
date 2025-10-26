@@ -20,16 +20,6 @@ async function getGuestByToken(token: string) {
   return guest;
 }
 
-async function getAllCharacters() {
-  const characters = await prisma.character.findMany({
-    orderBy: {
-      displayName: 'asc',
-    },
-  });
-
-  return characters;
-}
-
 export default async function GuestListPortal({ params }: GuestListPortalProps) {
   const { token } = await params;
   const guest = await getGuestByToken(token);
@@ -39,7 +29,21 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
     notFound();
   }
 
-  const allCharacters = await getAllCharacters();
+  // Hardcoded character list as requested
+  const allCharacters = [
+    { name: 'Gomez Adams', occupation: 'Hotel Owner' },
+    { name: 'Morticia Adams', occupation: 'Hotel Owner' },
+    { name: 'Lurch', occupation: 'Butler' },
+    { name: 'Chef Dumpsterella', occupation: 'Hotel Chef' },
+    { name: 'Meghan Sparkle', occupation: 'Failed Actress' },
+    { name: 'Harry "the spare" windsor', occupation: 'Ex Prince' },
+    { name: 'Mayor Dixie', occupation: 'Mayor' },
+    { name: 'Vincent Drake', occupation: 'Venture Capitalist' },
+    { name: 'Barney Stinson', occupation: 'Philanderer Husband' },
+    { name: 'Robin Stinson', occupation: 'Rich Socialite' },
+    { name: 'Todd Kohlhepp', occupation: 'Realtor who\'s also a psycho murderer' },
+    { name: 'Laura Kohlhepp', occupation: 'Police Chief' },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
@@ -74,19 +78,12 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {allCharacters.map((character) => {
-                    // Extract occupation from character traits
-                    const occupation = character.traits && typeof character.traits === 'object' 
-                      ? (character.traits as any).occupation || 'N/A'
-                      : 'N/A';
-                    
-                    return (
-                      <TableRow key={character.id} className="border-gray-700 hover:bg-gray-800/30">
-                        <TableCell className="text-white font-medium">{character.displayName}</TableCell>
-                        <TableCell className="text-gray-300">{occupation}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {allCharacters.map((character, index) => (
+                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
+                      <TableCell className="text-white font-medium">{character.name}</TableCell>
+                      <TableCell className="text-gray-300">{character.occupation}</TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </div>

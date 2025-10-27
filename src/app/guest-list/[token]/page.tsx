@@ -29,22 +29,28 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
     notFound();
   }
 
-  // Hardcoded character list as requested
-  const allCharacters = [
-    { name: 'Gone "Case" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, husband of Mala "Ria" Adams' },
-    { name: 'Mala "Ria" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, Wife of Gone "Case" Adams' },
-    { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
-    { name: 'Martha Scruher\'t', occupation: 'Hotel Chef', whatYouKnow: 'Your Chef for Tonight' },
-    { name: 'Meghan Sparkle', occupation: 'Former Actress now a "Humanitarian" and "Philanthropist"', whatYouKnow: 'Wife of Harry Grindsor' },
-    { name: 'Harry "the spare" Grindsor', occupation: 'Ousted Prince of the Royal Grindsor Family', whatYouKnow: 'Husband to Megan Sparkle. Was 5th in line for the throne, but famously denounced his royal title and called his grandma, Queen Racistabeth, "a colonial warlord with pearls"' },
-    { name: 'Ivanka Plump', occupation: 'Mayor of the City', whatYouKnow: 'Married to Jared Krusher' },
-    { name: 'Jared Krusher', occupation: 'Lawyer', whatYouKnow: 'Husband of Ivanka Plump' },
-    { name: 'Barney Stinson', occupation: 'Banker at Goliath National Bank', whatYouKnow: 'Married to Robin Stinson. Well-known Philanderer' },
-    { name: 'Robin Stinson', occupation: 'Rich Socialite', whatYouKnow: 'Once a low-budget teen pop singer on regional TV and now a famous socialite after inheriting her father\'s wealth after his death. She is famously known for organizing "Sheet Gala".' },
-    { name: 'Todd Kohlhepp', occupation: 'Realtor', whatYouKnow: 'Married to Laura Kohlhepp. The best realtor in the city. There is not a single house in the city that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
-    { name: 'Laura Kohlhepp', occupation: 'Police Chief', whatYouKnow: 'Married to Todd Kohlhepp' },
-    { name: 'Pornhub Goswimmy', occupation: 'Journalist for Poopublic News', whatYouKnow: 'Famous Articles:\n• Bodies Found Inside Abandoned Mansion Outside City Limits – Police Deny Serial Killer Rumors\n• Sheet Gala Scandal $5 Million \'Charity\' Money Vanishes Overnight\n• Royal Crisis: Prince Forced Out of Line of Succession After Marrying a Commoner' },
-    { name: 'E\'mma Artscammer', occupation: 'Art Dealer', whatYouKnow: 'Dealer of fine artwork' },
+  // Organize characters by category
+  const hosts = [
+    { name: 'Gone "Case" Adams', role: 'Hotel Owner', description: 'Your Host for Tonight, husband of Mala "Ria" Adams' },
+    { name: 'Mala "Ria" Adams', role: 'Hotel Owner', description: 'Your Host for Tonight, Wife of Gone "Case" Adams' },
+  ];
+
+  const staff = [
+    { name: 'Lurch', role: 'Butler', description: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
+    { name: 'Martha Scruher\'t', role: 'Hotel Chef', description: 'Your Chef for Tonight' },
+  ];
+
+  const guests = [
+    { name: 'Meghan Sparkle', role: 'Former Actress now a "Humanitarian" and "Philanthropist"', description: 'Wife of Harry Grindsor' },
+    { name: 'Harry "the spare" Grindsor', role: 'Ousted Prince of the Royal Grindsor Family', description: 'Husband to Megan Sparkle. Was 5th in line for the throne, but famously denounced his royal title and called his grandma, Queen Racistabeth, "a colonial warlord with pearls"' },
+    { name: 'Ivanka Plump', role: 'Mayor of the City', description: 'Married to Jared Krusher' },
+    { name: 'Jared Krusher', role: 'Lawyer', description: 'Husband of Ivanka Plump' },
+    { name: 'Barney Stinson', role: 'Banker at Goliath National Bank', description: 'Married to Robin Stinson. Well-known Philanderer' },
+    { name: 'Robin Stinson', role: 'Rich Socialite', description: 'Once a low-budget teen pop singer on regional TV and now a famous socialite after inheriting her father\'s wealth after his death. She is famously known for organizing "Sheet Gala".' },
+    { name: 'Todd Kohlhepp', role: 'Realtor', description: 'Married to Laura Kohlhepp. The best realtor in the city. There is not a single house in the city that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
+    { name: 'Laura Kohlhepp', role: 'Police Chief', description: 'Married to Todd Kohlhepp' },
+    { name: 'Pornhub Goswimmy', role: 'Journalist for Poopublic News', description: 'Famous Articles:\n• Bodies Found Inside Abandoned Mansion Outside City Limits – Police Deny Serial Killer Rumors\n• Sheet Gala Scandal $5 Million \'Charity\' Money Vanishes Overnight\n• Royal Crisis: Prince Forced Out of Line of Succession After Marrying a Commoner' },
+    { name: 'E\'mma Artscammer', role: 'Art Dealer', description: 'Dealer of fine artwork' },
   ];
 
   return (
@@ -71,21 +77,69 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Hosts Section */}
             <div className="mt-6">
+              <h3 className="text-xl font-semibold text-white mb-4">Host</h3>
               <Table>
                 <TableHeader>
                   <TableRow className="border-gray-700 hover:bg-gray-800/50">
                     <TableHead className="text-white">Name</TableHead>
-                    <TableHead className="text-white">Occupation</TableHead>
-                    <TableHead className="text-white">What you know ?</TableHead>
+                    <TableHead className="text-white">Role</TableHead>
+                    <TableHead className="text-white">Public Description</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {allCharacters.map((character, index) => (
+                  {hosts.map((character, index) => (
                     <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
                       <TableCell className="text-white font-medium">{character.name}</TableCell>
-                      <TableCell className="text-gray-300">{character.occupation}</TableCell>
-                      <TableCell className="text-gray-300 whitespace-pre-line">{character.whatYouKnow}</TableCell>
+                      <TableCell className="text-gray-300">{character.role}</TableCell>
+                      <TableCell className="text-gray-300 whitespace-pre-line">{character.description}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Staff Section */}
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-white mb-4">Staff</h3>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-gray-700 hover:bg-gray-800/50">
+                    <TableHead className="text-white">Name</TableHead>
+                    <TableHead className="text-white">Role</TableHead>
+                    <TableHead className="text-white">Public Description</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {staff.map((character, index) => (
+                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
+                      <TableCell className="text-white font-medium">{character.name}</TableCell>
+                      <TableCell className="text-gray-300">{character.role}</TableCell>
+                      <TableCell className="text-gray-300 whitespace-pre-line">{character.description}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Guests Section */}
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-white mb-4">Guests</h3>
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-gray-700 hover:bg-gray-800/50">
+                    <TableHead className="text-white">Name</TableHead>
+                    <TableHead className="text-white">Role</TableHead>
+                    <TableHead className="text-white">Public Description</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {guests.map((character, index) => (
+                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
+                      <TableCell className="text-white font-medium">{character.name}</TableCell>
+                      <TableCell className="text-gray-300">{character.role}</TableCell>
+                      <TableCell className="text-gray-300 whitespace-pre-line">{character.description}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

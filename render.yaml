@@ -16,10 +16,7 @@ services:
           name: black-lotus-web
           property: host
       - key: APP_BASE_URL
-        fromService:
-          type: web
-          name: black-lotus-web
-          property: host
+        value: "https://mm.saveoj.us"
     envVarGroups:
       - black-lotus-env-group
 
@@ -89,3 +86,9 @@ envVarGroups:
       
       - key: RATE_LIMIT_PER_DAY
         value: "100"
+      
+      - key: APP_BASE_URL
+        value: "https://mm.saveoj.us"
+      
+      - key: REAL_ADDRESS
+        value: "40849 High Street, Fremont"

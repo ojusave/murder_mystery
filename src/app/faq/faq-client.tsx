@@ -56,9 +56,7 @@ export default function FAQClient({ faqs }: FAQClientProps) {
                     : 'max-h-0 py-0 opacity-0 overflow-hidden'
                 }`}
               >
-                <p className="text-gray-300 leading-relaxed text-lg">
-                  {faq.answer}
-                </p>
+                <p className="text-gray-300 leading-relaxed text-lg" dangerouslySetInnerHTML={{ __html: faq.answer.replace(/waiver/g, '<a href="/waiver" class="text-purple-400 hover:text-purple-300 underline">waiver</a>') }} />
               </div>
             </div>
           );

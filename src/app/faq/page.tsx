@@ -49,7 +49,7 @@ const staticFaqs: FAQ[] = [
   {
     id: 'faq-6',
     question: 'Can I help with something?',
-    answer: "Yes, you can help with decor, making drinks, or bringing themed snacks. Please check the goddamn waiver (/waiver) first though - we need to make sure you won't burn down our house or poison everyone. Story and other creative elements are also welcome, but don't expect us to use your terrible ideas just because you suggested them.",
+    answer: "Yes, you can help with decor, making drinks, or bringing themed snacks. Please check the goddamn waiver first though - we need to make sure you won't burn down our house or poison everyone. Story and other creative elements are also welcome, but don't expect us to use your terrible ideas just because you suggested them.",
     order: 6,
     isActive: true
   },

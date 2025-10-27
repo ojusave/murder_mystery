@@ -191,21 +191,6 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
 
                 {guest.status === 'approved' && guest.character && (
                   <div className="space-y-4">
-                    <div className="bg-green-900/30 border border-green-500 rounded-lg p-4">
-                      <h4 className="text-lg font-semibold text-green-300 mb-2">Ready to Play!</h4>
-                      <p>You're all set for The Black Lotus Murder Mystery! Here's what you need to know:</p>
-                    </div>
-                    
-                    <div className="bg-gray-800/50 rounded-lg p-4">
-                      <h4 className="text-lg font-semibold text-white mb-3">Event Details</h4>
-                      <div className="space-y-2">
-                        <p><strong className="text-white">Date:</strong> November 1st, 2025</p>
-                        <p><strong className="text-white">Time:</strong> 8:00 PM - 12:00 AM</p>
-                        <p><strong className="text-white">Location:</strong> [Venue TBD]</p>
-                        <p><strong className="text-white">Dress Code:</strong> Costumes encouraged!</p>
-                      </div>
-                    </div>
-
                     <div className="bg-gray-800/50 rounded-lg p-4">
                       <h4 className="text-lg font-semibold text-white mb-3">What to Bring</h4>
                       <div className="space-y-1">

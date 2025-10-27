@@ -67,7 +67,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
               Guest List
             </CardTitle>
             <CardDescription className="text-gray-300 text-center">
-              Attendees for The Black Lotus Murder Mystery
+              Host, Staff and Guests for tonight's grand hotel opening
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -75,7 +75,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
               <Table>
                 <TableHeader>
                   <TableRow className="border-gray-700 hover:bg-gray-800/50">
-                    <TableHead className="text-white">Character Name</TableHead>
+                    <TableHead className="text-white">Name</TableHead>
                     <TableHead className="text-white">Occupation</TableHead>
                     <TableHead className="text-white">What you know ?</TableHead>
                   </TableRow>

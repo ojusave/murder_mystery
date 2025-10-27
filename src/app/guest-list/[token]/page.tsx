@@ -36,15 +36,15 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
     { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
     { name: 'Chef Dumpsterella', occupation: 'Hotel Chef', whatYouKnow: 'Your Chef for Tonight' },
     { name: 'Meghan Sparkle', occupation: 'Former Actress now a "Humanitarian" and "Philanthropist"', whatYouKnow: 'Wife of Harry Grindsor' },
-    { name: 'Harry "the spare" Grindsor', occupation: 'Ousted Prince of the Royal Grindsor Family', whatYouKnow: 'Husband to Meghan Sparkle. Ousted from the royal family by his brother Gilliam and Katie "future ice queen" Grindsor because of his marriage to Meghan. Currently 5th in line for the Throne.' },
+    { name: 'Harry "the spare" Grindsor', occupation: 'Ousted Prince of the Royal Grindsor Family', whatYouKnow: 'Husband to Megan Sparkle. Was 5th in line for the throne, but famously denounced his royal title and called his grandma, Queen Racistabeth, "a colonial warlord with pearls"' },
     { name: 'Tracy Ramoray', occupation: 'Mayor of the City', whatYouKnow: 'Married to Vincent Ramoray' },
     { name: 'Drake Ramoray', occupation: 'Lawyer', whatYouKnow: 'Husband of Tracy Ramoray' },
     { name: 'Barney Stinson', occupation: 'Banker at Goliath National Bank', whatYouKnow: 'Married to Robin Stinson. Well-known Philanderer' },
     { name: 'Robin Stinson', occupation: 'Rich Socialite', whatYouKnow: 'Once a low-budget teen pop singer on regional TV and now a famous socialite after inheriting her father\'s wealth after his death. She is famously known for organizing "Sheet Gala".' },
     { name: 'Todd Kohlhepp', occupation: 'Realtor', whatYouKnow: 'Married to Laura Kohlhepp. The best realtor in the city. There is not a single house in the city that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
     { name: 'Laura Kohlhepp', occupation: 'Police Chief', whatYouKnow: 'Married to Todd Kohlhepp' },
-    { name: 'Pornhub Goswimmy', occupation: 'Journalist for Poopublic News', whatYouKnow: 'Famous Articles:\n• Serial Killer in the city who finds and tortures people in basements\n• Last Sheet-Gala organized by Robin Stinson, all the money was embezzled, but by whom?\n• Is all well between Meghan and Prince Harry?' },
-    { name: 'E\'mma Artscammer', occupation: 'Art Dealer', whatYouKnow: '' },
+    { name: 'Pornhub Goswimmy', occupation: 'Journalist for Poopublic News', whatYouKnow: 'Famous Articles:\n• Bodies Found Inside Abandoned Mansion Outside City Limits – Police Deny Serial Killer Rumors\n• Sheet Gala Scandal $5 Million \'Charity\' Money Vanishes Overnight\n• Royal Crisis: Prince Forced Out of Line of Succession After Marrying a Commoner' },
+    { name: 'E\'mma Artscammer', occupation: 'Art Dealer', whatYouKnow: 'Dealer of fine artwork' },
   ];
 
   return (

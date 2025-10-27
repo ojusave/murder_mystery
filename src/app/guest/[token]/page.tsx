@@ -95,15 +95,6 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                     <p className="mt-1 italic">"{guest.suggestions}"</p>
                   </div>
                 )}
-                
-                {/* Welcome message for new RSVPs */}
-                <div className="bg-purple-900/30 rounded-lg p-4 mt-6">
-                  <h3 className="text-lg font-semibold text-white mb-2">🎉 Welcome to Black Lotus!</h3>
-                  <p className="text-sm text-gray-300">
-                    Your RSVP has been successfully submitted! You can bookmark this page to check your status anytime.
-                    We'll review your application and get back to you within 24-48 hours.
-                  </p>
-                </div>
               </div>
             </CardContent>
           </Card>

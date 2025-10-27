@@ -34,7 +34,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
     { name: 'Gone "Case" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, husband of Mala "Ria" Adams' },
     { name: 'Mala "Ria" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, Wife of Gomez "Case" Adams' },
     { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
-    { name: 'Chef Dumpsterella', occupation: 'Hotel Chef', whatYouKnow: 'Your Chef for Tonight' },
+    { name: 'Martha Screwhert', occupation: 'Hotel Chef', whatYouKnow: 'Your Chef for Tonight' },
     { name: 'Meghan Sparkle', occupation: 'Former Actress now a "Humanitarian" and "Philanthropist"', whatYouKnow: 'Wife of Harry Grindsor' },
     { name: 'Harry "the spare" Grindsor', occupation: 'Ousted Prince of the Royal Grindsor Family', whatYouKnow: 'Husband to Megan Sparkle. Was 5th in line for the throne, but famously denounced his royal title and called his grandma, Queen Racistabeth, "a colonial warlord with pearls"' },
     { name: 'Ivanka Plump', occupation: 'Mayor of the City', whatYouKnow: 'Married to Jared Krusher' },

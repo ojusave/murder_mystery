@@ -154,6 +154,15 @@ export default async function GuestPortal({ params }: GuestPortalProps) {
                       <p className="text-gray-300">{guest.character.notesPrivate}</p>
                     </div>
                   )}
+                  
+                  <div className="bg-purple-900/30 rounded-lg p-4">
+                    <a 
+                      href={`/guest-list/${guest.token}`}
+                      className="inline-flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                    >
+                      View Guest List & Character Information
+                    </a>
+                  </div>
                 </div>
               </CardContent>
             </Card>

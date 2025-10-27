@@ -31,19 +31,20 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
 
   // Hardcoded character list as requested
   const allCharacters = [
-    { name: 'Gomez Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight' },
-    { name: 'Morticia Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight' },
-    { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Hotel Butler' },
-    { name: 'Chef Dumpsterella', occupation: 'Hotel Chef', whatYouKnow: 'Hotel Chef' },
-    { name: 'Meghan Sparkle', occupation: 'Failed Actress', whatYouKnow: 'Wife of Harry Windsor' },
-    { name: 'Harry "the spare" windsor', occupation: 'Ex Prince', whatYouKnow: 'Husband to Meghan Sparkle. The second in line for the royal succession, but ousted by the royals because of his marriage to Meghan Sparkle' },
-    { name: 'Mayor Dixie', occupation: 'Mayor', whatYouKnow: '' },
-    { name: 'Vincent Drake', occupation: 'Banker', whatYouKnow: '' },
-    { name: 'Barney Stinson', occupation: 'Philanderer Husband', whatYouKnow: '' },
-    { name: 'Robin Stinson', occupation: 'Rich Socialite', whatYouKnow: 'Famous socialite and the organizer of "Sheet Gala". But her last gala was a scandal. The money was transferred to an offshore account and she has been accused of embezzling funds' },
-    { name: 'Todd Kohlhepp', occupation: 'Realtor', whatYouKnow: 'The best realtor in the city. There is not a single house that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
-    { name: 'Laura Kohlhepp', occupation: 'Police Chief', whatYouKnow: 'Commissioner of Police' },
-    { name: 'Pornhub Goswimmy', occupation: 'Journalist', whatYouKnow: '• Serial Killer in the city who finds and tortures people in basements\n• Last Sheet-Gala organized by Robin Stinson, all the money was embezzled, but by whom ?\n• Is all well between Megan and Prince Harry ?' },
+    { name: 'Gone "Case" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, husband of Mala "Ria" Adams' },
+    { name: 'Mala "Ria" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, Wife of Gomez "Case" Adams' },
+    { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
+    { name: 'Chef Dumpsterella', occupation: 'Hotel Chef', whatYouKnow: 'Your Chef for Tonight' },
+    { name: 'Meghan Sparkle', occupation: 'Former Actress now a "Humanitarian" and "Philanthropist"', whatYouKnow: 'Wife of Harry Grindsor' },
+    { name: 'Harry "the spare" Grindsor', occupation: 'Ousted Prince of the Royal Grindsor Family', whatYouKnow: 'Husband to Meghan Sparkle. Ousted from the royal family by his brother Gilliam and Katie "future ice queen" Grindsor because of his marriage to Meghan. Currently 5th in line for the Throne.' },
+    { name: 'Tracy Ramoray', occupation: 'Mayor of the City', whatYouKnow: 'Married to Vincent Ramoray' },
+    { name: 'Drake Ramoray', occupation: 'Lawyer', whatYouKnow: 'Husband of Tracy Ramoray' },
+    { name: 'Barney Stinson', occupation: 'Banker at Goliath National Bank', whatYouKnow: 'Married to Robin Stinson. Well-known Philanderer' },
+    { name: 'Robin Stinson', occupation: 'Rich Socialite', whatYouKnow: 'Once a low-budget teen pop singer on regional TV and now a famous socialite after inheriting her father\'s wealth after his death. She is famously known for organizing "Sheet Gala".' },
+    { name: 'Todd Kohlhepp', occupation: 'Realtor', whatYouKnow: 'Married to Laura Kohlhepp. The best realtor in the city. There is not a single house in the city that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
+    { name: 'Laura Kohlhepp', occupation: 'Police Chief', whatYouKnow: 'Married to Todd Kohlhepp' },
+    { name: 'Pornhub Goswimmy', occupation: 'Journalist for Poopublic News', whatYouKnow: 'Famous Articles:\n• Serial Killer in the city who finds and tortures people in basements\n• Last Sheet-Gala organized by Robin Stinson, all the money was embezzled, but by whom?\n• Is all well between Meghan and Prince Harry?' },
+    { name: 'E\'mma Artscammer', occupation: 'Art Dealer', whatYouKnow: '' },
   ];
 
   return (

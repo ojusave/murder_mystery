@@ -585,30 +585,20 @@ export async function sendCharacterUpdatedEmail(guest: any) {
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1f2937, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
       <h1 style="text-align: center; margin-bottom: 30px;">The Black Lotus</h1>
-      <h2 style="color: #f59e0b;">Character Details Updated - Because You Probably Messed Up</h2>
-      <p>Hey ${guest.legalName},</p>
-      <p>Your character details have been updated! Because apparently, you couldn't handle the original assignment.</p>
+      <h2 style="color: #f59e0b;">Character Details Updated</h2>
+      <p>Hi ${guest.legalName},</p>
+      <p>Your character details have been updated for The Black Lotus Murder Mystery.</p>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0; color: #f59e0b;">Updated Character: ${character.displayName}</h3>
         <p><strong>Background:</strong> ${character.traits.backstory}</p>
-        <p><strong>Your Role:</strong> Try to act like you belong here (still)</p>
-      </div>
-      
-      <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin: 20px 0;">
-        <h4 style="margin-top: 0; color: #f59e0b;">Changes Made:</h4>
-        <ul style="margin: 0; padding-left: 20px;">
-          <li>We fixed your character because you probably would have ruined it</li>
-          <li>Updated the backstory because the original was too complex for you</li>
-          <li>Simplified everything because we don't trust you with anything complicated</li>
-        </ul>
       </div>
       
       <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="margin-top: 0;">Event Details:</h3>
-        <p><strong>Date:</strong> November 1st, 2025 (still the same date, still not changing)</p>
-        <p><strong>Time:</strong> 8:00 PM - 12:00 AM (still your life we're wasting)</p>
-        <p><strong>Location:</strong> ${REAL_ADDRESS} (still the same place, still not moving)</p>
+        <p><strong>Date:</strong> November 1st, 2025</p>
+        <p><strong>Time:</strong> 8:00 PM - 12:00 AM</p>
+        <p><strong>Location:</strong> ${REAL_ADDRESS}</p>
       </div>
       
       <div style="text-align: center; margin: 30px 0;">
@@ -617,10 +607,8 @@ export async function sendCharacterUpdatedEmail(guest: any) {
         </a>
       </div>
       
-      <p>Please review the updated character information and try not to mess it up this time.</p>
-      <p>Questions? Concerns? Existential dread about your inability to handle simple tasks? We're here for you, but we're not happy about it.</p>
+      <p>Please review the updated character information in your guest portal.</p>
       <p>Best regards,<br>BrO-J & Half-Chai</p>
-      <p style="font-size: 12px; color: #9ca3af;">(P.S. - The character is fictional. The mystery is real. Your incompetence is legendary.)</p>
     </div>
   `;
 
@@ -628,7 +616,7 @@ export async function sendCharacterUpdatedEmail(guest: any) {
     await resend.emails.send({
       from: EMAIL_FROM,
       to: guest.email,
-      subject: 'Character Details Updated - Because You Probably Messed Up',
+      subject: 'Character Details Updated - The Black Lotus Murder Mystery',
       html,
     });
     console.log(`Character updated email sent to ${guest.email}`);

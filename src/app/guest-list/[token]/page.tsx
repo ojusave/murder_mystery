@@ -32,7 +32,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
   // Hardcoded character list as requested
   const allCharacters = [
     { name: 'Gone "Case" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, husband of Mala "Ria" Adams' },
-    { name: 'Mala "Ria" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, Wife of Gomez "Case" Adams' },
+    { name: 'Mala "Ria" Adams', occupation: 'Hotel Owner', whatYouKnow: 'Your Host for Tonight, Wife of Gone "Case" Adams' },
     { name: 'Lurch', occupation: 'Butler', whatYouKnow: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
     { name: 'Martha Scruher\'t', occupation: 'Hotel Chef', whatYouKnow: 'Your Chef for Tonight' },
     { name: 'Meghan Sparkle', occupation: 'Former Actress now a "Humanitarian" and "Philanthropist"', whatYouKnow: 'Wife of Harry Grindsor' },

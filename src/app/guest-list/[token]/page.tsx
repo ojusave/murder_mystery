@@ -67,7 +67,7 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
               Guest List
             </CardTitle>
             <CardDescription className="text-gray-300 text-center">
-              Host, Staff and Guests for tonight's grand hotel opening
+              Host, Staff and Guests for Black Lotus Hotel Grand Re-Opening
             </CardDescription>
           </CardHeader>
           <CardContent>

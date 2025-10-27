@@ -1163,6 +1163,48 @@ export default function AdminDashboard() {
             </div>
 
             <div>
+              <Label htmlFor="edit-bringOptions" className="text-white">What to Bring (comma separated)</Label>
+              <Input
+                id="edit-bringOptions"
+                value={editForm.bringOptions?.join(', ') || ''}
+                onChange={(e) => setEditForm({...editForm, bringOptions: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})}
+                className="bg-gray-700 border-gray-600 text-white"
+                placeholder="e.g., Drink, Dessert, Side dish"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-bringOther" className="text-white">Bring Other</Label>
+              <Input
+                id="edit-bringOther"
+                value={editForm.bringOther || ''}
+                onChange={(e) => setEditForm({...editForm, bringOther: e.target.value})}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-talents" className="text-white">Your Talents (comma separated)</Label>
+              <Input
+                id="edit-talents"
+                value={editForm.talents?.join(', ') || ''}
+                onChange={(e) => setEditForm({...editForm, talents: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})}
+                className="bg-gray-700 border-gray-600 text-white"
+                placeholder="e.g., Singing, Dancing, Acting"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-talentsOther" className="text-white">Talents Other</Label>
+              <Input
+                id="edit-talentsOther"
+                value={editForm.talentsOther || ''}
+                onChange={(e) => setEditForm({...editForm, talentsOther: e.target.value})}
+                className="bg-gray-700 border-gray-600 text-white"
+              />
+            </div>
+
+            <div>
               <Label htmlFor="edit-suggestions" className="text-white">Suggestions</Label>
               <Textarea
                 id="edit-suggestions"

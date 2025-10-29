@@ -112,7 +112,7 @@ const staticFaqs: FAQ[] = [
   {
     id: 'faq-15',
     question: 'What topics are off limit?',
-    answer: "Tech, work, crypto, promotions, investments, layoffs, \"hustle,\" stocks, startup bullshit, career advice, job references, visa, immigration, LinkedIn lunatic talk, and anything else that makes people want to kill themselves from boredom. This is a party, not a networking event. Shut the fuck up and stay in character.",
+    answer: "Anything painfully boring or corporate—tech, work drama, crypto cope, fake hustle culture, layoffs trauma dumps, portfolio flexing, startup delusions, promotion whining, career advice, job begging, visa sob stories, or LinkedIn-clown motivational garbage. Also banned: kid or parenting monologues—pregnancy oversharing, fertility chronicles, baby factory planning, breast pump epics, sleep schedule propaganda, daycare tragedies, milestones nobody asked for, and the sanctimonious \"parenting is my identity\" sermon. We get it—some of you breed. Congratulations. Give it a rest. This is a party, not therapy, not career counseling, and definitely not a parenting panel. Stay in character.",
     order: 15,
     isActive: true
   },

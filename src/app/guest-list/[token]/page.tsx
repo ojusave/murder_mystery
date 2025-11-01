@@ -20,6 +20,55 @@ async function getGuestByToken(token: string) {
   return guest;
 }
 
+async function getAllAssignedCharacters() {
+  const characters = await prisma.character.findMany({
+    where: {
+      guestId: { not: null },
+    },
+    include: {
+      guest: {
+        select: {
+          status: true,
+        },
+      },
+    },
+    orderBy: {
+      displayName: 'asc',
+    },
+  });
+
+  return characters
+    .filter(char => char.guest?.status === 'approved')
+    .map(char => {
+      const traits = char.traits as any;
+      return {
+        id: char.id,
+        name: char.displayName,
+        role: traits?.occupation || '',
+        description: traits?.backstory || '',
+      };
+    });
+}
+
+function categorizeCharacters(characters: Array<{ id: string; name: string; role: string; description: string }>) {
+  const hosts: Array<{ id: string; name: string; role: string; description: string }> = [];
+  const staff: Array<{ id: string; name: string; role: string; description: string }> = [];
+  const guests: Array<{ id: string; name: string; role: string; description: string }> = [];
+
+  characters.forEach(char => {
+    const roleLower = char.role.toLowerCase();
+    if (roleLower.includes('hotel owner') || roleLower.includes('host')) {
+      hosts.push(char);
+    } else if (roleLower.includes('butler') || roleLower.includes('chef') || roleLower.includes('staff') || roleLower.includes('manager')) {
+      staff.push(char);
+    } else {
+      guests.push(char);
+    }
+  });
+
+  return { hosts, staff, guests };
+}
+
 export default async function GuestListPortal({ params }: GuestListPortalProps) {
   const { token } = await params;
   const guest = await getGuestByToken(token);
@@ -29,29 +78,9 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
     notFound();
   }
 
-  // Organize characters by category
-  const hosts = [
-    { name: 'Gone "Case" Adams', role: 'Hotel Owner', description: 'Your Host for Tonight, husband of Mala "Ria" Adams' },
-    { name: 'Mala "Ria" Adams', role: 'Hotel Owner', description: 'Your Host for Tonight, Wife of Gone "Case" Adams' },
-  ];
-
-  const staff = [
-    { name: 'Lurch', role: 'Butler', description: 'Works at Hotel Black lotus. The Manager, the butler, he\'s your go-to guy when you need anything.' },
-    { name: 'Martha Scruher\'t', role: 'Hotel Chef', description: 'Your Chef for Tonight' },
-  ];
-
-  const guests = [
-    { name: 'Meghan Sparkle', role: 'Former Actress now a "Humanitarian" and "Philanthropist"', description: 'Wife of Harry Grindsor' },
-    { name: 'Harry "the spare" Grindsor', role: 'Ousted Prince of the Royal Grindsor Family', description: 'Husband to Megan Sparkle. Was 5th in line for the throne, but famously denounced his royal title and called his grandma, Queen Racistabeth, "a colonial warlord with pearls"' },
-    { name: 'Ivanka Plump', role: 'Mayor of the City', description: 'Married to Jared Krusher' },
-    { name: 'Jared Krusher', role: 'Lawyer', description: 'Husband of Ivanka Plump' },
-    { name: 'Barney Stinson', role: 'Banker at Goliath National Bank', description: 'Married to Robin Stinson. Well-known Philanderer' },
-    { name: 'Robin Stinson', role: 'Rich Socialite', description: 'Once a low-budget teen pop singer on regional TV and now a famous socialite after inheriting her father\'s wealth after his death. She is famously known for organizing "Sheet Gala".' },
-    { name: 'Todd Kohlhepp', role: 'Realtor', description: 'Married to Laura Kohlhepp. The best realtor in the city. There is not a single house in the city that he hasn\'t sold, including the current hotel "Black Lotus" to its owners.' },
-    { name: 'Laura Kohlhepp', role: 'Police Chief', description: 'Married to Todd Kohlhepp' },
-    { name: 'Pornhub Goswimmy', role: 'Journalist for Poopublic News', description: 'Famous Articles:\n• Bodies Found Inside Abandoned Mansion Outside City Limits – Police Deny Serial Killer Rumors\n• Sheet Gala Scandal $5 Million \'Charity\' Money Vanishes Overnight\n• Royal Crisis: Prince Forced Out of Line of Succession After Marrying a Commoner' },
-    { name: 'E\'mma Artscammer', role: 'Art Dealer', description: 'Dealer of fine artwork' },
-  ];
+  // Fetch all assigned characters from database
+  const allCharacters = await getAllAssignedCharacters();
+  const { hosts, staff, guests } = categorizeCharacters(allCharacters);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
@@ -89,8 +118,8 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {hosts.map((character, index) => (
-                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
+                  {hosts.map((character) => (
+                    <TableRow key={character.id || character.name} className="border-gray-700 hover:bg-gray-800/30">
                       <TableCell className="text-white font-medium">{character.name}</TableCell>
                       <TableCell className="text-gray-300">{character.role}</TableCell>
                       <TableCell className="text-gray-300 whitespace-pre-line">{character.description}</TableCell>
@@ -112,8 +141,8 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {staff.map((character, index) => (
-                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
+                  {staff.map((character) => (
+                    <TableRow key={character.id || character.name} className="border-gray-700 hover:bg-gray-800/30">
                       <TableCell className="text-white font-medium">{character.name}</TableCell>
                       <TableCell className="text-gray-300">{character.role}</TableCell>
                       <TableCell className="text-gray-300 whitespace-pre-line">{character.description}</TableCell>
@@ -135,8 +164,8 @@ export default async function GuestListPortal({ params }: GuestListPortalProps) 
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {guests.map((character, index) => (
-                    <TableRow key={index} className="border-gray-700 hover:bg-gray-800/30">
+                  {guests.map((character) => (
+                    <TableRow key={character.id || character.name} className="border-gray-700 hover:bg-gray-800/30">
                       <TableCell className="text-white font-medium">{character.name}</TableCell>
                       <TableCell className="text-gray-300">{character.role}</TableCell>
                       <TableCell className="text-gray-300 whitespace-pre-line">{character.description}</TableCell>
